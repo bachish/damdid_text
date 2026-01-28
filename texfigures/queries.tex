@@ -1,0 +1,96 @@
+\newcommand{\nodeDistanceRsm}{2cm}
+\newcommand{\rsmInnerXSep}{0.1cm}
+\newcommand{\rsmInnerYSep}{0.8cm}
+
+% ЛЕВАЯ (G1)
+\newcommand{\rsmgone}[1][1.0]{%
+\begin{tikzpicture}[thick,scale=#1, node distance=\nodeDistanceRsm,
+                    shorten >=1pt,on grid,auto] 
+
+  \node[state, initial above] (q_0)   {$q_0$};
+  \node[state] (q_1) [below right=of q_0] {$q_1$};
+  \node[state] (q_2) [below=of q_1] {$q_2$};
+  \node[state, accepting] (q_3) [below left=of q_2] {$q_3$};
+  \node[state] (q_4) [below left=of q_0] {$q_4$};
+  \node[state] (q_5) [below=of q_4] {$q_5$};
+
+  \node[draw=black, fit=(q_0) (q_1) (q_5) (q_3), inner xsep=0.1cm, inner ysep=0.1cm] (E) {};
+  \node[below right] at (E.north west) {S};
+
+  \path[->]
+    (q_0) edge[sloped, right, above, bend left] node {$\overline{subClassOf}$} (q_1)
+    (q_1) edge node {$q_0$} (q_2)
+    (q_2) edge[sloped, right, below, bend left] node {$subClassOf$} (q_3)
+    (q_1) edge[sloped, above] node {$subClassOf$} (q_3)
+    (q_0) edge[bend right, sloped, below] node {$\overline{type}$} (q_4)
+    (q_4) edge[left] node {$q_0$} (q_5)
+    (q_5) edge[left, sloped, bend right, below] node {$type$} (q_3)
+    (q_4) edge[sloped, above] node {$type$} (q_3);
+\end{tikzpicture}%
+}
+
+
+% ПРАВАЯ ВЕРХНЯЯ (G2)
+\newcommand{\rsmgtwo}[1][1.0]{%
+\begin{tikzpicture}[thick,scale=#1, node distance=2cm,
+                    shorten >=1pt,on grid,auto]
+  \node[state, initial] (q_0)   {$q_0$};
+  \node[state] (q_1) [right=of q_0] {$q_1$};
+  \node[state] (q_2) [right=of q_1] {$q_2$};
+  \node[state, accepting] (q_3) [right=of q_2] {$q_3$};
+  \node[draw=black, fit=(q_0) (q_1) (q_3),
+        inner xsep=\rsmInnerXSep, inner ysep=\rsmInnerYSep] (E) {};
+  \node[below right] at (E.north west) {S};
+  \path[->]
+    (q_0) edge[bend right, below] node {$\overline{subClassOf}$} (q_1)
+    (q_1) edge node {$q_0$} (q_2)
+    (q_2) edge[bend right, below] node {$subClassOf$} (q_3)
+    (q_0) edge[bend left, below]  node {$subClassOf$} (q_3);
+\end{tikzpicture}%
+}
+
+% ПРАВАЯ НИЖНЯЯ (Geo)
+\newcommand{\rsmgeo}[1][1.0]{%
+\begin{tikzpicture}[thick,scale=#1, node distance=2cm,
+                    shorten >=1pt,on grid,auto]
+  \node[state, initial] (q_0)   {$q_0$};
+  \node[state] (q_1) [right=of q_0] {$q_1$};
+  \node[state] (q_2) [right=of q_1] {$q_2$};
+  \node[state, accepting] (q_3) [right=of q_2] {$q_3$};
+  \node[draw=black, fit=(q_0) (q_1) (q_3),
+        inner xsep=\rsmInnerXSep, inner ysep=\rsmInnerYSep] (E) {};
+  \node[below right] at (E.north west) {S};
+  \path[->]
+    (q_0) edge[bend left, above]  node {$broaderTransitive$} (q_1)
+    (q_1) edge  node {$q_0$} (q_2)
+    (q_2) edge[bend right, below] node {$\overline{broaderTransitive}$} (q_3)
+    (q_1) edge[bend left, above]  node {$\overline{broaderTransitive}$} (q_3);
+\end{tikzpicture}%
+}
+
+\begin{figure}[]
+  \resizebox{0.8\textwidth}{!}{
+      \begin{minipage}[t]{0.4\textwidth}\vspace{0pt}
+        \begin{subfigure}[t]{\linewidth}\centering
+          \rsmgone[0.95] % подгони геометрию слева
+          \caption{RSM for query $G_1$ (\ref{eqn:g_1})}\label{fig:rsm_g1}
+        \end{subfigure}
+      \end{minipage}\hspace{0pt}
+      \begin{minipage}[t]{0.53\textwidth}\vspace{0pt}
+          \vspace{1.8em}
+        \begin{subfigure}[t]{\linewidth}\centering
+          \rsmgtwo[0.80] % правая верхняя: геометрия меньше, шрифт тот же
+          \caption{RSM for query $G_2$ (\ref{eqn:g_2})}\label{fig:rsm_g2}
+        \end{subfigure}
+    
+        \vspace{1.4em}
+    
+        \begin{subfigure}[t]{\linewidth}\centering
+          \rsmgeo[0.80]
+          \caption{RSM for query \textit{Geo} (\ref{eqn:geo})}\label{fig:rsm_geo}
+        \end{subfigure}
+      \end{minipage}
+  }
+  \caption{RSMs for queries.}
+  
+\end{figure}

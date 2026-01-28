@@ -1,0 +1,55 @@
+\section{Performance of GLL on Queries in BNF and EBNF}\label{section:BFN_or_RSM}
+
+As discussed above, different ways to specify context-free grammars can be used to specify the query. The basic one is BNF (see definition~\ref{def:bnf}), the more expressive (but not more powerful) is EBNF (see definition~\ref{def:ebnf}). EBNF is not only more expressive, but potentially allows one to improve the performance of query evaluation because it avoids stack usage by replacing some recursive rules with the Kleene star. RSMs allow one to natively represent grammars in EBNF and can be handled by GLL as described in section~\ref{section:GLL-CFPQ}.
+
+We implemented and evaluated two versions of the GLL-based CFPQ algorithm\footnote{The implementation: https://github.com/vadyushkins/kotgll Accessed: 12.11.2024.}: one operates with grammar in BNF, and another one operates with grammar in EBNF and utilizes RSM to represent it. At this step, we use simple data structures for graph and query representations, tuned for our algorithm. Both versions were evaluated in reachability-only mode to estimate performance differences and to choose the best one to integrate with Neo4j. 
+
+\mycomment{
+\subsection{Implementation Details}
+The modification of the GLL algorithm to operate with the grammar in EBNF is based on replacing \emph{positions in the grammar} in the descriptor with the state of a recursive automaton.
+%in other words in tuple $\langle \langle A \rightarrow \alpha, c_{\alpha} \rangle, c_{u }, c_{i}, c_{N} \rangle$ pair $\langle A \rightarrow \alpha, c_{\alpha} \rangle$ is replaced by $c_{R}$ which is the current state of the recursive automaton.
+Accordingly, the transition in a context-free grammar is replaced with a transition in a recursive automaton.
+
+Our modification, like the classic GLL algorithm, can be generalized to graphs. At the transition step in the recursive automaton, all transitions from the current state of the recursive automaton are processed along with all outgoing edges of the current vertex of the graph.
+
+To make the implementation code itself as concise and understandable as possible for further extensions and optimizations, the Kotlin was chosen as a programming language for implementing.
+}
+
+\subsection{Evaluation}\label{sectioin:cfg_vs_rsm}
+
+To assess the applicability of the proposed solution, we evaluate it on a number of real-world graphs and queries described in section~\ref{section:dataset}.
+
+We compare the performance of evaluation of queries in \textit{reachability-only} mode with different sizes of the start vertex set to estimate the speedup of  the RSM-based version relative to the BNF-based one.
+
+The experimental study was conducted as follows.   
+\begin{itemize}
+    \item For all graphs, queries and start vertices sets, that described in section~\ref{section:dataset}, we measure evaluation time for both versions.
+    \item Average time for each start vertices set size was calculated. So, for each graph, query, and start vertices set size we have an average time of respective query evaluation.
+    \item Speedup as a ratio of BNF-based version evaluation time to RSM-based version evaluation time was calculated.
+\end{itemize}
+
+
+Results presented in figures~\ref{fig:speedup-g1},~\ref{fig:speedup-g2}, and~\ref{fig:speedup-geo} for queries $G_1$, $G_2$ and \textit{Geo} respectively. 
+We can see that in almost all cases the RSM-based version is faster than the BNF-based one. While in most cases speedup is not greater than 2, in some cases it can be more than 5 (see figure~\ref{fig:speedup-geo}: graph \textit{pathways}, grammar \textit{Geo}). Average speedup over all graphs and grammars is 1.5. So we can conclude that RSM-based GLL demonstrates better performance than the BNF-based one on average. 
+
+\newcommand\speedImageW{0.34}
+\newcommand\speedImageScale{1.111}
+\begin{figure}
+    \centering
+    \begin{subfigure}[t]{\speedImageW\textwidth}
+    \includegraphics[width=\speedImageScale\textwidth]{figures/g1_kotgll_result.pdf}
+    \caption{ $G_1$ query}
+    \label{fig:speedup-g1}
+    \end{subfigure}%
+    \begin{subfigure}[t]{\speedImageW\textwidth}
+    \includegraphics[width=\speedImageScale\textwidth]{figures/g2_kotgll_result.pdf}
+    \caption{$G_2$ query}
+    \label{fig:speedup-g2}
+    \end{subfigure}%
+    \begin{subfigure}[t]{\speedImageW\textwidth}
+    \includegraphics[width=\speedImageScale\textwidth]{figures/geo_kotgll_result.pdf}
+    \caption{$Geo$ query}
+    \label{fig:speedup-geo}
+    \end{subfigure}%
+    \caption{Multiple sources CFPQ reachability speedup (RSM over CFG) on RDF graphs.}
+\end{figure}

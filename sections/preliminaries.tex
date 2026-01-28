@@ -1,0 +1,75 @@
+\section{Preliminaries}\label{section:preliminaries}
+
+In this section, we introduce basic definitions and notations for graphs, regular languages, context-free grammars, and finally, we formulate variants of the FLPQ problem.
+
+We use a directed edge-labelled graph as a data model. We denote a graph as $D=\langle V,E,L \rangle$, where $V$ is a finite set of vertices, $E \subseteq V \times L \times V$ is a set of edges, and $L$ is a set of edge labels. A path $\pi$ in a graph $D$ is a sequence of edges: $u  \xrightarrow{l_0} \ldots \xrightarrow{l_m} v$. We denote a path between vertices $u$ and $v$ as $u\pi v$. The function $\omega$ maps a path to a word by concatenating the labels of its edges:
+\begin{equation}\label{eqn:omega}
+  \omega(\pi) = \omega(u \xrightarrow{l_0} \ldots \xrightarrow{l_m} v) = l_0\ldots l_m .  
+\end{equation}
+
+In the context of formal languages, we would like to remind the reader of some fundamental facts about regular expressions and regular languages.
+
+\begin{definition}
+    A \textit{regular expression} over the alphabet $\Sigma$ specifies a \textit{regular language} using the following syntax.
+    \begin{itemize}
+        \item If $t \in \Sigma$, then $t$ is a regular expression.
+        \item The concatenation $E_1 \cdot E_2$ of two regular expressions $E_1$ and $E_2$ is a regular expression. Note that in some cases $\cdot$ may be omitted.
+        \item The union $E_1 \mid E_2$ of two regular expressions $E_1$ and $E_2$ is a regular expression.
+        \item The Kleene star $E^* = \bigcup_{n=0}^{n=\infty} R^n$ of a regular expression $E$ is a regular expression.
+    \end{itemize}
+\end{definition}
+
+In some cases $E^+$ can be used as syntactic sugar for $E \cdot E^*$. 
+
+Both regular expressions and finite automata specify regular languages and can be converted into each other. Every regular language can be specified using deterministic finite automata without $\varepsilon$-transitions. Note that regular languages form a strong subset of context-free languages.
+
+\begin{definition}\label{def:bnf}
+A \textit{context-free grammar} is a 4-tuple $G=\langle \Sigma, \mathcal{N}, P, S\rangle$, where $\Sigma$ is a finite set of terminals, $\mathcal{N}$ is a finite set of nonterminals, $S \in N$ is the start nonterminal, and $P$ is a set of productions. Each production has the following form: $N_i \to w$, where $N_i \in \mathcal{N}$ is the left-hand side of the production, and $w \in (\Sigma \cup \mathcal{N} )^*$ is the right-hand side of the production.    
+\end{definition}
+ 
+ For simplicity, $S \to w_1 \mid w_2$ is used instead of $S \to w_1; S \to w_2$. Some example grammars are presented in equations~\ref{eqn:g_1},~\ref{eqn:g_2}, and~\ref{eqn:geo}. 
+
+ \begin{definition}
+ A \textit{derivation step} (in the grammar $G =\langle \Sigma, \mathcal{N}, P, S\rangle$) is a production application: having a sequence of form $w_1N_0w_2$, where $N_0 \in \mathcal{N}$ and $w_1, w_2 \in (\Sigma \cup \mathcal{N})^*$, and a production $N_0 \to w_3$, one gets a sequence $w_1w_3w_2$, by replacing the left-hand side of the production with its right-hand side.    
+ \end{definition}
+
+\begin{definition}
+A word $w \in \Sigma^*$ is \textit{derivable} in the grammar $G=\langle \Sigma, \mathcal{N}, P, S\rangle$ if there is a sequence of derivation steps such that the initial sequence is the start nonterminal of the grammar and $w$ is a final sequence: $S \to w_1 \to \ldots \to w$, or $S \to^* w$. 
+\end{definition}
+
+\begin{definition}
+The \textit{language specified by the context-free grammar} $G=\langle \Sigma, \mathcal{N}, P, S\rangle$ (denoted $\mathcal{L}(G)$) is a set of words derivable from the start nonterminal of the given grammar: $\mathcal{L}(G) = \{ w \mid S \to ^* w \}$.
+\end{definition}
+
+\begin{definition}\label{def:ebnf}
+    A context-free grammar $G=\langle \Sigma, \mathcal{N}, P, S\rangle$ is in \textit{Extended Backus-Naur Form} (EBNF) if productions have the form $\mathcal{N} \to E$ where $E$ is a regular expression over $\mathcal{N} \cup \Sigma$.
+\end{definition}
+
+Grammar in EBNF can be converted to Backus-Naur Form, but such transformation requires introducing new productions and new nonterminals, which leads to a significant increase in the size of the grammar and, subsequently, poor performance of path querying algorithms.  
+
+We use a generalization of a \textit{parse tree} to represent the result of a query.
+
+\begin{definition}
+    \textit{Parse tree} of the sequence $w$ w.r.t. the context-free grammar $G=\langle \Sigma, \mathcal{N}, P, S\rangle$ in EBNF is a rooted, node-labelled, ordered tree with the following properties.
+    \begin{itemize}
+        \item All leaves are labelled with the elements of $\Sigma \cup \{\varepsilon\}$, where $\varepsilon \notin \Sigma \cup \mathcal{N}$ is a special symbol to demote the empty string. Left-to-right concatenation of leaves forms $w$.
+        \item All other nodes are labelled with the elements of $\mathcal{N}$.
+        \item The root is labelled with $S$.
+        \item Let $w_0$ is an ordered concatenation of child's labels of node labelled with $N_i$. Then $w_0 \in \mathcal{L}(r)$, where $N_i \to r \in P$.  
+    \end{itemize}
+\end{definition}
+
+A set of problems for the graph $D$ and the language $\mathcal{L}$ can be formulated: 
+\begin{align}
+R &= \{(u,v) \mid \text{exists a path } u\pi v \text{ in } D, \omega(\pi) \in \mathcal{L}  \} \label{eqn:all_pairs_reachability}
+\\
+Q &= \{\pi \mid \text{exists a path } u\pi v \text{ in } D, \omega(\pi) \in \mathcal{L}  \} \label{eqn:all_pairs_all_paths}
+\\
+R(I) &= \{(u,v) \mid \text{exists a path } u\pi v \text{ in } D, u \in I, \omega(\pi) \in \mathcal{L}  \} \label{eqn:multiple_source_reachability}
+\\
+Q(I) &= \{\pi \mid \text{exists a path } u\pi v \text{ in } D, u \in I, \omega(\pi) \in \mathcal{L}  \} \label{eqn:multiple_source_all_paths}
+\end{align}
+
+Here~\ref{eqn:all_pairs_reachability} is the \textit{all-pairs reachability problem}, and~\ref{eqn:all_pairs_all_paths} is the \textit{all-pairs all-paths problem}. The additional parameter $I$ denotes the set of start vertices in~\ref{eqn:multiple_source_reachability} and~\ref{eqn:multiple_source_all_paths}. Thus~\ref{eqn:multiple_source_reachability} and~\ref{eqn:multiple_source_all_paths} --- are the \textit{multiple source reachability} and the \textit{multiple source all-paths} problems, respectively. Note that for the \textit{all-paths} problems, the result $Q$ can be an infinite set. Typically, the algorithms for these problems build a finite structure which contains all paths of interest, not the explicit set of paths. As far as the intersection of a regular and a context-free language is context-free~\cite{MR0151376}, the mentioned finite representation of the result for the reachability problem is a representation of a context-free language.
+
+This work is focused on a context-free language, but the partial case --- regular languages --- is also discussed. This corresponds to two specific cases of formal language path querying (FLPQ): \textit{Context-Free Path Querying} (CFPQ) and \textit{Regular Path Querying} (RPQ).  

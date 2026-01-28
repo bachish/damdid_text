@@ -1,0 +1,886 @@
+
+% Journals
+
+% First the Full Name is given, then the abbreviation used in the AMS Math
+% Reviews, with an indication if it could not be found there.
+% Note the 2nd overwrites the 1st, so swap them if you want the full name.
+
+ %{AMS}
+ @String{AMSTrans = "American Mathematical Society Translations" }
+ @String{AMSTrans = "Amer. Math. Soc. Transl." }
+ @String{BullAMS = "Bulletin of the American Mathematical Society" }
+ @String{BullAMS = "Bull. Amer. Math. Soc." }
+ @String{ProcAMS = "Proceedings of the American Mathematical Society" }
+ @String{ProcAMS = "Proc. Amer. Math. Soc." }
+ @String{TransAMS = "Transactions of the American Mathematical Society" }
+ @String{TransAMS = "Trans. Amer. Math. Soc." }
+
+ %ACM
+ @String{CACM = "Communications of the {ACM}" }
+ @String{CACM = "Commun. {ACM}" }
+ @String{CompServ = "Comput. Surveys" }
+ @String{JACM = "J. ACM" }
+ @String{ACMMathSoft = "{ACM} Transactions on Mathematical Software" }
+ @String{ACMMathSoft = "{ACM} Trans. Math. Software" }
+ @String{SIGNUM = "{ACM} {SIGNUM} Newsletter" }
+ @String{SIGNUM = "{ACM} {SIGNUM} Newslett." }
+
+ @String{AmerSocio = "American Journal of Sociology" }
+ @String{AmerStatAssoc = "Journal of the American Statistical Association" }
+ @String{AmerStatAssoc = "J. Amer. Statist. Assoc." }
+ @String{ApplMathComp = "Applied Mathematics and Computation" }
+ @String{ApplMathComp = "Appl. Math. Comput." }
+ @String{AmerMathMonthly = "American Mathematical Monthly" }
+ @String{AmerMathMonthly = "Amer. Math. Monthly" }
+ @String{BIT = "{BIT}" }
+ @String{BritStatPsych = "British Journal of Mathematical and Statistical
+          Psychology" }
+ @String{BritStatPsych = "Brit. J. Math. Statist. Psych." }
+ @String{CanMathBull = "Canadian Mathematical Bulletin" }
+ @String{CanMathBull = "Canad. Math. Bull." }
+ @String{CompApplMath = "Journal of Computational and Applied Mathematics" }
+ @String{CompApplMath = "J. Comput. Appl. Math." }
+ @String{CompPhys = "Journal of Computational Physics" }
+ @String{CompPhys = "J. Comput. Phys." }
+ @String{CompStruct = "Computers and Structures" }
+ @String{CompStruct = "Comput. \& Structures" }
+ @String{CompJour = "The Computer Journal" }
+ @String{CompJour = "Comput. J." }
+ @String{CompSysSci = "Journal of Computer and System Sciences" }
+ @String{CompSysSci = "J. Comput. System Sci." }
+ @String{Computing = "Computing" }
+ @String{ContempMath = "Contemporary Mathematics" }
+ @String{ContempMath = "Contemp. Math." }
+ @String{Crelle = "Crelle's Journal" }
+ @String{GiornaleMath = "Giornale di Mathematiche" }
+ @String{GiornaleMath = "Giorn. Mat." } % didn't find in AMS MR., ibid.
+
+ %IEEE
+ @String{Computer = "{IEEE} Computer" }
+ @String{IEEETransComp = "{IEEE} Transactions on Computers" }
+ @String{IEEETransComp = "{IEEE} Trans. Comput." }
+ @String{IEEETransAC = "{IEEE} Transactions on Automatic Control" }
+ @String{IEEETransAC = "{IEEE} Trans. Automat. Control" }
+ @String{IEEESpec = "{IEEE} Spectrum" } % didn't find in AMS MR
+ @String{ProcIEEE = "Proceedings of the {IEEE}" }
+ @String{ProcIEEE = "Proc. {IEEE}" } % didn't find in AMS MR
+ @String{IEEETransAeroElec = "{IEEE} Transactions on Aerospace and Electronic
+     Systems" }
+ @String{IEEETransAeroElec = "{IEEE} Trans. Aerospace Electron. Systems" }
+
+ @String{IMANumerAna = "{IMA} Journal of Numerical Analysis" }
+ @String{IMANumerAna = "{IMA} J. Numer. Anal." }
+ @String{InfProcLet = "Information Processing Letters" }
+ @String{InfProcLet = "Inform. Process. Lett." }
+ @String{InstMathApp = "Journal of the Institute of Mathematics and
+     its Applications" }
+ @String{InstMathApp = "J. Inst. Math. Appl." }
+ @String{IntControl = "International Journal of Control" }
+ @String{IntControl = "Internat. J. Control" }
+ @String{IntNumerEng = "International Journal for Numerical Methods in
+     Engineering" }
+ @String{IntNumerEng = "Internat. J. Numer. Methods Engrg." }
+ @String{IntSuper = "International Journal of Supercomputing Applications" }
+ @String{IntSuper = "Internat. J. Supercomputing Applic." } % didn't find
+%% in AMS MR
+ @String{Kibernetika = "Kibernetika" }
+ @String{JResNatBurStand = "Journal of Research of the National Bureau
+     of Standards" }
+ @String{JResNatBurStand = "J. Res. Nat. Bur. Standards" }
+ @String{LinAlgApp = "Linear Algebra and its Applications" }
+ @String{LinAlgApp = "Linear Algebra Appl." }
+ @String{MathAnaAppl = "Journal of Mathematical Analysis and Applications" }
+ @String{MathAnaAppl = "J. Math. Anal. Appl." }
+ @String{MathAnnalen = "Mathematische Annalen" }
+ @String{MathAnnalen = "Math. Ann." }
+ @String{MathPhys = "Journal of Mathematical Physics" }
+ @String{MathPhys = "J. Math. Phys." }
+ @String{MathComp = "Mathematics of Computation" }
+ @String{MathComp = "Math. Comp." }
+ @String{MathScand = "Mathematica Scandinavica" }
+ @String{MathScand = "Math. Scand." }
+ @String{TablesAidsComp = "Mathematical Tables and Other Aids to Computation" }
+ @String{TablesAidsComp = "Math. Tables Aids Comput." }
+ @String{NumerMath = "Numerische Mathematik" }
+ @String{NumerMath = "Numer. Math." }
+ @String{PacificMath = "Pacific Journal of Mathematics" }
+ @String{PacificMath = "Pacific J. Math." }
+ @String{ParDistComp = "Journal of Parallel and Distributed Computing" }
+ @String{ParDistComp = "J. Parallel and Distrib. Comput." } % didn't find
+%% in AMS MR
+ @String{ParComputing = "Parallel Computing" }
+ @String{ParComputing = "Parallel Comput." }
+ @String{PhilMag = "Philosophical Magazine" }
+ @String{PhilMag = "Philos. Mag." }
+ @String{ProcNAS = "Proceedings of the National Academy of Sciences
+                    of the USA" }
+ @String{ProcNAS = "Proc. Nat. Acad. Sci. U. S. A." }
+ @String{Psychometrika = "Psychometrika" }
+ @String{QuartMath = "Quarterly Journal of Mathematics, Oxford, Series (2)" }
+ @String{QuartMath = "Quart. J. Math. Oxford Ser. (2)" }
+ @String{QuartApplMath = "Quarterly of Applied Mathematics" }
+ @String{QuartApplMath = "Quart. Appl. Math." }
+ @String{RevueInstStat = "Review of the International Statisical Institute" }
+ @String{RevueInstStat = "Rev. Inst. Internat. Statist." }
+
+ %SIAM
+ @String{JSIAM = "Journal of the Society for Industrial and Applied
+     Mathematics" }
+ @String{JSIAM = "J. Soc. Indust. Appl. Math." }
+ @String{JSIAMB = "Journal of the Society for Industrial and Applied
+     Mathematics, Series B, Numerical Analysis" }
+ @String{JSIAMB = "J. Soc. Indust. Appl. Math. Ser. B Numer. Anal." }
+ @String{SIAMAlgMeth = "{SIAM} Journal on Algebraic and Discrete Methods" }
+ @String{SIAMAlgMeth = "{SIAM} J. Algebraic Discrete Methods" }
+ @String{SIAMAppMath = "{SIAM} Journal on Applied Mathematics" }
+ @String{SIAMAppMath = "{SIAM} J. Appl. Math." }
+ @String{SIAMComp = "{SIAM} Journal on Computing" }
+ @String{SIAMComp = "{SIAM} J. Comput." }
+ @String{SIAMMatrix = "{SIAM} Journal on Matrix Analysis and Applications" }
+ @String{SIAMMatrix = "{SIAM} J. Matrix Anal. Appl." }
+ @String{SIAMNumAnal = "{SIAM} Journal on Numerical Analysis" }
+ @String{SIAMNumAnal = "{SIAM} J. Numer. Anal." }
+ @String{SIAMReview = "{SIAM} Review" }
+ @String{SIAMReview = "{SIAM} Rev." }
+ @String{SIAMSciStat = "{SIAM} Journal on Scientific and Statistical
+     Computing" }
+ @String{SIAMSciStat = "{SIAM} J. Sci. Statist. Comput." }
+
+ @String{SoftPracExp = "Software Practice and Experience" }
+ @String{SoftPracExp = "Software Prac. Experience" } % didn't find in AMS MR
+ @String{StatScience = "Statistical Science" }
+ @String{StatScience = "Statist. Sci." }
+ @String{Techno = "Technometrics" }
+ @String{USSRCompMathPhys = "{USSR} Computational Mathematics and Mathematical
+     Physics" }
+ @String{USSRCompMathPhys = "{U. S. S. R.} Comput. Math. and Math. Phys." }
+ @String{VLSICompSys = "Journal of {VLSI} and Computer Systems" }
+ @String{VLSICompSys = "J. {VLSI} Comput. Syst." }
+ @String{ZAngewMathMech = "Zeitschrift fur Angewandte Mathematik und
+     Mechanik" }
+ @String{ZAngewMathMech = "Z. Angew. Math. Mech." }
+ @String{ZAngewMathPhys = "Zeitschrift fur Angewandte Mathematik und Physik" }
+ @String{ZAngewMathPhys = "Z. Angew. Math. Phys." }
+
+% Publishers % ================================================= |
+
+ @String{Academic = "Academic Press" }
+ @String{ACMPress = "{ACM} Press" }
+ @String{AdamHilger = "Adam Hilger" }
+ @String{AddisonWesley = "Addison-Wesley" }
+ @String{AllynBacon = "Allyn and Bacon" }
+ @String{AMS = "American Mathematical Society" }
+ @String{Birkhauser = "Birkha{\"u}ser" }
+ @String{CambridgePress = "Cambridge University Press" }
+ @String{Chelsea = "Chelsea" }
+ @String{ClaredonPress = "Claredon Press" }
+ @String{DoverPub = "Dover Publications" }
+ @String{Eyolles = "Eyolles" }
+ @String{HoltRinehartWinston = "Holt, Rinehart and Winston" }
+ @String{Interscience = "Interscience" }
+ @String{JohnsHopkinsPress = "The Johns Hopkins University Press" }
+ @String{JohnWileySons = "John Wiley and Sons" }
+ @String{Macmillan = "Macmillan" }
+ @String{MathWorks = "The Math Works Inc." }
+ @String{McGrawHill = "McGraw-Hill" }
+ @String{NatBurStd = "National Bureau of Standards" }
+ @String{NorthHolland = "North-Holland" }
+ @String{OxfordPress = "Oxford University Press" }  %address Oxford or London?
+ @String{PergamonPress = "Pergamon Press" }
+ @String{PlenumPress = "Plenum Press" }
+ @String{PrenticeHall = "Prentice-Hall" }
+ @String{SIAMPub = "{SIAM} Publications" }
+ @String{Springer = "Springer-Verlag" }
+ @String{TexasPress = "University of Texas Press" }
+ @String{VanNostrand = "Van Nostrand" }
+ @String{WHFreeman = "W. H. Freeman and Co." }
+
+%Entries
+
+@inproceedings{Kuijpers:2019:ESC:3335783.3335791,
+ author = {Kuijpers, Jochem and Fletcher, George and Yakovets, Nikolay and Lindaaker, Tobias},
+ title = {An Experimental Study of Context-Free Path Query Evaluation Methods},
+ booktitle = {Proceedings of the 31st International Conference on Scientific and Statistical Database Management},
+ series = {SSDBM '19},
+ year = {2019},
+ isbn = {978-1-4503-6216-0},
+ location = {Santa Cruz, CA, USA},
+ pages = {121--132},
+ numpages = {12},
+ url = {http://doi.acm.org/10.1145/3335783.3335791},
+ doi = {10.1145/3335783.3335791},
+ acmid = {3335791},
+ publisher = {ACM},
+ address = {New York, NY, USA},
+}
+
+@article {SubgraphQueriesbyContextfreeGrammars,
+      author = "Petteri Sevon and Lauri Eronen",
+      title = "Subgraph Queries by Context-free Grammars",
+      journal = "Journal of Integrative Bioinformatics",
+      year = "2008",
+      publisher = "De Gruyter",
+      address = "Berlin, Boston",
+      volume = "5",
+      number = "2",
+      doi = "https://doi.org/10.1515/jib-2008-100",
+      pages=      "157 -- 172",
+      url = "https://www.degruyter.com/view/journals/jib/5/2/article-p157.xml"
+}
+
+@inproceedings{Grigorev:2017:CPQ:3166094.3166104,
+ author = {Grigorev, Semyon and Ragozina, Anastasiya},
+ title = {Context-free Path Querying with Structural Representation of Result},
+ booktitle = {Proceedings of the 13th Central \& Eastern European Software Engineering Conference in Russia},
+ series = {CEE-SECR '17},
+ year = {2017},
+ isbn = {978-1-4503-6396-9},
+ location = {St. Petersburg, Russia},
+ pages = {10:1--10:7},
+ articleno = {10},
+ numpages = {7},
+ url = {http://doi.acm.org/10.1145/3166094.3166104},
+ doi = {10.1145/3166094.3166104},
+ acmid = {3166104},
+ publisher = {ACM},
+ address = {New York, NY, USA},
+ keywords = {CFPQ, GLL, LL, context-free grammar, graph database, graph parsing, path query, top-down parsing},
+}
+
+@INPROCEEDINGS{8731467, 
+author={H. {Miao} and A. {Deshpande}}, 
+booktitle={2019 IEEE 35th International Conference on Data Engineering (ICDE)}, 
+title={Understanding Data Science Lifecycle Provenance via Graph Segmentation and Summarization}, 
+year={2019}, 
+volume={}, 
+number={}, 
+pages={1710-1713},}
+
+@inproceedings{10.1145/3398682.3399163,
+author = {Terekhov, Arseniy and Khoroshev, Artyom and Azimov, Rustam and Grigorev, Semyon},
+title = {Context-Free Path Querying with Single-Path Semantics by Matrix Multiplication},
+year = {2020},
+isbn = {9781450380218},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/3398682.3399163},
+doi = {10.1145/3398682.3399163},
+abstract = {A recent study showed that the applicability of context-free path querying (CFPQ)
+algorithms with relational query semantics integrated with graph databases is limited
+because of low performance and high memory consumption of existing solutions. In this
+work, we implement a matrix-based CFPQ algorithm by using appropriate high-performance
+libraries for linear algebra and integrate it with RedisGraph graph database. Also,
+we introduce a new CFPQ algorithm with single-path query semantics that allows us
+to extract one found path for each pair of nodes. Finally, we provide the evaluation
+of our algorithms for both semantics which shows that matrix-based CFPQ implementation
+for Redis-Graph database is performant enough for real-world data analysis.},
+booktitle = {Proceedings of the 3rd Joint International Workshop on Graph Data Management Experiences \& Systems (GRADES) and Network Data Analytics (NDA)},
+articleno = {5},
+numpages = {12},
+keywords = {CUDA, context-free grammar, Context-free path querying, linear algebra, GPGPU, matrix multiplication, Boolean matrix, RedisGraph database, transitive closure, graph databases},
+location = {Portland, OR, USA},
+series = {GRADES-NDA'20}
+}
+
+@InProceedings{10.1007/978-3-319-91662-0_17,
+  author="Santos, Fred C.
+  and Costa, Umberto S.
+  and Musicante, Martin A.",
+  editor="Mikkonen, Tommi
+  and Klamma, Ralf
+  and Hern{\'a}ndez, Juan",
+  title="A Bottom-Up Algorithm for Answering Context-Free Path Queries in Graph Databases",
+  booktitle="Web Engineering",
+  year="2018",
+  publisher="Springer International Publishing",
+  address="Cham",
+  pages="225--233",
+  abstract="Many computing applications require processing of data that are directly collected from the Internet. In this context, the use of the Resource Description Framework (RDF) has became a common feature. The query and analysis of RDF data is paramount to explore the full potential of the data available on the Web. Query languages for RDF graph databases rely on the use of regular expressions to identify paths over the data. Some interesting queries, such as same-generation queries, cannot be expressed by regular expressions. We are interested in extending the expressiveness of queries over graph databases by using paths defined by context-free grammars. We introduce a new query algorithm to process context-free path queries over graph databases. Our approach is inspired by the LR(1) parsing techniques. A prototype was implemented and experiments were conducted to validate and compare the results of our algorithm with those obtained by similar approaches.",
+  isbn="978-3-319-91662-0"
+}
+
+@inproceedings{10.1145/3167132.3167265,
+author = {Medeiros, Ciro M. and Musicante, Martin A. and Costa, Umberto S.},
+title = {Efficient Evaluation of Context-Free Path Queries for Graph Databases},
+year = {2018},
+isbn = {9781450351911},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/3167132.3167265},
+doi = {10.1145/3167132.3167265},
+abstract = {We present a context-free path query evaluation algorithm inspired by top-down parsing
+techniques. Given a graph and a query defined over a context-free grammar, our algorithm
+identifies paths on the graph which form words of the language generated by the grammar.
+We show that our algorithm is correct. We conduct performance evaluation experiments
+with some popular ontologies and synthetic databases to endorse the efficiency of
+our approach. The algorithm presents a cubic worst-case runtime complexity in terms
+of the number of nodes in the graph, which is an improvement over previous work.},
+booktitle = {Proceedings of the 33rd Annual ACM Symposium on Applied Computing},
+pages = {1230–1237},
+numpages = {8},
+keywords = {graph databases, context-free grammars, top-down parsing, query languages, context-free paths in graphs},
+location = {Pau, France},
+series = {SAC '18}
+}
+
+@inproceedings{Azimov:2018:CPQ:3210259.3210264,
+ author = {Azimov, Rustam and Grigorev, Semyon},
+ title = {Context-free Path Querying by Matrix Multiplication},
+ booktitle = {Proceedings of the 1st ACM SIGMOD Joint International Workshop on Graph Data Management Experiences \& Systems (GRADES) and Network Data Analytics (NDA)},
+ series = {GRADES-NDA '18},
+ year = {2018},
+ isbn = {978-1-4503-5695-4},
+ location = {Houston, Texas},
+ pages = {5:1--5:10},
+ articleno = {5},
+ numpages = {10},
+ url = {http://doi.acm.org/10.1145/3210259.3210264},
+ doi = {10.1145/3210259.3210264},
+ acmid = {3210264},
+ publisher = {ACM},
+ address = {New York, NY, USA},
+ keywords = {GPGPU, context-free grammar, context-free path querying, graph databases, matrix multiplication, transitive closure},
+}
+
+@inproceedings{hellingsRelational,
+  title={Conjunctive context-free path queries},
+  author={Hellings, Jelle},
+  booktitle={Proceedings of ICDT'14},
+  pages={119--130},
+  year={2014}
+}
+
+@InProceedings{10.1007/978-3-319-46523-4_38,
+author="Zhang, Xiaowang
+and Feng, Zhiyong
+and Wang, Xin
+and Rao, Guozheng
+and Wu, Wenrui",
+editor="Groth, Paul
+and Simperl, Elena
+and Gray, Alasdair
+and Sabou, Marta
+and Kr{\"o}tzsch, Markus
+and Lecue, Freddy
+and Fl{\"o}ck, Fabian
+and Gil, Yolanda",
+title="Context-Free Path Queries on RDF Graphs",
+booktitle="The Semantic Web -- ISWC 2016",
+year="2016",
+publisher="Springer International Publishing",
+address="Cham",
+pages="632--648",
+abstract="Navigational graph queries are an important class of queries that can extract implicit binary relations over the nodes of input graphs. Most of the navigational query languages used in the RDF community, e.g. property paths in W3C SPARQL 1.1 and nested regular expressions in nSPARQL, are based on the regular expressions. It is known that regular expressions have limited expressivity; for instance, some natural queries, like same generation-queries, are not expressible with regular expressions. To overcome this limitation, in this paper, we present cfSPARQL, an extension of SPARQL query language equipped with context-free grammars. The cfSPARQL language is strictly more expressive than property paths and nested expressions. The additional expressivity can be used for modelling graph similarities, graph summarization and ontology alignment. Despite the increasing expressivity, we show that cfSPARQL still enjoys a low computational complexity and can be evaluated efficiently.",
+isbn="978-3-319-46523-4"
+}
+
+@inproceedings{Zheng,
+ author = {Zheng, Xin and Rugina, Radu},
+ title = {Demand-driven Alias Analysis for C},
+ booktitle = {Proceedings of the 35th Annual ACM SIGPLAN-SIGACT Symposium on Principles of Programming Languages},
+ series = {POPL '08},
+ year = {2008},
+ isbn = {978-1-59593-689-9},
+ location = {San Francisco, California, USA},
+ pages = {197--208},
+ numpages = {12},
+ url = {http://doi.acm.org/10.1145/1328438.1328464},
+ doi = {10.1145/1328438.1328464},
+ acmid = {1328464},
+ publisher = {ACM},
+ address = {New York, NY, USA},
+ keywords = {CFL reachability, alias analysis, demand-driven analysis, memory disambiguation, pointer analysis},
+}
+
+@article{10.1145/373243.360208,
+author = {Rehof, Jakob and F\"{a}hndrich, Manuel},
+title = {Type-Base Flow Analysis: From Polymorphic Subtyping to CFL-Reachability},
+year = {2001},
+issue_date = {March 2001},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+volume = {36},
+number = {3},
+issn = {0362-1340},
+url = {https://doi.org/10.1145/373243.360208},
+doi = {10.1145/373243.360208},
+journal = {SIGPLAN Not.},
+month = jan,
+pages = {54--66},
+numpages = {13}
+}
+
+@InProceedings{10.1007/978-3-662-46663-6_5,
+author="Afroozeh, Ali
+and Izmaylova, Anastasia",
+editor="Franke, Bj{\"o}rn",
+title="Faster, Practical GLL Parsing",
+booktitle="Compiler Construction",
+year="2015",
+publisher="Springer Berlin Heidelberg",
+address="Berlin, Heidelberg",
+pages="89--108",
+abstract="Generalized LL (GLL) parsing is an extension of recursivedescent (RD) parsing that supports all context-free grammars in cubic time and space. GLL parsers have the direct relationship with the grammar that RD parsers have, and therefore, compared to GLR, are easier to understand, debug, and extend. This makes GLL parsing attractive for parsing programming languages.",
+isbn="978-3-662-46663-6"
+}
+
+@InProceedings{10.1007/978-3-642-00982-2_35,
+author="Hemerik, Kees",
+editor="Dediu, Adrian Horia
+and Ionescu, Armand Mihai
+and Mart{\'i}n-Vide, Carlos",
+title="Towards a Taxonomy for ECFG and RRPG Parsing",
+booktitle="Language and Automata Theory and Applications",
+year="2009",
+publisher="Springer Berlin Heidelberg",
+address="Berlin, Heidelberg",
+pages="410--421",
+abstract="Extended Context-Free Grammars (ECFGs) and Regular Right-Part Grammars (RRPGs) have many applications, but they are sparsely covered in the vast literature on parsing and grammars. This paper presents first steps towards a taxonomy of parsers for ECFGs and RRPGs, in order to make this subject more accessible.",
+isbn="978-3-642-00982-2"
+}
+
+@inproceedings{DBLP:conf/edbt/TerekhovPAZG21,
+  author    = {Arseniy Terekhov and
+               Vlada Pogozhelskaya and
+               Vadim Abzalov and
+               Timur Zinnatulin and
+               Semyon V. Grigorev},
+  editor    = {Yannis Velegrakis and
+               Demetris Zeinalipour{-}Yazti and
+               Panos K. Chrysanthis and
+               Francesco Guerra},
+  title     = {Multiple-Source Context-Free Path Querying in Terms of Linear Algebra},
+  booktitle = {Proceedings of the 24th International Conference on Extending Database
+               Technology, {EDBT} 2021, Nicosia, Cyprus, March 23 - 26, 2021},
+  pages     = {487--492},
+  publisher = {OpenProceedings.org},
+  year      = {2021},
+  url       = {https://doi.org/10.5441/002/edbt.2021.56},
+  doi       = {10.5441/002/edbt.2021.56},
+  timestamp = {Sat, 20 Mar 2021 10:29:38 +0100},
+  biburl    = {https://dblp.org/rec/conf/edbt/TerekhovPAZG21.bib},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
+}
+
+@article{SCOTT2018120,
+title = {GLL syntax analysers for EBNF grammars},
+journal = {Science of Computer Programming},
+volume = {166},
+pages = {120-145},
+year = {2018},
+issn = {0167-6423},
+doi = {https://doi.org/10.1016/j.scico.2018.06.001},
+url = {https://www.sciencedirect.com/science/article/pii/S0167642318302375},
+author = {Elizabeth Scott and Adrian Johnstone},
+keywords = {General context-free grammars, Generalised LL parsing, Extended BNF},
+abstract = {GLL is a worst-case cubic, recursive descent based parsing technique which can be applied to all BNF grammars without the need for grammar modification. However, EBNF grammars are often used, both for their compactness and their relative expressive simplicity. In this paper we give a formal specification for a parse tree representation of derivations which reflects the EBNF structure of the grammar, is worst case cubic size, and captures all derivations in the case of ambiguity. Particular care is need in the case of closures with nullable bodies. We also describe an extension of GLL which directly supports the EBNF constructs. The resulting parsers are worst case cubic and follow the structure of the specifying EBNF grammar, making the parser behaviour easy to reason about. The parsers exploit the efficiency of factorisation and the use of iteration rather than recursion, retaining the structure of the specification in the presence of embedded semantic actions.}
+}
+
+@article{SCOTT2010177,
+title = {GLL Parsing},
+journal = {Electronic Notes in Theoretical Computer Science},
+volume = {253},
+number = {7},
+pages = {177-189},
+year = {2010},
+note = {Proceedings of the Ninth Workshop on Language Descriptions Tools and Applications (LDTA 2009)},
+issn = {1571-0661},
+doi = {https://doi.org/10.1016/j.entcs.2010.08.041},
+url = {https://www.sciencedirect.com/science/article/pii/S1571066110001209},
+author = {Elizabeth Scott and Adrian Johnstone},
+keywords = {generalised parsing, recursive descent, RNGLR and RIGLR parsing, context free languages},
+abstract = {Recursive Descent (RD) parsers are popular because their control flow follows the structure of the grammar and hence they are easy to write and to debug. However, the class of grammars which admit RD parsers is very limited. Backtracking techniques may be used to extend this class, but can have explosive runtimes and cannot deal with grammars with left recursion. Tomita-style RNGLR parsers are fully general but are based on LR techniques and do not have the direct relationship with the grammar that an RD parser has. We develop the fully general GLL parsing technique which is recursive descent-like, and has the property that the parse follows closely the structure of the grammar rules, but uses RNGLR-like machinery to handle non-determinism. The resulting recognisers run in worst-case cubic time and can be built even for left recursive grammars.}
+}
+
+@InProceedings{10.1007/978-3-030-61133-0_7,
+author="Hellings, Jelle",
+editor="Qin, Lu
+and Zhang, Wenjie
+and Zhang, Ying
+and Peng, You
+and Kato, Hiroyuki
+and Wang, Wei
+and Xiao, Chuan",
+title="Explaining Results of Path Queries on Graphs",
+booktitle="Software Foundations for Data Interoperability and Large Scale Graph Data Analytics",
+year="2020",
+publisher="Springer International Publishing",
+address="Cham",
+pages="84--98",
+abstract="Many graph query languages use, at their core, path queries that yield node pairs that are connected by a path of interest. For the end-user, such node pairs only give limited insight as to why this query result is obtained, as the pair does not directly identify the underlying path of interest. To address this limitation of path queries, we propose the single-path semantics, which evaluates path queries to, for each node pair (m, n), a single path from m to n satisfying the conditions of the query. To put our proposal in practice, we provide an efficient algorithm for evaluating context-free path queries, a particular powerful type of path queries, using the single-path semantics. Additionally, we perform a short evaluation of our techniques that shows that the single-path semantics is practically feasible, even when query results grow large.",
+isbn="978-3-030-61133-0"
+}
+
+@ARTICLE{9064792,
+  author={Rodriguez-Prieto, Oscar and Mycroft, Alan and Ortin, Francisco},
+  journal={IEEE Access}, 
+  title={An Efficient and Scalable Platform for Java Source Code Analysis Using Overlaid Graph Representations}, 
+  year={2020},
+  volume={8},
+  number={},
+  pages={72239-72260},
+  doi={10.1109/ACCESS.2020.2987631}}
+
+@article{SCOTT20131828,
+title = {GLL parse-tree generation},
+journal = {Science of Computer Programming},
+volume = {78},
+number = {10},
+pages = {1828-1844},
+year = {2013},
+note = {Special section on Language Descriptions Tools and Applications (LDTA’08 \& ’09) \& Special section on Software Engineering Aspects of Ubiquitous Computing and Ambient Intelligence (UCAmI 2011)},
+issn = {0167-6423},
+doi = {https://doi.org/10.1016/j.scico.2012.03.005},
+url = {https://www.sciencedirect.com/science/article/pii/S0167642312000627},
+author = {Elizabeth Scott and Adrian Johnstone},
+keywords = {Generalised parsing, Recursive descent, GLL parsing, RNGLR and RIGLR parsing, Context free languages},
+abstract = {Backtracking techniques which are often used to extend recursive descent (RD) parsers can have explosive run-times and cannot deal with grammars with left recursion. GLL parsers are fully general, worst-case cubic parsers which have the recursive descent-like property that they are easy to write and to use for grammar debugging. They have the direct relationship with the grammar that an RD parser has. In this paper we give an algorithm for generating GLL parsers which build an SPPF representation of the derivations of the input, complementing our existing GLL recognition algorithm, and we show that such parsers and recognisers are worst-case cubic.}
+}
+
+@inproceedings{10.1145/3461837.3464513,
+author = {Azimov, Rustam and Epelbaum, Ilya and Grigorev, Semyon},
+title = {Context-Free Path Querying with All-Path Semantics by Matrix Multiplication},
+year = {2021},
+isbn = {9781450384773},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/3461837.3464513},
+doi = {10.1145/3461837.3464513},
+abstract = {Context-Free Path Querying (CFPQ) allows one to use context-free grammars as path constraints in navigational graph queries. Many algorithms for CFPQ were proposed but recently showed that the state-of-the-art CFPQ algorithms are still not performant enough for practical use. One promising way to achieve high-performance solutions for graph querying problems is to reduce them to linear algebra operations. Recently, there are two CFPQ solutions formulated in terms of linear algebra: the one based on the Boolean matrix multiplication operation proposed by Azimov et al. (2018) and the Kronecker product-based CFPQ algorithm proposed by Orachev et al. (2020). However, the algorithm based on matrix multiplication still does not support the most expressive all-path query semantics and cannot be truly compared with Kronecker product-based CFPQ algorithm. In this work, we introduce a new matrix-based CFPQ algorithm with all-path query semantics that allows us to extract all found paths for each pair of vertices. Also, we implement our algorithm by using appropriate high-performance libraries for linear algebra. Finally, we provide a comparison of the most performant linear algebra-based CFPQ algorithms for different query semantics.},
+booktitle = {Proceedings of the 4th ACM SIGMOD Joint International Workshop on Graph Data Management Experiences \& Systems (GRADES) and Network Data Analytics (NDA)},
+articleno = {4},
+numpages = {7},
+keywords = {context-free grammar, linear algebra, transitive closure, context-free path querying, graph databases, GraphBLAS, matrix multiplication},
+location = {Virtual Event, China},
+series = {GRADES-NDA '21}
+}
+
+@article{10.1145/1075382.1075387,
+author = {Alur, Rajeev and Benedikt, Michael and Etessami, Kousha and Godefroid, Patrice and Reps, Thomas and Yannakakis, Mihalis},
+title = {Analysis of Recursive State Machines},
+year = {2005},
+issue_date = {July 2005},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+volume = {27},
+number = {4},
+issn = {0164-0925},
+url = {https://doi.org/10.1145/1075382.1075387},
+doi = {10.1145/1075382.1075387},
+abstract = {Recursive state machines (RSMs) enhance the power of ordinary state machines by allowing vertices to correspond either to ordinary states or to potentially recursive invocations of other state machines. RSMs can model the control flow in sequential imperative programs containing recursive procedure calls. They can be viewed as a visual notation extending Statecharts-like hierarchical state machines, where concurrency is disallowed but recursion is allowed. They are also related to various models of pushdown systems studied in the verification and program analysis communities.After introducing RSMs and comparing their expressiveness with other models, we focus on whether verification can be efficiently performed for RSMs. Our first goal is to examine the verification of linear time properties of RSMs. We begin this study by dealing with two key components for algorithmic analysis and model checking, namely, reachability (Is a target state reachable from initial states?) and cycle detection (Is there a reachable cycle containing an accepting state?). We show that both these problems can be solved in time O(nθ2) and space O(nθ), where n is the size of the recursive machine and θ is the maximum, over all component state machines, of the minimum of the number of entries and the number of exits of each component. From this, we easily derive algorithms for linear time temporal logic model checking with the same complexity in the model. We then turn to properties in the branching time logic CTL*, and again demonstrate a bound linear in the size of the state machine, but only for the case of RSMs with a single exit node.},
+journal = {ACM Trans. Program. Lang. Syst.},
+month = {jul},
+pages = {786–818},
+numpages = {33},
+keywords = {model checking, program analysis, Software verification, temporal logic, context-free languages, recursive state machines, pushdown automata}
+}
+
+@article{SCOTT201963,
+title = {Derivation representation using binary subtree sets},
+journal = {Science of Computer Programming},
+volume = {175},
+pages = {63-84},
+year = {2019},
+issn = {0167-6423},
+doi = {https://doi.org/10.1016/j.scico.2019.01.008},
+url = {https://www.sciencedirect.com/science/article/pii/S0167642318302302},
+author = {Elizabeth Scott and Adrian Johnstone and L. Thomas {van Binsbergen}},
+keywords = {Generalised parsing, Combinators, Derivations, Shared packed parse forests},
+abstract = {This paper introduces sets of binary subtree representations as an alternative to shared packed parse forests as the output of a generalised parser, and shows how these may be generated by Earley's algorithm, by a new GLL-style parser and by Johnson's continuation passing combinator style parsers. The set based output removes the clerical overhead associated with graph constructions, making the parsers simpler.}
+}
+
+@article{10.1145/3583660.3583664,
+author = {Pavlogiannis, Andreas},
+title = {CFL/Dyck Reachability: An Algorithmic Perspective},
+year = {2023},
+issue_date = {October 2022},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+volume = {9},
+number = {4},
+url = {https://doi.org/10.1145/3583660.3583664},
+doi = {10.1145/3583660.3583664},
+abstract = {CFL/Dyck reachability is a simple graph-theoretic problem: given a CFL/Dyck language L over an alphabet Σ, a graph G = (V, E) of Σ-labeled edges, and two distinguished nodes s, t ∈ V, does there exist a path from s to t that spells out a word in L? This simple notion of language-based graph reachability serves as the algorithmic formulation of a large number of problems in diverse domains, such as graph databases and program static analysis. This paper takes an algorithmic perspective on CFL/Dyck reachability, and overviews several recent advances concerning the decidability and complexity of the problem and some its close variants, as realized in the areas of automata theory and program verification.},
+journal = {ACM SIGLOG News},
+month = {feb},
+pages = {5–25},
+numpages = {21}
+}
+
+@InProceedings{10.1007/978-3-030-54832-2_6,
+author="Orachev, Egor
+and Epelbaum, Ilya
+and Azimov, Rustam
+and Grigorev, Semyon",
+editor="Darmont, J{\'e}r{\^o}me
+and Novikov, Boris
+and Wrembel, Robert",
+title="Context-Free Path Querying by Kronecker Product",
+booktitle="Advances in Databases and Information Systems",
+year="2020",
+publisher="Springer International Publishing",
+address="Cham",
+pages="49--59",
+abstract="Context-free path queries (CFPQ) extend the regular path queries (RPQ) by allowing context-free grammars to be used as constraints for paths. Algorithms for CFPQ are actively developed, but J. Kuijpers et al. have recently concluded, that existing algorithms are not performant enough to be used in real-world applications. Thus the development of new algorithms for CFPQ is justified. In this paper, we provide a new CFPQ algorithm which is based on such linear algebra operations as Kronecker product and transitive closure and handles grammars presented as recursive state machines. Thus, the proposed algorithm can be implemented by using high-performance libraries and modern parallel hardware. Moreover, it avoids grammar growth which provides the possibility for queries optimization.",
+isbn="978-3-030-54832-2"
+}
+
+@inproceedings{10.1145/298514.298576,
+author = {Yannakakis, Mihalis},
+title = {Graph-Theoretic Methods in Database Theory},
+year = {1990},
+isbn = {0897913523},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/298514.298576},
+doi = {10.1145/298514.298576},
+booktitle = {Proceedings of the Ninth ACM SIGACT-SIGMOD-SIGART Symposium on Principles of Database Systems},
+pages = {230–242},
+numpages = {13},
+location = {Nashville, Tennessee, USA},
+series = {PODS '90}
+}
+
+@inproceedings{10.1145/3241653.3241655,
+author = {Verbitskaia, Ekaterina and Kirillov, Ilya and Nozkin, Ilya and Grigorev, Semyon},
+title = {Parser Combinators for Context-Free Path Querying},
+year = {2018},
+isbn = {9781450358361},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/3241653.3241655},
+doi = {10.1145/3241653.3241655},
+abstract = {Transparent integration of a domain-specific language for specification of context-free path queries (CFPQs) into a general-purpose programming language as well as static checking of errors in queries may greatly simplify the development of applications using CFPQs. LINQ and ORM can be used for the integration, but they have issues with flexibility: query decomposition and reusing of subqueries are a challenge. Adaptation of parser combinators technique for paths querying may solve these problems. Conventional parser combinators process linear input, and only the Trails library is known to apply this technique for path querying. Trails suffers the common parser combinators issue: it does not support left-recursive grammars and also experiences problems in cycles handling. We demonstrate that it is possible to create general parser combinators for CFPQ which support arbitrary context-free grammars and arbitrary input graphs. We implement a library of such parser combinators and show that it is applicable for realistic tasks.},
+booktitle = {Proceedings of the 9th ACM SIGPLAN International Symposium on Scala},
+pages = {13–23},
+numpages = {11},
+keywords = {Context-Free Language Reachability, Language-Constrained Path Problem, Generalized LL, Neo4j, Context-Free Path Querying, Scala, Graph Databases, GLL, Parser Combinators},
+location = {St. Louis, MO, USA},
+series = {Scala 2018}
+}
+
+@inproceedings{10.1145/199448.199462,
+author = {Reps, Thomas and Horwitz, Susan and Sagiv, Mooly},
+title = {Precise Interprocedural Dataflow Analysis via Graph Reachability},
+year = {1995},
+isbn = {0897916921},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/199448.199462},
+doi = {10.1145/199448.199462},
+abstract = {The paper shows how a large class of interprocedural dataflow-analysis problems can be solved precisely in polynomial time by transforming them into a special kind of graph-reachability problem. The only restrictions are that the set of dataflow facts must be a finite set, and that the dataflow functions must distribute over the confluence operator (either union or intersection). This class of probable problems includes—but is not limited to—the classical separable problems (also known as “gen/kill” or “bit-vector” problems)—e.g., reaching definitions, available expressions, and live variables. In addition, the class of problems that our techniques handle includes many non-separable problems, including truly-live variables, copy constant propagation, and possibly-uninitialized variables.Results are reported from a preliminary experimental study of C programs (for the problem of finding possibly-uninitialized variables).},
+booktitle = {Proceedings of the 22nd ACM SIGPLAN-SIGACT Symposium on Principles of Programming Languages},
+pages = {49–61},
+numpages = {13},
+location = {San Francisco, California, USA},
+series = {POPL '95}
+}
+
+@phdthesis{rekers1992parser,
+  title={Parser generation for interactive environments},
+  author={Rekers, Jan G},
+  year={1992},
+  school={Citeseer}
+}
+
+@article{10.1145/3591233,
+author = {Lei, Yuxiang and Sui, Yulei and Tan, Shin Hwei and Zhang, Qirun},
+title = {Recursive State Machine Guided Graph Folding for Context-Free Language Reachability},
+year = {2023},
+issue_date = {June 2023},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+volume = {7},
+number = {PLDI},
+url = {https://doi.org/10.1145/3591233},
+doi = {10.1145/3591233},
+abstract = {Context-free language reachability (CFL-reachability) is a fundamental framework for program analysis. A large variety of static analyses can be formulated as CFL-reachability problems, which determines whether specific source-sink pairs in an edge-labeled graph are connected by a reachable path, i.e., a path whose edge labels form a string accepted by the given CFL. Computing CFL-reachability is expensive. The fastest algorithm exhibits a slightly subcubic time complexity with respect to the input graph size. Improving the scalability of CFL-reachability is of practical interest, but reducing the time complexity is inherently difficult. In this paper, we focus on improving the scalability of CFL-reachability from a more practical perspective---reducing the input graph size. Our idea arises from the existence of trivial edges, i.e., edges that do not affect any reachable path in CFL-reachability. We observe that two nodes joined by trivial edges can be folded---by merging the two nodes with all the edges joining them removed---without affecting the CFL-reachability result. By studying the characteristic of the recursive state machines (RSMs), an alternative form of CFLs, we propose an approach to identify foldable node pairs without the need to verify the underlying reachable paths (which is equivalent to solving the CFL-reachability problem). In particular, given a CFL-reachability problem instance with an input graph G and an RSM, based on the correspondence between paths in G and state transitions in RSM, we propose a graph folding principle, which can determine whether two adjacent nodes are foldable by examining only their incoming and outgoing edges. On top of the graph folding principle, we propose an efficient graph folding algorithm GF. The time complexity of GF is linear with respect to the number of nodes in the input graph. Our evaluations on two clients (alias analysis and value-flow analysis) show that GF significantly accelerates RSM/CFL-reachability by reducing the input graph size. On average, for value-flow analysis, GF reduces 60.96\% of nodes and 42.67\% of edges of the input graphs, obtaining a speedup of 4.65\texttimes{} and a memory usage reduction of 57.35\%. For alias analysis, GF reduces 38.93\% of nodes and 35.61\% of edges of the input graphs, obtaining a speedup of 3.21\texttimes{} and a memory usage reduction of 65.19\%.},
+journal = {Proc. ACM Program. Lang.},
+month = {jun},
+articleno = {119},
+numpages = {25},
+keywords = {CFL-reachability, recursive state machines, graph simplification}
+}
+
+@article{10.1145/1328897.1328460,
+author = {Chaudhuri, Swarat},
+title = {Subcubic Algorithms for Recursive State Machines},
+year = {2008},
+issue_date = {January 2008},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+volume = {43},
+number = {1},
+issn = {0362-1340},
+url = {https://doi.org/10.1145/1328897.1328460},
+doi = {10.1145/1328897.1328460},
+abstract = {We show that the reachability problem for recursive state machines (or equivalently, pushdown systems), believed for long to have cubic worst-case complexity, can be solved in slightly subcubic time. All that is necessary for the new bound is a simple adaptation of a known technique. We also show that a better algorithm exists if the input machine does not have infinite recursive loops.},
+journal = {SIGPLAN Not.},
+month = {jan},
+pages = {159–169},
+numpages = {11},
+keywords = {transitive closure, pushdown systems, context-free languages, interprocedural analysis, cubic bottleneck, CFL-reachability, recursive state machines}
+}
+
+@inproceedings{10.1145/1328438.1328460,
+author = {Chaudhuri, Swarat},
+title = {Subcubic Algorithms for Recursive State Machines},
+year = {2008},
+isbn = {9781595936899},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/1328438.1328460},
+doi = {10.1145/1328438.1328460},
+abstract = {We show that the reachability problem for recursive state machines (or equivalently, pushdown systems), believed for long to have cubic worst-case complexity, can be solved in slightly subcubic time. All that is necessary for the new bound is a simple adaptation of a known technique. We also show that a better algorithm exists if the input machine does not have infinite recursive loops.},
+booktitle = {Proceedings of the 35th Annual ACM SIGPLAN-SIGACT Symposium on Principles of Programming Languages},
+pages = {159–169},
+numpages = {11},
+keywords = {pushdown systems, transitive closure, context-free languages, CFL-reachability, interprocedural analysis, recursive state machines, cubic bottleneck},
+location = {San Francisco, California, USA},
+series = {POPL '08}
+}
+
+@inproceedings{10.1145/3427081.3427087,
+author = {Medeiros, Ciro M. and Musicante, Martin A. and Costa, Umberto S.},
+title = {An Algorithm for Context-Free Path Queries over Graph Databases},
+year = {2020},
+isbn = {9781450389433},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/3427081.3427087},
+doi = {10.1145/3427081.3427087},
+abstract = {Path queries are used to specify paths inside a data graph to match a given pattern. Query languages such as SPARQL usually include support for regular path patterns defined by means of regular expressions. Context-free path queries define a path whose language can be defined by a context-free grammar. This kind of query is interesting in practice in domains such as genetics, data science, or source code analysis. In this paper, we present a novel algorithm for context-free path query processing. Our algorithm works by looking for localized paths, allowing us to process subgraphs, in contrast to other approaches that have to process the whole graph. It also takes any context-free grammar as input, avoiding the use of normal forms that are more problematic in practice. The output of our algorithm provides enough information to reconstruct the paths matching the query. We prove the correctness of our approach and show its runtime and memory complexity. We show the viability of our approach by means of a prototype implemented in Go. We run experiments proposed in recent works, which include both synthetic and real RDF databases. Our algorithm shows some performance gains when compared with other algorithms implemented using single-thread programs.},
+booktitle = {Proceedings of the 24th Brazilian Symposium on Context-Oriented Programming and Advanced Modularity},
+pages = {40–47},
+numpages = {8},
+keywords = {RDF, context-free grammars, graph path queries},
+location = {Natal, Brazil},
+series = {SBLP '20}
+}
+
+@article{MEDEIROS201975,
+title = {LL-based query answering over RDF databases},
+journal = {Journal of Computer Languages},
+volume = {51},
+pages = {75-87},
+year = {2019},
+issn = {2590-1184},
+doi = {https://doi.org/10.1016/j.cola.2019.02.002},
+url = {https://www.sciencedirect.com/science/article/pii/S1045926X18301915},
+author = {Ciro M. Medeiros and Martin A. Musicante and Umberto S. Costa},
+keywords = {Context-Free graph patterns, Graph databases, RDF, SPARQL},
+abstract = {We present a method based on top-down parsing techniques for evaluating context-free path queries on RDF Graph Databases. The syntax of the query language is based on SPARQL. The language extends SPARQL by allowing the use of non-terminal symbols of a context-free grammar to specify paths on the graph. In this manner, the language subsumes the definition of regular graph patterns present in SPARQL. Our query evaluator takes an RDF graph, a context-free grammar and a declarative query, and produces tuples of values. The query evaluator proceeds in two stages: Firstly, the RDF graph is enriched with edges representing paths which correspond to strings derived by the grammar. We show that this algorithm is correct and presents a cubic worst-case run-time complexity on the number of nodes in the graph, which is an improvement over some previous work. The second stage of the evaluator uses the produced graph to identify tuples of values defined by a declarative query. In order to validate our approach, we conducted experiments by using some popular ontologies as well as synthetic databases. We compare performance results of our method with some related work.}
+}
+
+@article{MEDEIROS2022101089,
+title = {Querying graph databases using context-free grammars},
+journal = {Journal of Computer Languages},
+volume = {68},
+pages = {101089},
+year = {2022},
+issn = {2590-1184},
+doi = {https://doi.org/10.1016/j.cola.2021.101089},
+url = {https://www.sciencedirect.com/science/article/pii/S2590118421000642},
+author = {Ciro M. Medeiros and Martin A. Musicante and Umberto S. Costa},
+keywords = {Context-free grammars, Graph path queries, RDF},
+abstract = {Path queries are used to specify paths inside a data graph to match a given pattern. Query languages such as SPARQL usually include support for regular path patterns defined by means of regular expressions. Context-free path queries define a path whose language can be defined by a context-free grammar. This kind of query is interesting in practice in domains such as genetics, data science, and source code analysis. In this paper, we present an algorithm for context-free path query processing. Our algorithm works by looking for localized paths, allowing us to process subgraphs, in contrast to other approaches that have to process the whole graph. It also takes any context-free grammar as input, avoiding the use of normal forms that can be problematic. The grammar normalization process may introduce a large number of non-terminal symbols and production rules, what, in general, reflects on more runtime and memory consumption by evaluation algorithms. We prove the correctness of our approach and show its runtime and memory complexity. We show the viability of our approach by means of prototypes implemented in Go and Python. We run experiments proposed in recent works, which include both synthetic and real RDF databases, and introduce a more realistic scenario inspired in Biology. Our algorithm shows performance gains when compared to other algorithms implemented using single-thread programs.}
+}
+
+@article{Bradford2009,
+  doi = {10.1051/ita/2009011},
+  url = {https://doi.org/10.1051/ita/2009011},
+  year = {2009},
+  month = apr,
+  publisher = {{EDP} Sciences},
+  volume = {43},
+  number = {3},
+  pages = {567--583},
+  author = {Phillip G. Bradford and David A. Thomas},
+  title = {Labeled shortest paths in digraphs with negative and positive edge weights},
+  journal = {{RAIRO} - Theoretical Informatics and Applications}
+}
+
+@INPROCEEDINGS{4625871,
+  author={Ward, Charles B. and Wiegand, Nathan M. and Bradford, Phillip G.},
+  booktitle={2008 37th International Conference on Parallel Processing}, 
+  title={A Distributed Context-Free Language Constrained Shortest Path Algorithm}, 
+  year={2008},
+  volume={},
+  number={},
+  pages={373-380},
+  doi={10.1109/ICPP.2008.67}}
+
+
+@INPROCEEDINGS{8249039,
+  author={Bradford, Phillip G.},
+  booktitle={2017 IEEE 8th Annual Ubiquitous Computing, Electronics and Mobile Communication Conference (UEMCON)}, 
+  title={Efficient exact paths for dyck and semi-dyck labeled path reachability (extended abstract)}, 
+  year={2017},
+  volume={},
+  number={},
+  pages={247-253},
+  doi={10.1109/UEMCON.2017.8249039}}
+
+@inproceedings{10.1145/3318464.3384400,
+author = {Susanina, Yuliya},
+title = {Context-Free Path Querying via Matrix Equations},
+year = {2020},
+isbn = {9781450367356},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/3318464.3384400},
+doi = {10.1145/3318464.3384400},
+abstract = {Context-free path querying (CFPQ) widely used for graph-structured data analysis in different areas. It is crucial to develop highly efficient algorithms for CFPQ since the size of the input data is typically large. We show how to reduce GFPQ evaluation to solving systems of matrix equations over R --- a problem for which there exist high-performance solutions. Also, we demonstrate the applicability of our approach to real-world data analysis.},
+booktitle = {Proceedings of the 2020 ACM SIGMOD International Conference on Management of Data},
+pages = {2821–2823},
+numpages = {3},
+keywords = {context-free path querying, nonlinear matrix equations, context-free grammar, graph databases, Newton's method},
+location = {Portland, OR, USA},
+series = {SIGMOD '20}
+}
+
+@article {MR0151376,
+    AUTHOR = {Bar-Hillel, Y. and Perles, M. and Shamir, E.},
+     TITLE = {On formal properties of simple phrase structure grammars},
+   JOURNAL = {Z. Phonetik Sprachwiss. Kommunikat.},
+  FJOURNAL = {Zeitschrift f\"{u}r Phonetik Sprachwissenschaft und
+              Kommunikationsforschung},
+    VOLUME = {14},
+      YEAR = {1961},
+     PAGES = {143--172},
+      ISSN = {0044-331X},
+   MRCLASS = {02.75},
+  MRNUMBER = {151376},
+}
+
+@inproceedings{Pacaci2020RegularPQ,
+author = {Pacaci, Anil and Bonifati, Angela and \"{O}zsu, M. Tamer},
+title = {Regular Path Query Evaluation on Streaming Graphs},
+year = {2020},
+isbn = {9781450367356},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/3318464.3389733},
+doi = {10.1145/3318464.3389733},
+abstract = {We study persistent query evaluation over streaming graphs, which is becoming increasingly important. We focus on navigational queries that determine if there exists a path between two entities that satisfies a user-specified constraint. We adopt the Regular Path Query (RPQ) model that specifies navigational patterns with labeled constraints. We propose deterministic algorithms to efficiently evaluate persistent RPQs under both arbitrary and simple path semantics in a uniform manner. Experimental analysis on real and synthetic streaming graphs shows that the proposed algorithms can process up to tens of thousands of edges per second and efficiently answer RPQs that are commonly used in real-world workloads.},
+booktitle = {Proceedings of the 2020 ACM SIGMOD International Conference on Management of Data},
+pages = {1415--1430},
+numpages = {16},
+keywords = {persistent query evaluation, streaming graphs, regular path queries},
+location = {Portland, OR, USA},
+series = {SIGMOD '20}
+}
+
+@article{Wang2019,
+  doi = {10.1007/s11280-019-00739-0},
+  url = {https://doi.org/10.1007/s11280-019-00739-0},
+  year = {2019},
+  month = nov,
+  publisher = {Springer Science and Business Media {LLC}},
+  volume = {23},
+  number = {3},
+  pages = {1465--1496},
+  author = {Wang, Xin and Wang, Simiao and Xin, Yueqi and Yang, Yajun and Li, Jianxin and Wang, Xiaofei},
+  title = {Distributed Pregel-based provenance-aware regular path query processing on {RDF} knowledge graphs},
+  journal = {World Wide Web}
+}

@@ -1,0 +1,156 @@
+\newcommand{\nodeDistance}{1.8cm}
+\begin{table}
+    \caption{The steps of the GLL-based CFPQ executed on the graph represented in figure~\ref{fig:input-graph} and the query represented in figure~\ref{fig:example-rsm}.}
+    \resizebox{0.98\textwidth}{!}
+    {
+        \begin{tabular}{l c c c}
+        
+        \hline \\
+        & 
+            Configuration
+        &
+            Path
+        &
+            Stack
+        \\
+        \hline 
+        \\
+            1 
+        & %config
+            $\vdash (q_4,v_0,(q_4,v_0),\epsilon)$ 
+        & %path
+        
+        & %stack
+            \vspace{-0.2cm}
+            \begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=\nodeDistance, semithick]
+                \node[state]         (A)              {$q_4,v_0$};
+            \end{tikzpicture} 
+            \\
+            \\
+
+        \hline \\
+
+            2 
+        &%config
+            $(q_4,v_0,(q_4,v_0),\epsilon) \vdash \{(q_0,v_0,(q_0,v_0),\epsilon)\}$ 
+        &%path
+        
+        &%stack
+            \multirow{2}{*}[0.15cm]{
+                \begin{minipage}[t]{0.2\textwidth}
+                \begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=1.8cm, semithick]
+                    \node[state]         (A)              {$q_4,v_0$};
+                    \node[state]         (B) [right of=A] {$q_0,v_0$};
+                    \path (B) edge         node {$q_5, \epsilon $} (A);
+                \end{tikzpicture}
+            \end{minipage}
+            }
+            \\
+            3 
+        &%config
+            $(q_0,v_0,(q_0,v_0),\epsilon) \vdash \{(q_1,v_0,(q_0,v_0),R^{q_0,v_0}_{q_1,v_0})\}$ 
+        &%path
+            $[(q_0,v_0),(q_1,v_0)] \xleftarrow{} a$
+        &%stack(look at previous stack)
+            \\
+            \\
+            \hline 
+            \\
+            4 
+        &%config
+            \makecell{
+                $(q_1,v_0,(q_0,v_0),R^{q_0,v_0}_{q_1,v_0}) \vdash \\\{\xcancel{(q_0,v_0,(q_0,v_0),\epsilon)}, (q_3,v_1,(q_0,v_0),R^{q_0,v_0}_{q_3,v_1})\}$ 
+            }
+        &%path
+            \begin{minipage}[t]{0.2\textwidth}
+            $\begin{array}{l}
+                \left[(q_1,v_0),(q_3,v_1)\right] \xleftarrow{} b \\ 
+                \left[(q_0,v_0),(q_3,v_1)\right] \xleftarrow{} (q_1,v_0) \\
+            \end{array}
+            $
+            \end{minipage}
+        &%stack
+            \multirow{2}{*}[0.2cm]{
+            \begin{minipage}[t]{0.02\textwidth}
+                \resizebox{8\textwidth}{!}{
+                    \begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=\nodeDistance, semithick]
+                        \node[state]         (A)              {$q_4,v_0$};
+                        \node[state]         (B) [below of=A] {$q_0,v_0$};
+                        \path (B) edge         node[right]{$q_5, \epsilon$} (A)
+                                (B) edge  [loop below] node[below]{$q_2, R^{q_0,v_0}_{q_1,v_0}$} (B) 
+                                ;
+                    \end{tikzpicture}
+                }
+            \end{minipage}
+            }
+        \\
+        
+        &
+        \\
+        
+            5 
+        &%config
+            \makecell{
+                $(q_3,v_1,(q_0,v_0),R^{q_0,v_0}_{q_3,v_1}) \vdash \\ \{(q_2,v_1,(q_0,v_0),R^{q_0,v_0}_{q_2,v_1}), \boxed{(q_5,v_1,(q_4,v_0),R^{q_4,v_0}_{q_5,v_1})}\}$ 
+            }
+        &%path
+            \begin{minipage}[t]{0.2\textwidth}
+                $\begin{array}{l}
+                    \left[(q_4,v_0),(q_5,v_1)\right] \xleftarrow{} S \\
+                    \left[(q_1,v_0),(q_2,v_1)\right] \xleftarrow{} S \\
+                    \left[(q_0,v_0),(q_2,v_1)\right] \xleftarrow{} (q_1,v_0) 
+                \end{array}$
+            \end{minipage}
+            
+        &%stack(look at previous stack)
+        \\
+        \\
+            6 
+        &%config 
+            $(q_2,v_1,(q_0,v_0),R^{q_0,v_0}_{q_2,v_1}) \vdash \{(q_3,v_0,(q_0,v_0),R^{q_0,v_0}_{q_3,v_0})\}$ 
+        &%path
+            \begin{minipage}[t]{0.2\textwidth}
+                $\begin{array}{l}
+                    \left[(q_2,v_1),(q_3,v_0)\right] \xleftarrow{} b \\
+                    \left[(q_0,v_0),(q_3,v_0)\right] \xleftarrow{} (q_2,v_1)
+                \end{array}$
+            \end{minipage}
+        &%stack(look at previous stack)
+        \\
+        \\
+            7 
+        &%config 
+            \makecell{
+                $(q_3,v_0,(q_0,v_0),R^{q_0,v_0}_{q_3,v_0}) \vdash \\\{(q_2,v_0,(q_0,v_0),R^{q_0,v_0}_{q_2,v_0}), \boxed{(q_5,v_0,(q_4,v_0),R^{q_4,v_0}_{q_5,v_0})}\}$ 
+            }
+        &%path
+            \begin{minipage}[t]{0.2\textwidth}
+                $\begin{array}{l}
+                    \left[(q_4,v_0),(q_5,v_0)\right] \xleftarrow{} S \\
+                    \left[(q_1,v_0),(q_2,v_0)\right] \xleftarrow{} S \\
+                    \left[(q_0,v_0),(q_2,v_0)\right] \xleftarrow{} (q_1,v_0)
+                \end{array}$
+            \end{minipage}
+        &%stack(look at previous stack)
+        \\
+        \\
+            8 
+        &%config
+            $(q_2,v_0,(q_0,v_0),R^{q_0,v_0}_{q_2,v_0}) \vdash \{\xcancel{(q_3,v_1,(q_0,v_0),R^{q_0,v_0}_{q_3,v_1})}\}$ 
+        &%path
+            \begin{minipage}[t]{0.2\textwidth}
+                $\begin{array}{l}
+                \left[(q_0,v_0),(q_3,v_1)\right] \xleftarrow{} (q_2,v_0) \\
+                \left[(q_2,v_0),(q_3,v_1)\right] \xleftarrow{} b
+                \end{array}$
+            \end{minipage}
+        &%stack(look at previous stack)
+        \\
+        \\
+        
+        \hline
+        
+        \end{tabular}
+    }
+    \label{tbl:gll-example}
+\end{table}

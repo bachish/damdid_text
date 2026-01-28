@@ -1,0 +1,108 @@
+\section{CFPQ For Neo4j}\label{section:cfpq_fro_neo4j}
+
+In this section we provide details on the integration of GLL-based CFPQ to Neo4j graph database. We choose the RSM-based version because our comparison (see section~\ref{sectioin:cfg_vs_rsm}) shows that it is faster than the BNF-based one.
+
+Also, we provide results of the implemented solution evaluation which show that, first of all, the provided solution is faster than a similar linear algebra-based solution for RedisGraph. Also, we show that on RPQs our solution is compatible with the Neo4j native one and in some cases evaluates queries successfully while the native solution fails with an \textit{OutOfMemory} exception.
+
+\subsection{Implementation Details}
+
+Neo4j stored procedure is a mechanism through which query language can be extended by writing custom code in Java in such a way that it can be called directly via Cypher. %The Java code need to be compiled into a \texttt{jar} file and to be put in the plugins directory of Neo4j root folder. 
+
+We implemented a Neo4j stored procedure which solves the reachability problem for the given set of start vertices and the given query. The procedure can be called as follows:
+$\texttt{CALL}~\texttt{cfpq.gll.getReachabilities(nodes, q)}$
+where \texttt{nodes} is a collection of start nodes, and \texttt{q} is a string representation (or description) of RSM specified over relation types. The result of the given procedure is a stream of reachable pairs of nodes. Note that the expressive power of our solution is limited: we cannot use the full power of Cypher inside our constraints. For example, we cannot specify constraints on vertices inside our constraints.
+
+\mycomment{
+%\scalebox{0.75}{\parbox{.5\linewidth}{%
+\begin{align*}
+StartState(&id=0,nonterminal=Nonterminal(S),\\
+           &isStart=true,isFinal=false) \\
+State(&id=1,nonterminal=Nonterminal(S), \\
+      &isStart=false,isFinal=false) \\
+State(&id=4,nonterminal=Nonterminal(S),isStart=false,isFinal=false) \\
+State(&id=3,nonterminal=Nonterminal(S),isStart=false,isFinal=true) \\
+State(&id=2,nonterminal=Nonterminal(S),isStart=false,isFinal=false) \\
+State(&id=5,nonterminal=Nonterminal(S), \\
+      &isStart=false,isFinal=false) \\
+TerminalEdge(&tail=0,head=1,terminal=Terminal(subClassOf\_r)) \\
+TerminalEdge(&tail=0,head=4,terminal=Terminal(type\_r)) \\
+TerminalEdge(&tail=1,head=3,terminal=Terminal(subClassOf)) \\
+NonterminalEdge(&tail=1,head=2,nonterminal=Nonterminal(S)) \\
+TerminalEdge(&tail=4,head=3,terminal=Terminal(type)) \\
+NonterminalEdge(&tail=4,head=5,nonterminal=Nonterminal(S)) \\
+TerminalEdge(&tail=2,head=3,terminal=Terminal(subClassOf)) \\
+TerminalEdge(&tail=5,head=3,terminal=Terminal(type))
+\end{align*}
+}
+%}}
+% \begin{figure}[ht]
+%     \centering
+%     \includegraphics[width=0.47\textwidth]{architecture.pdf}
+%     \caption{Architecture of the solution}
+%     \label{fig:solution_architecture}
+% \end{figure}
+
+We implemented a wrapper for Neo4j. Communication with the database is done using the Neo4j Native Java API. So, we used an embedded database, which means it is run inside of the application and is not used as an external service.
+
+Along with the existing modifications of GLL, we made a Neo4j-specific one. Neo4j return result should be represented as a \texttt{Stream} and it is important to prevent early stream forcing, thus we changed all GLL internals to ensure that. This also has an added benefit that the query result is a stream, and thus it is possible to get the results on demand. 
+
+\subsection{Evaluation}
+
+To assess the applicability of the proposed solution, we evaluate it on a number of real-world graphs and queries. To estimate relative performance, we compare our solution with the matrix-based CFPQ algorithm implemented in RedisGraph by Arseniy Terekhov et al in~\cite{DBLP:conf/edbt/TerekhovPAZG21}. Also, we compare the performance of query evaluation in \textit{reachability-only} mode on regular path queries with the native Neo4j solution.
+
+%\subsection{Evaluation Results}
+
+The results of context-free path query evaluations are presented in figures~\ref{fig:performance-g1} for $G_1$,~\ref{fig:performance-g2} for $G_2$, and~\ref{fig:performance-geo} for \textit{Geo}. 
+
+The results show that query evaluation time depends not only on a graph size or its sparsity, but also on the inner structure of the graph. For example, the relatively small graph \textit{go\_hierarchy} fully consists of edges used in queries $G_1$ and $G_2$, thus evaluation time for these queries is significantly bigger than for some bigger but more sparse graphs, for example, for the \textit{eclass} graph. Especially for a relatively big starting vertex set. Note that the creation of relevant metrics for CFPQ query evaluation time prediction is a challenging problem by itself and should be tackled in the future.
+
+Also, we can see that in almost all cases the proposed solution is significantly faster than RedisGraph (in orders of magnitude in some cases). At the same time, in some cases (see results for graph \textit{core} and all queries) RedisGraph outperforms our solution. Also, one can see that evaluation time for RedisGraph is more predictable. For our solution, in some cases, execution time highly depends on the start set. For example, see figure~\ref{fig:performance-geo}, graph \textit{enzyme}.    
+
+\newcommand\squeryImageW{0.34}
+\newcommand\squeryImageScale{1.111}
+\begin{figure}
+    \begin{subfigure}[t]{\squeryImageW\textwidth}
+        \centering
+    \includegraphics[width=\squeryImageScale\textwidth]{figures/g1_result.pdf}
+    \caption{$G_1$ query}
+    \label{fig:performance-g1}
+    \end{subfigure}%
+    \begin{subfigure}[t]{\squeryImageW\textwidth}
+        \centering
+    \includegraphics[width=\squeryImageScale\textwidth]{figures/g2_result.pdf}
+    \caption{$G_2$ query}
+    \label{fig:performance-g2}
+    \end{subfigure}%
+    \begin{subfigure}[t]{\squeryImageW\textwidth}
+        \centering
+    \includegraphics[width=\squeryImageScale\textwidth]{figures/geo_result.pdf}
+    \caption{$Geo$ query}
+    \label{fig:performance-geo}
+    \end{subfigure}%
+    \caption{Multiple sources CFPQ reachability results for queries related to RDF analysis.}
+\end{figure}
+
+The particularly important scenario is the case when the start set is a single vertex. 
+The results of the \texttt{single-source reachability} show that such queries are reasonably fast: median time is about a few milliseconds for all graphs and all queries. Note that even for single source queries, evaluation time highly depends on graph structure: evaluation time on \textit{core} graph is significantly bigger than for all other graphs for all queries. Note that \textit{core} is the smallest graph in terms of the number of nodes and edges. Again, to provide a reliable metric to predict query execution time is a non-trivial task. Moreover, time grows with the size of a chunk, as expected. 
+
+Partial results for RPQ evaluation are presented in figures~\ref{fig:performance-reg1} and~\ref{fig:performance-reg2} for $\textit{reg}_1$ (defined in ~\ref{eqn:reg_1}) and $\textit{reg}_2$ (defined in ~\ref{eqn:reg_2}) respectively. For queries $\textit{reg}_3$ (defined in ~\ref{eqn:reg_3}) and $\textit{reg}_4$ (defined in ~\ref{eqn:reg_4}) we get similar results. Note that on \textit{geospecies} and \textit{taxonomy} graphs, the native solution failed with an \textit{OutOfMemory} exception, while our solution evaluates queries successfully. 
+
+\begin{figure}
+    \begin{subfigure}[t]{0.55\textwidth}
+        \includegraphics[width=1.0125\textwidth]{figures/reg1_rpq_result.pdf}
+        \caption{$\textit{reg}_1$ query}
+        \label{fig:performance-reg1}
+    \end{subfigure}%
+    \hspace{-2em}
+    \begin{subfigure}[t]{0.55\textwidth}
+        \includegraphics[width=1.0125\textwidth]{figures/reg2_rpq_result.pdf}
+        \caption{$\textit{reg}_2$ query}
+        \label{fig:performance-reg2}
+    \end{subfigure}%   
+    \caption{Multiple source RPQ reachability results for queries related to RDF analysis and respective query (native solution failed with OOM on last two graphs).}
+\end{figure}
+
+
+We can see that the proposed solution is slightly slower than the native Neo4j algorithm, but not dramatically: typically less than two times. Moreover, in some cases, our solution is comparable with the native one (see figure~\ref{fig:performance-reg1} and figure~\ref{fig:performance-reg2}, graph \textit{eclass}), and in some cases, our solution is faster than the native one (see figure~\ref{fig:performance-reg2}, graph \textit{core}).
+
+Finally, we conclude that not only can the linear algebra-based CFPQ algorithms be used in real-world graph analysis systems: the proposed GLL-based solution outperforms the linear algebra-based one. Moreover, we show that the proposed solution can be used as a universal algorithm for both RPQ and CFPQ.

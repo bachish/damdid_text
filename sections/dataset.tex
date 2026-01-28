@@ -1,0 +1,183 @@
+\section{Experiment design}\label{section:dataset}
+In this section, we provide a description of graphs and queries used for the evaluation of implemented algorithms. Also, we describe common evaluation scenarios and the evaluation environment.
+
+We evaluated our solution on both classical regular and context-free path queries to estimate the ability to use the proposed algorithm as a universal algorithm for a wide range of queries. 
+
+\subsection{Graphs}
+
+For the evaluation, we use a number of graphs from the CFPQ\_Data\footnote{CFPQ\_Data is a public set of graphs and grammars for CFPQ algorithms evaluation. GitHub repository: \url{https://github.com/FormalLanguageConstrainedPathQuerying/CFPQ\_Data}. Accessed: 27.09.2024.} data set. We selected a number of graphs related to RDF analysis.
+%, as well as a number of graphs extracted from the Linux sources which related to static code analysis problems.
+A detailed description of the graphs, namely the number of vertices and edges and the number of edges labeled by tags used in queries, is in Table~\ref{tab:graphs_for_evaluation_rdf}. Here ``bt'' is an abbreviation for  \textit{broaderTransitive} relationship.
+
+%) and in table~\ref{tab:graphs_for_evaluation_stat} for static code analysis. 
+
+\begin{table}
+    \caption{RDF graphs for evaluation: number of vertices and edges, and number of edges with specific label.}
+    \label{tab:graphs_for_evaluation_rdf}
+    \centering
+    \scalebox{1}{
+    \rowcolors{2}{black!2}{black!10}
+    \begin{tabular}{| l | c | c | c | c | c | c |}
+         \hline
+         Graph name & $|V|$ & $|E|$ & \#subClassOf & \#type & \#bt\\
+         \hline
+         \hline
+         Core               & 1 323     & 2 752      & 178        & 0        & 0 \\
+         Pathways           & 6 238     & 12 363     & 3 117      & 3 118     & 0 \\
+         Go\_hierarchy       & 45 007    & 490 109    & 490 109    & 0         & 0 \\
+         Enzyme             & 48 815    & 86 543     & 8 163      & 14 989    & 8 156\\
+         Eclass             & 239 111   & 360 248    & 90 962     & 72 517    & 0 \\
+         Geospecies         & 450 609   & 2 201 532  & 0          & 89 065    & 20 867 \\
+         Go                 & 582 929   & 1 437 437  & 94 514     & 226 481   & 0 \\
+         Taxonomy           & 5 728 398 & 14 922 125 & 2 112 637  & 2 508 635 & 0 \\
+         \hline
+    \end{tabular}
+    }
+\end{table}
+    
+%\begin{table}[h!]
+%    \centering
+%    \rowcolors{2}{black!2}{black!10}
+%    \begin{tabular}{| c | c | c | c | c | c | c |}
+%         \hline
+%         Graph name & $|V|$ & $|E|$ & \#a & \#d \\
+%         \hline
+%         \hline
+%         Apache         & 1 721 418 & 1 510 411  & 362 799 & 1 147 612 \\
+%         Block          & 3 423 234 & 2 951 393  & 669 238 & 2 282 155 \\
+%         Fs             & 4 177 416 & 3 609 373 & 824 430 & 2 784 943 \\
+%         Ipc            & 3 401 022 & 2 931 498 & 664 151 & 2 267 347 \\
+%         Lib            & 3 401 355 & 2 931 880 & 664 311 & 2 267 569 \\
+%         Mm             & 2 538 243 & 2 191 079 & 498 918 & 1 692 161 \\
+%         Net            & 4 039 470 & 3 500 141 & 807 162 & 2 692 979 \\
+%         Postgre        & 5 203 419 & 4 678 543 & 1 209 597 & 3 468 946 \\
+%         Security       & 3 479 982 & 3 003 326 & 683 339 & 2 319 987 \\
+%         Sound          & 3 528 861 & 3 049 732 & 697 159 & 2 352 573 \\
+%         Init           & 2 446 224 & 2 112 809 & 481 994 & 1 630 815 \\
+%         Arch           & 3 448 422 & 2 970 242 & 6 712 95 & 2 298 947 \\
+%         Crypto         & 3 464 970 & 2 988 387 & 678 408 & 2 309 979 \\
+%         Drivers        & 4 273 803 & 3 707 769 & 858 568 & 2 849 201 \\
+%         Kernel         & 11 254 434& 9 484 213  & 1 981 258 & 7 502 955 \\
+%         \hline
+%    \end{tabular}
+%    \caption{Points-to graphs for evaluation: number of vertices and edges, and number of edges with specific label}
+%    \label{tab:graphs_for_evaluation_stat}
+%\end{table}
+
+For regular path queries evaluation, we used only RDF graphs because code analysis related graphs contain only two types of labels. Regular queries over such graphs are meaningless.
+
+\subsection{Regular Queries}
+
+Regular queries were generated using a well-established set of templates for RPQ algorithms evaluation. Namely, we use templates presented in Table 2 in~\cite{Pacaci2020RegularPQ} and in Table 5 in~\cite{Wang2019}. We select four non-trivial templates (that contain compositions of Kleene star and union) that are expressible in Cypher syntax to be able to compare the native Neo4j querying algorithm with our solution. Used templates are presented in equations~\ref{eqn:reg_1},~\ref{eqn:reg_2},~\ref{eqn:reg_3}, and~\ref{eqn:reg_4}. Respective path patterns expressed in Cypher are presented in equations~\ref{eqn:cypher_reg_1},~\ref{eqn:cypher_reg_2},~\ref{eqn:cypher_reg_3}, and~\ref{eqn:cypher_reg_4}. Note that while Cypher's power is limited, our solution can handle arbitrary RPQs. We generate one query for each template and each graph. The most frequent relations from the given graph were used as symbols in the query template.
+
+\begin{minipage}{0.44\textwidth}
+\begin{align}
+\textit{reg}_1 = & (a \mid b)^* \label{eqn:reg_1}\\
+\textit{reg}_2 = & a^* \cdot b^* \label{eqn:reg_2}
+\end{align}
+\end{minipage}
+\begin{minipage}{0.44\textwidth}
+\begin{align}
+\textit{reg}_3 = & (a \mid b \mid c)^+ \label{eqn:reg_3}\\
+\textit{reg}_4 = & (a \mid b)^+ \cdot (c \mid d)^+ \label{eqn:reg_4}
+\end{align}
+\end{minipage}
+
+\begin{align}
+\textit{reg}_1^{\text{N4j}} = & \texttt{()-[:a | :b]->\{0,\}()} \label{eqn:cypher_reg_1}\\
+\textit{reg}_2^{\text{N4j}} = & \texttt{()-[:a]->\{0,\}()-[:b]->\{0,\}()} \label{eqn:cypher_reg_2}\\
+\textit{reg}_3^{\text{N4j}} = & \texttt{()-[:a | :b | :c]->\{1,\}()} \label{eqn:cypher_reg_3}\\
+\textit{reg}_4^{\text{N4j}} = & \texttt{()-[:a | :b]->\{1,\}()-[:c | :d]->\{1,\}()} \label{eqn:cypher_reg_4}
+\end{align}
+
+Also note that exclude \textit{go\_hierarchy} graph from evaluation because it contains only one type of edge, so it is impossible to express meaningful queries over it. 
+
+\mycomment{
+\begin{table}
+    \centering
+{\small
+\renewcommand{\arraystretch}{1.2}
+\rowcolors{2}{black!2}{black!10}
+\begin{tabular}{|c|c||c|c|}
+\hline
+
+Name & Query & Name & Query \\
+\hline
+\hline
+$Q_1$   & $a^*$                               & $Q_9^5$    & $(a \mid b \mid c \mid d \mid e)^+$                     \\
+$Q_2$   & $a\cdot b^*$                        & $Q_{10}^2$ & $(a \mid b) \cdot c^*$                                  \\
+$Q_3$   & $a \cdot b^* \cdot c^*$             & $Q_{10}^3$ & $(a \mid b \mid c)  \cdot d^*$                          \\
+$Q_4^2$ & $(a \mid b)^*$                      & $Q_{10}^4$ & $(a \mid b \mid c \mid d)  \cdot e^*$                   \\
+$Q_4^3$ & $(a \mid b \mid c)^*$               & $Q_{10}^5$ & $(a \mid b \mid c \mid d \mid e)  \cdot f^*$            \\
+$Q_4^4$ & $(a \mid b \mid c \mid d)^*$        & $Q_{10}^2$ & $a \cdot b$                                             \\
+$Q_4^5$ & $(a \mid b \mid c \mid d \mid e)^*$ & $Q_{11}^3$ & $a \cdot b \cdot c$                                     \\
+$Q_5$   & $a \cdot b^* \cdot c$               & $Q_{11}^4$ & $a \cdot b \cdot c \cdot d$                             \\
+$Q_6$   & $a^* \cdot b^*$                     & $Q_{11}^5$ & $a \cdot b \cdot c \cdot d \cdot f$                     \\
+$Q_7$   & $a \cdot b \cdot c^*$               & $Q_{12}$   & $(a \cdot b)^+ \mid  (c \cdot d)^+$                     \\
+$Q_8$   & $a? \cdot b^*$                      & $Q_{13}$   & $(a \cdot(b \cdot c)^*)^+ \mid  (d \cdot f)^+$          \\
+$Q_9^2$ & $(a \mid b)^+$                      & $Q_{14}$   & $(a \cdot b \cdot (c \cdot d)^*)^+  \cdot (e \mid f)^*$ \\
+$Q_9^3$ & $(a \mid b \mid c)^+$               & $Q_{15}$   & $(a \mid b)^+ \cdot (c \mid d)^+$                       \\
+$Q_9^4$ & $(a \mid b \mid c \mid d)^+$        & $Q_{16}$   & $a \cdot b \cdot (c \mid d \mid e)$                     \\
+\hline
+\end{tabular}
+}
+\caption{Queries templates for RPQ evaluation}
+\label{tbl:queries_templates}
+\end{table}
+}
+
+\subsection{Context-Free Queries}
+
+All queries used in our evaluation are variants of \textit{same-generation query}. For the \textit{RDF} graphs we use the same queries that were used for CFPQ algorithms evaluation in the other works~\cite{Azimov:2018:CPQ:3210259.3210264,Kuijpers:2019:ESC:3335783.3335791}: $G_1$~(\ref{eqn:g_1}), $G_2$~(\ref{eqn:g_2}), and $Geo$~(\ref{eqn:geo}). The queries are expressed as context-free grammars where $S$ is a nonterminal, \textit{subClassOf, type, broaderTransitive, }$ \overline{\textit{subClassOf}}$, $\overline{\textit{type}}$, $\overline{\textit{broaderTransitive}}$ are terminals or the labels of edges. We denote the inverse of an $x$ relation and the respective edge as $\overline{x}$.
+
+\begin{align}
+\label{eqn:g_2}
+S \to \overline{\textit{subClassOf}} \ \ S \ \textit{subClasOf} \mid \textit{subClassOf}
+\end{align}
+
+\begin{align}
+\begin{split}
+\label{eqn:g_1}
+S \to & \overline{\textit{subClassOf}} \ \ S \ \textit{subClasOf} \mid \overline{\textit{type}} \ \ S \ \textit{type}\\   & \mid \overline{\textit{subClassOf}} \ \ \textit{subClassOf} \mid \overline{\textit{type}} \ \textit{type}
+\end{split}
+\end{align}
+
+\begin{align}
+\begin{split}
+\label{eqn:geo}
+S \to & \textit{broaderTransitive} \ \  S \ \overline{\textit{broaderTransitive}} \\
+      & \mid \textit{broaderTransitive} \ \  \overline{\textit{broaderTransitive}}
+\end{split}
+\end{align}
+
+Respective RSMs are presented in figures~\ref{fig:rsm_g1} for $G_1$,~\ref{fig:rsm_g2} for $G_2$, and~\ref{fig:rsm_geo} for \textit{Geo}.
+
+\input{texfigures/queries}
+
+
+%For \textit{Points-to} graphs we use a \textit{PointsTo} query~(\ref{eqn:points_to}) which describes a points-to analysis~\cite{Zheng}.
+
+%\begin{align}
+%\begin{split}
+%\label{eqn:points_to}
+%M & \to \overline{d} \ V \ d \\
+%V & \to (M? \ \overline{a})^* \ M? \ (a \ M?)^* 
+%\end{split}
+%\end{align}
+
+\subsection{Scenarios Description}
+
+We evaluate the proposed solution on the \textit{multiple sources reachability} scenario. We assume that the size of the starting set is significantly less than the number of the input graph vertices. This limitation looks reasonable in practical cases.
+%We omit \textit{all-pairs all-paths} because it seems impractical: the detailed analysis is often required only for paths within a specific subgraph, not the entire graph. 
+
+The starting sets for the multiple sources querying are generated from all vertices of a graph with a random permutation. We use chunks of size 1, 10, 100. For graphs with less than 10~000 vertices, all vertices were used for querying. For graphs with from 10~000 to 100~000 vertices, 10\% of vertices were considered starting ones. For the graphs with more than 100~000 vertices, only 1\% of vertices were considered. We use the same sets for all cases in all experiments to be able to compare results.
+
+To check the correctness of our solution and to force the result stream, we compute the number of reachable pairs for each query.
+
+\subsection{Evaluation Environment}
+
+We ran all experiments on a PC with Ubuntu 20.04 installed. It has an Intel Core i7-6700 CPU, 3.4GHz, 4 threads (hyper-threading is turned off), and DDR4 64Gb RAM. We use OpenJDK 64-Bit Server VM Corretto-17.0.8.8.1 (build 17.0.8.1+8-LTS, mixed mode, sharing). JVM was configured to use 55Gb of heap memory: both \texttt{xms} and \texttt{xmx} are set to 55Gb. 
+
+We use Neo4j 5.12.0. Almost all configurations of Neo4j are default. We only set  \texttt{memory\_transaction\_global\_max\_size} to \texttt{0}, which means unlimited memory usage per transaction.
+
+As a competitor for our implementation, we use a linear algebra-based solution, integrated to RedisGraph by Arseniy Terekhov et al. and described in~\cite{DBLP:conf/edbt/TerekhovPAZG21} and we use the configuration described in it for RedisGraph evaluation in our work.

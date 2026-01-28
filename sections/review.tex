@@ -1,0 +1,47 @@
+\newpage
+\begin{enumerate}
+    \item \textbf{Remark}: Context Free Path Queries are a very advanced querying method for graph databases, and in my opinion it deserves a much more extended motivation section with some detailed real-world examples, not just a list of areas/problems where its applicable.
+
+    \textbf{Answer}: We agree that context-free path querying is a powerful technique that warrants a clearer motivation. In response, we have expanded the introduction with concrete real-world example of CFPQ.
+    
+    \item 
+    \begin{enumerate}
+        \item \textbf{Remark}: There are some mistypes: Cyper instead of Cypher (p. 3), constrains instead of constraints (p. 3).
+
+        \textbf{Answer}: Fixed.
+
+        \item \textbf{Remark}: It would be very interesting if the authors explain HOW the proposed GLL CPFQ algorithm outperforms some linear algebra-based algorithm (even though the proposed algorithm does not use parallel computations yet, but linear-algebra based algoritms do).
+        Isn't it right that linear-algebra based algorithms process many paths in one matrix operation but state machine algorithms process only one path at each moment?
+
+        \textbf{Answer}: This is a challenging question, and we cannot yet offer a full theoretical explanation. Intuitively, linear-algebra CFPQ processes many paths at once via matrix multiplications, but the associated overhead (building/handling large sparse matrices, exploring many irrelevant path combinations) can dominate --- especially on small or sparse queries. GLL, while stepwise, is grammar-guided and avoids unnecessary work on non-productive parts of the graph.
+    \end{enumerate}
+    \item
+        
+        \begin{enumerate}
+        \item \textbf{Remark}: Bold text should be replaced with italics.
+    
+        
+        \textbf{Answer}: Replaced.
+        \item \textbf{Remark}: The introduction should give the reader a more detailed intuition about GLL.
+    
+        \textbf{Answer}: We have added a brief intuitive description of GLL in the introduction to help readers.
+    
+        \item \textbf{Remark}: The title of section "5. Dataset Description" does not fully correspond to the content: in addition to the dataset, it describes model queries, application scenarios, and an environment for experiments.
+    
+        \textbf{Answer}: Replaced with "Experiment design".
+    
+        \item \textbf{Remark}: For experiments, a specialized set of RDF graphs for Context-Free Path Querying (CFPQ) is used. The queries look like model queries. But it seems that there is currently no better benchmark for the CFPQ task.
+    
+        \textbf{Answer}: There is currently no widely adopted large-scale benchmark for CFPQ. Despite promising application domains, publicly available datasets from graphs and queries remain limited.
+    
+        \item \textbf{Remark}: The experiments in section 6 are aimed at choosing a solution for implementation in Neo4j. But the details of this experimental implementation are not given. You can provide a link to the code.
+    
+        \textbf{Answer}: Added a link to the repository with implementations.
+    
+        \item \textbf{Remark}: Figures 6, 7, 8 – the font and details are small, unreadable.
+    
+        \textbf{Answer}: The size of the drawings from the note and some other illustrations in the article has been increased.
+        
+        \end{enumerate}
+    
+\end{enumerate}

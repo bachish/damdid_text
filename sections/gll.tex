@@ -1,0 +1,168 @@
+\section{Generalized LL for CFPQ}\label{section:GLL-CFPQ}
+
+Our solution is based on the generalized LL parsing algorithm~\cite{SCOTT2010177} which was shown to generalize well to graph processing~\cite{Grigorev:2017:CPQ:3166094.3166104}. As a result of parsing, GLL can construct a \textit{Shared Packed Parse Forest} (SPPF)~\cite{SCOTT20131828} --- a special data structure which represents all possible derivations of the input in a compressed form. Alternatively, GLL can provide the result in the form of \textit{binary subtree sets}~\cite{SCOTT201963}. It was shown in~\cite{Grigorev:2017:CPQ:3166094.3166104} that SPPF can be naturally used to represent the result of the query for the \textit{all-paths} problem finitely (see \ref{eqn:all_pairs_all_paths} and~\ref{eqn:multiple_source_all_paths} in the set of problems).
+
+In our work, we modify the GLL-based CFPQ algorithm to handle RSMs instead of grammars in BNF as a query specification. It enables performance improvement and native handling of both context-free and regular languages.
+
+\subsection{Paths Representation}
+
+Firstly, we need a way to represent a possibly infinite set of paths of interest. 
+Note that the solution of the all-paths problem is a set of paths which can be treated as a language using the $\omega$ function (\ref{eqn:omega}). This language is a context-free language because it is an intersection of a context-free and a regular language. Thus, the paths can be represented in a way a context-free language can be represented. 
+
+The obvious way to represent a context-free language is to specify a respective context-free grammar. This way was used by Jelle Hellings in~\cite{10.1007/978-3-030-61133-0_7}: the query result is represented as a context-free grammar, and paths are extracted by generating strings.
+
+Another way is a so-called \textit{path index}: a data structure which is constructed during query processing and allows one to reconstruct paths of interest with the additional traversal. This idea is used in a wide range of graph analysis algorithms, notably by Rustam Azimov et al in~\cite{10.1145/3461837.3464513}. In our case, the path index for the graph $D=\langle V,E,L \rangle$ and the query $\mathcal{R}=\langle \mathcal{N}, \Sigma, B, B_S, Q, Q_S \rangle$ is a $\mathcal{K} \times \mathcal{K}$ square matrix $\mathcal{I}$, where $\mathcal{K} = |Q|\cdot|V|$. Columns and rows are indexed by tuples of the form $(q_i, v_j), q_i \in Q, v_j \in V$. Each cell $\mathcal{I}[(q_i,v_j),(q_l,v_k)]$ represents information about a \textit{range} $R^{q_i,v_j}_{q_l,v_k}$. \textit{Range} or a \textit{matched range} $R^{q_i,v_i}_{q_j,v_j}$ corresponds to the fact that there is a chain of transitions from the configuration $(q_i,v_i,\mathcal{S}_i)$ to the configuration $(q_j,v_j,\mathcal{S}_j)$, or $(q_i,v_i,\mathcal{S}_i) \vdash^* (q_j,v_j,\mathcal{S}_j)$. The symbol $\epsilon$ denotes the empty range: an empty sequence of configurations. Namely, $\mathcal{I}[(q_i,v_j),(q_l,v_k)]$ is a set which can contain the elements of three types:
+\begin{itemize}
+    \item $t \in \Sigma$ means that $(q_i,v_j,\mathcal{S}') \vdash (q_l,v_k,t::\mathcal{S}') $; 
+    \item $N_m \in \mathcal{N}$ means that $(q_i,v_j,\mathcal{S}') \vdash^* (q_l,v_k,N_m::\mathcal{S}')$; 
+    \item $I_{q_a,v_b}$ is an \textit{intermediate point} that is used to denote that the range $R^{q_i,v_j}_{q_l,v_k}$ was combined from two ranges $R^{q_i,v_j}_{q_a,v_b}$ and $R^{q_a,v_b}_{q_l,v_k}$. Equivalently, $$(q_i,v_j,\mathcal{S}') \vdash^* (q_a,v_b,\mathcal{S}'') \vdash^* (q_l,v_k,\mathcal{S}''').$$
+\end{itemize}
+
+A Shared Packed Parse Forest (SPPF) was proposed by Jan Rekers in~\cite{rekers1992parser} to represent parse forest without duplication of subtrees. Later, other versions of SPPF were introduced in different generalized parsing algorithms. It was also shown that SPPF is a natural way to compactly represent the structure of all paths that satisfy a CFPQ. In our work, we use SPPF with the following types of nodes. 
+
+\begin{itemize}
+    \item A \textit{Terminal node} to represent a matched edge label.
+    \item A \textit{Nonterminal node} to represent the root of the subtree which corresponds to paths can be derived from the respective nonterminal.  
+    \item An \textit{Intermediate node} which corresponds to the intermediate point used in the path index. This node has two children, both are range nodes.
+    \item A \textit{Range node} which corresponds to a matched range. It represents all possible ways to get a specific range and can have arbitrary many children. A child node can be of any type, besides a Range node. Nodes of this type can be reused.
+    \item An \textit{Epsilon node} to represent the empty subtree in the case when nonterminal produces the empty string. 
+\end{itemize}
+
+In this paper, we describe a version that creates the path index, and then we show how to reconstruct SPPF using this index. The version provided can be easily adapted to build an SPPF directly during query evaluation, without creating the path index.
+
+\subsection{GLL-Based CFPQ Algorithm}
+
+In this section, we provide the detailed description of the GLL-based CFPQ algorithm that solves the \textit{multiple source all-paths} problem and handles queries in the form of RSM. We use the improved version of GLL, proposed by Afroozeh and Izmaylova in~\cite{10.1007/978-3-662-46663-6_5}, as a basis for our solution. 
+
+Firstly, we introduce the basic components of the algorithm.
+
+\begin{definition}
+    A \textit{descriptor} is a 4-tuple $(q,v,s,r)$ where: 
+    \begin{itemize} 
+      \item $q$ is a state of RSM, 
+      \item $v$ is a position in the input graph, 
+      \item $s$ is a pointer to the current top of the stack, 
+      \item $r$ is a matched range.
+    \end{itemize}
+\end{definition}
+
+A descriptor represents the state of the system completely; thus computation can be continued from the specified point without any additional information, only given a descriptor. There are two collections of descriptors in the algorithm. The first one is a collection $\mathcal{Q}$ of descriptors to handle. Each descriptor is handled once, so the second one is a collection of already handled descriptors $\mathcal{Q}_{\text{handled}}$.
+
+Graph-structured stack (GSS) represents a set of stacks in a compact graph-like form which enables reusing of the common parts of stacks.  We use an optimized version proposed by Afroozeh and Izmaylova in~\cite{10.1007/978-3-662-46663-6_5}. In this version, vertices identify calls, and edges contain return addresses and information about the matched part of the input. We slightly adapt GSS as follows:
+
+\begin{definition}
+    Suppose one has the graph $D=\langle V, E ,L \rangle$ and evaluates the query $\mathcal{R}=\langle \mathcal{N}, \Sigma, B, B_S, Q, Q_S \rangle$ over it. Then a \textit{Graph Structured Stack} (\textit{GSS}) is a directed edge-labelled graph $D_{\text{GSS}} = \langle V_{\text{GSS}}, E_{\text{GSS}}, L_{\text{GSS}} \rangle$, where: 
+    \begin{itemize}
+        \item $V_{\text{GSS}} \subseteq Q \times V$,
+        \item $E_{\text{GSS}} \subseteq V_{\text{GSS}} \times L_{\text{GSS}} \times V_{\text{GSS}}$, $L_{\text{GSS}} \subseteq Q \times R$,        
+        \item $R \subseteq Q \times V \times Q \times V$ is a set of matched ranges.        
+    \end{itemize}
+\end{definition}
+
+Two main operations over GSS are \textit{push} and \textit{pop}. Push adds a vertex and an edge if they do not already exist.
+Doing pop, we go through all outgoing edges to get return addresses and to get the new stack head. There is no predefined order to handle descriptors. Thus, the new outgoing edge can be added at any time. To guarantee that all possible outgoing edges will be handled, we should save information about what pops have been done. In our case, we save the matched range of the current descriptor. When new outgoing edges are added to the GSS vertex, we should check whether this vertex has been popped and handle the newly added outgoing edges if necessary.
+
+We suppose that the input of the algorithm is an extended RSM $\mathcal{R}' = \langle \mathcal{N}', \Sigma',B',B'_S,Q',Q'_S\rangle$ and graph $D=\langle V, E ,L \rangle$. Also note that we solve multiple-source CFPQ, so the set of start vertices $V_S \subseteq V$ is specified by the user.
+The first step of the algorithm is the initialization. For each start vertex $v_i\in V_S$, we create a GSS vertex $s=(q'_0,v_i)$ and then create a descriptor $(q'_0,v_i,s,\epsilon)$, add it to $\mathcal{Q}$. Here $q'_0$ is the initial state of $B'_S$.
+
+In the main loop, we handle descriptors one by one. Namely, while $\mathcal{Q}$ is not empty, we pick a descriptor $d = (q_0,v_0,s_0,r_0), r_0=R^{p_0,u_0}_{q_0,v_0}$, add it to $\mathcal{Q}_{\text{handled}}$, and process it. Processing consists of the following cases that provide a way to compute the transition step of RSM, as defined in ~\ref{def:rsm_transition}, extended with path index creation.
+
+Let $\Delta$ be all possible transitions from all boxes:
+$$
+\Delta = \bigcup_{\substack{B_k \in B' \\ B_k = \langle Q^k, q^k_S, Q_F^k, \delta ^k \rangle}} \delta ^k.
+$$
+
+\begin{enumerate}
+    \item \textbf{Handling of terminal transitions.} The terminal transitions are handled similarly to transitions in a finite automaton: for all matched terminals, we simultaneously move forward to the next state and the next vertex; the stack does not change; the matched range extends right with the matched symbol.
+    Thus, the new set of descriptors is
+    \begin{align}
+    D_1 = \{&(q_1,v_1,s_0, R^{p_0,u_0}_{q_1,v_1}) \nonumber \\ 
+            & \mid (v_0,t,v_1) \in E, (q_0,t,q_1) \in \Delta, t \in \Sigma \}.
+    \end{align}
+    This time, we add the terminal $t$ to $\mathcal{I}[(q_0,v_0),(q_1,v_1)]$ and the intermediate point $I_{q_0,v_0}$ to $\mathcal{I}[(p_0,u_0),(q_1,v_1)]$.
+    
+    \item \textbf{Handling of nonterminal transitions.}
+    For each nonterminal symbol $N_0$ such that there exists a transition $(q_0,N_0,q_1)$, we should start processing of the nonterminal $N_0$. To achieve it, we should push the return address $q_1$ and the accumulated range $r_0$ to the stack. To do it, the vertex $s_1$ with label $(q_0,v_0)$ is created or reused. Next, we create the descriptor  $d = (q^{N_0}_{0},v_0,s_1,\epsilon)$, where $q^{N_0}_{0}$ is a start state of $B_{N_0}$. Additionally, we should handle the stored pops not to miss the newly added outgoing edge. For all stored matched ranges $R^{q_0,v_0}_{q_3,v_3}$ for the current GSS vertex $s_1$,  we create the range $R^{q_0,v_0}_{q_1,v_3}$. Finally, we combine the new range $R^{p_0,u_0}_{q_1,v_3}$ from the range of the current descriptor, the newly created one, and the respective descriptor $(q_0, v_3,q',R^{p_0,u_0}_{q_1,v_3})$. 
+    We also add intermediate points of created descriptors to $\mathcal{I}$.
+    Finally,
+    \begin{align}
+    D_2 = \{& q^{N_0}_{0},v_0,s_1,\epsilon  \nonumber \\
+            & \mid s_1 = (q_0,v_0), (q_0,N_0,q_1) \in \Delta, \nonumber \\  
+            & \ \ \  q^{N_0}_{0}\text{ is a start state of }B_{N_0}\}  \nonumber \\
+     \cup \{&q_1, v_3,s_0,R^{p_0,u_0}_{q_1,v_3} \nonumber \\ 
+            & \mid s_1 = (q_0,v_0), (q_0,N_0,q_1) \in \Delta,\nonumber \\ 
+            & R^{q_0,v_0}_{q_3,v_3} \in s_1.\text{stored\_pops} \}.
+    \end{align}
+    \item \textbf{Handling of the final state}. If $q_0$ is a final state of $B_{N_0}$, it means that the recognition of the corresponding nontermininal is completed. So, we should pop from the stack to determine the point from which we restart the recognition and return the respective states to continue. Namely, for all outgoing edges from $s_0=(r_0,w_0)$ of form $(s_0,(q_1,R^{q_2,v_2}_{q_3,w_0}),s_1)$ we use $q_1$ as the return address and use the range from label to create the following ranges. First of all, we create the range $R^{q_3,w_0}_{q_1,v_0}$ that corresponds to the recognized nonterminal, and save $N_0$ to $\mathcal{I}[(q_3,w_0),(q_1,v_0)]$. Next, we combine this range with the range from GSS edge getting $R^{q_2,v_2}_{q_1,v_0}$, and store intermediate point $I_{q_3,w_0}$ to $\mathcal{I}[(q_2,v_2),(q_1,v_0)]$. Note, that we should store the information about these pops. 
+    Finally,
+    \begin{align}
+    D_3 = \{ &(q_1,v_0,s_1,R^{q_2,v_2}_{q_1,v_0}) \nonumber \\
+             & \mid (s_0,(q_1,R^{q_2,v_2}_{q_3,w_0}),s_1) \in E_{\text{GSS}}, s_0 = (r_0,w_0)\}. 
+    \end{align}
+\end{enumerate}
+
+Now, we have a set of the newly created descriptors $D_{\text{created}} = D_1 \cup D_2 \cup D_3$. We drop out the descriptors which have been already handled, add the rest to $\mathcal{Q}$, and repeat the main loop again.
+
+The result of the algorithm is a path index $\mathcal{I}$, which allows one to check reachability or to reconstruct paths or SPPF by traversing starting from the cell corresponding to the range of interest.
+
+%\subsection{Theoretical Analysis of The Algorithm}
+
+%\begin{theorem}[Time complexity]
+%    For the given graph and the given RSM
+%    $$O(|Q|^4|V|^4)$$
+%    $$O(|Q|^2*{max_{q\in Q}Deg^+(q)}|V|^2*{max_{v\in V}Deg^+(v)})$$
+    
+%\end{theorem}
+
+%\begin{proof}[Proof of theorem]
+%    
+%\end{proof}
+
+%\begin{theorem}[Correctness]
+%    The proposed CFPQ algorithm is correct: for the given grammar and the given graph 
+%    \begin{enumerate}
+%        \item if there is a path from v to u then there is a !!!!
+%        \item if there is a !!! then there is a path from !!! to !!!
+%    \end{enumerate}
+%\end{theorem}
+
+%\begin{proof}[Proof of theorem]
+%By induction by path index structure    
+%\end{proof}
+
+
+\subsection{Example}
+
+
+Suppose that we have the same graph and RSM, as we have used in \ref{section:example_of_rsm} (\ref{fig:input-graph} and \ref{fig:example-rsm} respectively).
+We construct a path index and then show how to create SPPF using it. 
+All the steps of the index creation algorithm are presented in the table~\ref{tbl:gll-example}. The final index is presented in figure~\ref{fig:sppf-matrix}. Note that this example is rather simple, so we avoid handling the stored pops.
+
+
+
+The first step is the initialization. The stack is initialized with one vertex which represents the initial call, while the range is empty.
+
+In the second step, we start to handle the new nonterminal. So, the new vertex and the respective edge are added to GSS.
+
+In the third step, we match the terminal $a$ and create the first record in the path index.
+
+In the fourth step, we produce two descriptors. The first one has already been handled, so we should not process it again (thus, it is crossed out), but the creation of this descriptor leads to a new call. So, the new vertex and edge are added to GSS. Note that the respective vertex already exists, so only the new edge is added. Stack will not change any more after this step.
+
+In the fifth step, two descriptors are created. One of them (boxed) denotes that we have recognized a path of interest. The second unique path is finished at the seventh step. All other paths are a combination of these two.
+
+At the sixth step, the terminal $b$ from the edge $v_1 \xrightarrow{b} v_0$ is handled. %Respective cells in $\mathcal{I}$ are filled.
+
+Finally, at the eighth step, we get the empty set of descriptors to process $\mathcal{Q}$ and finish the process.
+
+\input{texfigures/sppf}
+
+
+Next, we show how to reconstruct SPPF from path index. Suppose we want to build SPPF for all paths that start in $v_0$, finish in $v_0$, and form words derivable from $S$. To achieve this, we start from the respective root range node $R^{q_4,v_0}_{q_5,v_0}$. The information about ways to build this range is stored in $\mathcal{I}[(q_4,v_0),(q_5,v_0)]$. Each element of the respective set becomes a child of the respective range node. In our case, we see that this range corresponds to the nonterminal node $S$. Thus, we should find all the ways to build range $R^{q_0,v_0}_{q_3,v_0}$ ($q_0$ is a start state for $S$ and $q_3$ is a final state). To do this, we look at $\mathcal{I}[(q_0,v_0),(q_3,v_0)]$. It contains the information about the intermediate point $I_{q_2,v_1}$ which means range $R^{q_0,v_0}_{q_3,v_0}$ has been built from the two ranges $R^{q_0,v_0}_{q_2,v_1}$ and $R^{q_2,v_1}_{q_3,v_0}$ that became children nodes of $I_{q_2,v_1}$. Repeating this procedure allows us to build SPPF in a top-down direction. At some steps, for example, when processing the intermediate point $I_{q_1,v_0}$, we found that some range nodes are always added to SPPF. Such nodes should be reused. The final result is presented in figure~\ref{fig:SPPF}.
+
+Note that one can extract paths explicitly instead of SPPF construction in a similar fashion. 
+
+\input{texfigures/gllSteps}
+
+\input{texfigures/pathIndexTable}
+
+

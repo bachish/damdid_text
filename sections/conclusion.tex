@@ -1,0 +1,20 @@
+\section{Conclusion and Future Work}\label{section:conclusion}
+
+In this work, we presented the GLL-based context-free path querying algorithm for the Neo4j graph database. The implementation is available on GitHub: \url{https://github.com/vadyushkins/cfpq-gll-neo4j-procedure}.
+
+Our solution uses Neo4j for graph storage, but the query language should be extended to support context-free constraints to make it useful. Both the extension of Cypher and the integration of our algorithm with the query engine are non-trivial challenges left for future work.
+
+While GLL-based CFPQ potentially can be used to solve \textit{all-paths} problem, currently we implemented the procedure for the reachability problem only. Choosing useful strategies to enumerate paths and implementation of them is a direction for future research.  
+
+The most important direction for future work is to find a way to provide an incremental version of the GLL-based CFPQ algorithm to avoid full query reevaluation when the graph is only slightly changed. While our solution is based on the well-known parsing algorithm and there are solutions for incremental parsing, development of the efficient incremental version of the GLL-based CFPQ algorithm is a challenging problem left for future research. 
+
+Another direction is to create a parallel version of the GLL-based CFPQ algorithm to improve its performance on huge graphs. Although it seems natural to handle descriptors in parallel, the algorithm operates over global structures,
+and the naive implementation of this idea leads to a significant overhead in synchronization.
+
+
+\begin{credits}
+\subsubsection{\ackname} We thank Adrian Johnstone for pointing out the Generalized LL algorithm in our discussion at Parsing@SLE--2013, which motivated the development of the presented solution. We thank George Fletcher for the discussion of the evaluation of different CFPQ algorithms for Neo4j.
+
+\subsubsection{\discintname}
+The authors have no competing interests to declare that are relevant to the content of this article. 
+\end{credits}
