@@ -136,7 +136,7 @@ The result of the algorithm is a path index $\mathcal{I}$, which allows one to c
 
 Suppose that we have the same graph and RSM, as we have used in \ref{section:example_of_rsm} (\ref{fig:input-graph} and \ref{fig:example-rsm} respectively).
 We construct a path index and then show how to create SPPF using it. 
-All the steps of the index creation algorithm are presented in the table~\ref{tbl:gll-example}. The final index is presented in figure~\ref{fig:sppf-matrix}. Note that this example is rather simple, so we avoid handling the stored pops.
+All the steps of the index creation algorithm are presented in the table~\ref{tbl:gll-example}. The final index is presented in Fig.~\ref{fig:sppf-matrix}. Note that this example is rather simple, so we avoid handling the stored pops.
 
 
 
@@ -157,7 +157,7 @@ Finally, at the eighth step, we get the empty set of descriptors to process $\ma
 \input{texfigures/sppf}
 
 
-Next, we show how to reconstruct SPPF from path index. Suppose we want to build SPPF for all paths that start in $v_0$, finish in $v_0$, and form words derivable from $S$. To achieve this, we start from the respective root range node $R^{q_4,v_0}_{q_5,v_0}$. The information about ways to build this range is stored in $\mathcal{I}[(q_4,v_0),(q_5,v_0)]$. Each element of the respective set becomes a child of the respective range node. In our case, we see that this range corresponds to the nonterminal node $S$. Thus, we should find all the ways to build range $R^{q_0,v_0}_{q_3,v_0}$ ($q_0$ is a start state for $S$ and $q_3$ is a final state). To do this, we look at $\mathcal{I}[(q_0,v_0),(q_3,v_0)]$. It contains the information about the intermediate point $I_{q_2,v_1}$ which means range $R^{q_0,v_0}_{q_3,v_0}$ has been built from the two ranges $R^{q_0,v_0}_{q_2,v_1}$ and $R^{q_2,v_1}_{q_3,v_0}$ that became children nodes of $I_{q_2,v_1}$. Repeating this procedure allows us to build SPPF in a top-down direction. At some steps, for example, when processing the intermediate point $I_{q_1,v_0}$, we found that some range nodes are always added to SPPF. Such nodes should be reused. The final result is presented in figure~\ref{fig:SPPF}.
+Next, we show how to reconstruct SPPF from path index. Suppose we want to build SPPF for all paths that start in $v_0$, finish in $v_0$, and form words derivable from $S$. To achieve this, we start from the respective root range node $R^{q_4,v_0}_{q_5,v_0}$. The information about ways to build this range is stored in $\mathcal{I}[(q_4,v_0),(q_5,v_0)]$. Each element of the respective set becomes a child of the respective range node. In our case, we see that this range corresponds to the nonterminal node $S$. Thus, we should find all the ways to build range $R^{q_0,v_0}_{q_3,v_0}$ ($q_0$ is a start state for $S$ and $q_3$ is a final state). To do this, we look at $\mathcal{I}[(q_0,v_0),(q_3,v_0)]$. It contains the information about the intermediate point $I_{q_2,v_1}$ which means range $R^{q_0,v_0}_{q_3,v_0}$ has been built from the two ranges $R^{q_0,v_0}_{q_2,v_1}$ and $R^{q_2,v_1}_{q_3,v_0}$ that became children nodes of $I_{q_2,v_1}$. Repeating this procedure allows us to build SPPF in a top-down direction. At some steps, for example, when processing the intermediate point $I_{q_1,v_0}$, we found that some range nodes are always added to SPPF. Such nodes should be reused. The final result is presented in Fig.~\ref{fig:SPPF}.
 
 Note that one can extract paths explicitly instead of SPPF construction in a similar fashion. 
 

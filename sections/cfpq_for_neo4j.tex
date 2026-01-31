@@ -52,46 +52,55 @@ To assess the applicability of the proposed solution, we evaluate it on a number
 
 %\subsection{Evaluation Results}
 
-The results of context-free path query evaluations are presented in figures~\ref{fig:performance-g1} for $G_1$,~\ref{fig:performance-g2} for $G_2$, and~\ref{fig:performance-geo} for \textit{Geo}. 
+The results of context-free path query evaluations are presented in Fig.~\ref{fig:performance}~a for $G_1$, Fig.~\ref{fig:performance}~b for $G_2$, and Fig.~\ref{fig:performance}~c for \textit{Geo}. 
 
 The results show that query evaluation time depends not only on a graph size or its sparsity, but also on the inner structure of the graph. For example, the relatively small graph \textit{go\_hierarchy} fully consists of edges used in queries $G_1$ and $G_2$, thus evaluation time for these queries is significantly bigger than for some bigger but more sparse graphs, for example, for the \textit{eclass} graph. Especially for a relatively big starting vertex set. Note that the creation of relevant metrics for CFPQ query evaluation time prediction is a challenging problem by itself and should be tackled in the future.
 
-Also, we can see that in almost all cases the proposed solution is significantly faster than RedisGraph (in orders of magnitude in some cases). At the same time, in some cases (see results for graph \textit{core} and all queries) RedisGraph outperforms our solution. Also, one can see that evaluation time for RedisGraph is more predictable. For our solution, in some cases, execution time highly depends on the start set. For example, see figure~\ref{fig:performance-geo}, graph \textit{enzyme}.    
+Also, we can see that in almost all cases the proposed solution is significantly faster than RedisGraph (in orders of magnitude in some cases). At the same time, in some cases (see results for graph \textit{core} and all queries) RedisGraph outperforms our solution. Also, one can see that evaluation time for RedisGraph is more predictable. For our solution, in some cases, execution time highly depends on the start set. For example, see Fig.~\ref{fig:performance}~c, graph \textit{enzyme}.    
 
 \newcommand\squeryImageW{0.34}
 \newcommand\squeryImageScale{1.111}
 \begin{figure}
-    \centering
-    \subfloat[$G_1$ query\label{fig:performance-g1}]{%
-        \includegraphics[width=\squeryImageW\textwidth]{figures/g1_result.eps}
-    }%
-    \subfloat[$G_2$ query\label{fig:performance-g2}]{%
-        \includegraphics[width=\squeryImageW\textwidth]{figures/g2_result.eps}
-    }%
-    \subfloat[$Geo$ query\label{fig:performance-geo}]{%
-        \includegraphics[width=\squeryImageW\textwidth]{figures/geo_result.eps}
-    }%
-    \caption{Multiple sources CFPQ reachability results for queries related to RDF analysis.}
+    \begin{minipage}{\squeryImageW\textwidth}
+        \centering
+        \includegraphics[width=\squeryImageScale\textwidth]{figures/g1_result.eps}
+        \small{(a)}
+    \end{minipage}%
+    \begin{minipage}{\squeryImageW\textwidth}
+        \centering
+    \includegraphics[width=\squeryImageScale\textwidth]{figures/g2_result.eps}
+    \small{(b)}
+    \end{minipage}%
+    \begin{minipage}{\squeryImageW\textwidth}
+        \centering
+    \includegraphics[width=\squeryImageScale\textwidth]{figures/geo_result.eps}
+    \small{(c)}
+    \end{minipage}%
+    \caption{Multiple source CFPQ reachability results for queries: (a)~$G_1$, (b)~$G_2$, (c)~$Geo$ related to RDF analysis.}
+    \label{fig:performance}
 \end{figure}
+
 
 The particularly important scenario is the case when the start set is a single vertex. 
 The results of the \texttt{single-source reachability} show that such queries are reasonably fast: median time is about a few milliseconds for all graphs and all queries. Note that even for single source queries, evaluation time highly depends on graph structure: evaluation time on \textit{core} graph is significantly bigger than for all other graphs for all queries. Note that \textit{core} is the smallest graph in terms of the number of nodes and edges. Again, to provide a reliable metric to predict query execution time is a non-trivial task. Moreover, time grows with the size of a chunk, as expected. 
 
-Partial results for RPQ evaluation are presented in figures~\ref{fig:performance-reg1} and~\ref{fig:performance-reg2} for $\textit{reg}_1$ (defined in ~\ref{eqn:reg_1}) and $\textit{reg}_2$ (defined in ~\ref{eqn:reg_2}) respectively. For queries $\textit{reg}_3$ (defined in ~\ref{eqn:reg_3}) and $\textit{reg}_4$ (defined in ~\ref{eqn:reg_4}) we get similar results. Note that on \textit{geospecies} and \textit{taxonomy} graphs, the native solution failed with an \textit{OutOfMemory} exception, while our solution evaluates queries successfully. 
+Partial results for RPQ evaluation are presented in Fig.~\ref{fig:performance-reg}~a and Fig.~\ref{fig:performance-reg}~b for $\textit{reg}_1$ (defined in~\ref{eqn:reg_1}) and $\textit{reg}_2$ (defined in~\ref{eqn:reg_2}) respectively. For queries $\textit{reg}_3$ (defined in~\ref{eqn:reg_3}) and $\textit{reg}_4$ (defined in~\ref{eqn:reg_4}) we get similar results. Note that on \textit{geospecies} and \textit{taxonomy} graphs, the native solution failed with an \textit{OutOfMemory} exception, while our solution evaluates queries successfully. 
 
 \begin{figure}
+    \begin{minipage}{0.4\textwidth}
+        \includegraphics[width=1.0125\textwidth]{figures/reg1_rpq_result.eps}
+        \small{(a)}
+    \end{minipage}%
+    \begin{minipage}{0.4\textwidth}
+        \includegraphics[width=1.0125\textwidth]{figures/reg2_rpq_result.eps}
+        \small{(b)}
+    \end{minipage}%   
     \centering
-    \subfloat[$\textit{reg}_1$ query\label{fig:performance-reg1}]{%
-        \includegraphics[width=0.55\textwidth]{figures/reg1_rpq_result.eps}
-    }%
-    \hspace{-2em}
-    \subfloat[$\textit{reg}_2$ query\label{fig:performance-reg2}]{%
-        \includegraphics[width=0.55\textwidth]{figures/reg2_rpq_result.eps}
-    }%
-    \caption{Multiple source RPQ reachability results for queries related to RDF analysis and respective query (native solution failed with OOM on last two graphs).}
+    \caption{Multiple source RPQ reachability results for queries related to RDF analysis: (a)~$\textit{reg}_1$ query, (b)~$\textit{reg}_2$ query (native solution failed with OOM on the last two graphs).}
+    \label{fig:performance-reg}
 \end{figure}
 
 
-We can see that the proposed solution is slightly slower than the native Neo4j algorithm, but not dramatically: typically less than two times. Moreover, in some cases, our solution is comparable with the native one (see figure~\ref{fig:performance-reg1} and figure~\ref{fig:performance-reg2}, graph \textit{eclass}), and in some cases, our solution is faster than the native one (see figure~\ref{fig:performance-reg2}, graph \textit{core}).
+We can see that the proposed solution is slightly slower than the native Neo4j algorithm, but not dramatically: typically less than two times. Moreover, in some cases, our solution is comparable with the native one (see Fig.~\ref{fig:performance-reg}~a and Fig.~\ref{fig:performance-reg}~b, graph \textit{eclass}), and in some cases, our solution is faster than the native one (see Fig.~\ref{fig:performance-reg}~b, graph \textit{core}).
 
 Finally, we conclude that not only can the linear algebra-based CFPQ algorithms be used in real-world graph analysis systems: the proposed GLL-based solution outperforms the linear algebra-based one. Moreover, we show that the proposed solution can be used as a universal algorithm for both RPQ and CFPQ.

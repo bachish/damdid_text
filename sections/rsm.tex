@@ -119,7 +119,7 @@ Now we need a way to compute transitions and to build trees efficiently, avoidin
 
 In this section, we introduce a step-by-step example of the context-free constrained path querying using RSM and the naive computation strategy. 
 
-Suppose that the input is a graph $D$ presented in figure~\ref{fig:input-graph} and the grammar  $G$ has two productions $S \to a \ b \mid a \ S \ b$. The start vertex is $v_0$ and our goal is to find at least one path to each reachable vertex (w.r.t. $G$). The extended RSM for the given grammar is presented in figure~\ref{fig:example-rsm}. 
+Suppose that the input is a graph $D$ presented in Fig.~\ref{fig:input-graph} and the grammar  $G$ has two productions $S \to a \ b \mid a \ S \ b$. The start vertex is $v_0$ and our goal is to find at least one path to each reachable vertex (w.r.t. $G$). The extended RSM for the given grammar is presented in Fig.~\ref{fig:example-rsm}. 
 
 The initial configuration is $(q_4,v_0,[])$: we start from the initial state of the box for $S'$, the initial position in the graph is a start vertex $v_0$, the stack is empty. In each step, we apply rules from definition~\ref{def:rsm_transition} to compute new configurations. The sequence of transitions, presented below, allows us to find a path $$v_0 \xrightarrow{a} v_0 \xrightarrow{b} v_1$$
 from $v_0$ to $v_1$ (step~\ref{eq:naive-rsm-step-res-1}) and a path 

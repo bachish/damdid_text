@@ -68,26 +68,30 @@
 \end{tikzpicture}%
 }
 
+
 \begin{figure}[]
   \resizebox{0.8\textwidth}{!}{
-      \begin{minipage}[t]{0.4\textwidth}\vspace{0pt}
-        \subfloat[RSM for query $G_1$ (\ref{eqn:g_1})\label{fig:rsm_g1}]{\centering
+      \begin{minipage}{0.4\textwidth}\vspace{0pt}
+        \begin{subfigure}{\linewidth}\centering
           \rsmgone[0.95] % подгони геометрию слева
-        }
+          \small \\ (a)
+        \end{subfigure}
       \end{minipage}\hspace{0pt}
-      \begin{minipage}[t]{0.53\textwidth}\vspace{0pt}
+      \begin{minipage}{0.53\textwidth}\vspace{0pt}
           \vspace{1.8em}
-        \subfloat[RSM for query $G_2$ (\ref{eqn:g_2})\label{fig:rsm_g2}]{\centering
+        \begin{subfigure}{\linewidth}\centering
           \rsmgtwo[0.80] % правая верхняя: геометрия меньше, шрифт тот же
-        }
+          \small \\ (b)
+        \end{subfigure}
     
         \vspace{1.4em}
     
-        \subfloat[RSM for query \textit{Geo} (\ref{eqn:geo})\label{fig:rsm_geo}]{\centering
+        \begin{subfigure}{\linewidth}\centering
           \rsmgeo[0.80]
-        }
+          \small \\ (c)
+        \end{subfigure}
       \end{minipage}
   }
-  \caption{RSMs for queries.}
-  
+  \caption{RSMs for queries: (a)~$G_1$~(\ref{eqn:g_1}), (b)~$G_2$~(\ref{eqn:g_2}), and (c)~$Geo$~(\ref{eqn:geo}).}
+  \label{fig:rsm_queries}
 \end{figure}

@@ -29,8 +29,8 @@ The experimental study was conducted as follows.
 \end{itemize}
 
 
-Results presented in figures~\ref{fig:speedup-g1},~\ref{fig:speedup-g2}, and~\ref{fig:speedup-geo} for queries $G_1$, $G_2$ and \textit{Geo} respectively. 
-We can see that in almost all cases the RSM-based version is faster than the BNF-based one. While in most cases speedup is not greater than 2, in some cases it can be more than 5 (see figure~\ref{fig:speedup-geo}: graph \textit{pathways}, grammar \textit{Geo}). Average speedup over all graphs and grammars is 1.5. So we can conclude that RSM-based GLL demonstrates better performance than the BNF-based one on average. 
+Results presented in Fig. ~\ref{fig:speedup} a, Fig. ~\ref{fig:speedup} b, and Fig. ~\ref{fig:speedup}c for queries $G_1$, $G_2$ and \textit{Geo} respectively. 
+We can see that in almost all cases the RSM-based version is faster than the BNF-based one. While in most cases speedup is not greater than 2, in some cases it can be more than 5 (see Fig.~\ref{fig:speedup}~c: graph \textit{pathways}, grammar \textit{Geo}). Average speedup over all graphs and grammars is 1.5. So we can conclude that RSM-based GLL demonstrates better performance than the BNF-based one on average. 
 
 
 
@@ -43,18 +43,18 @@ We can see that in almost all cases the RSM-based version is faster than the BNF
     \begin{minipage}{\speedImageW\textwidth} % 
         \centering % 
         \includegraphics[width=\speedImageScale\textwidth]{figures/g1_kotgll_result.eps}
-        \small (a) $G_1$ query 
+        \small (a) 
     \end{minipage}%
     \begin{minipage}{\speedImageW\textwidth}%
         \centering%
         \includegraphics[width=\speedImageScale\textwidth]{figures/g2_kotgll_result.eps}
-        \small (b) $G_2$ query
+        \small (b) 
     \end{minipage}%
     \begin{minipage}{\speedImageW\textwidth}%
         \centering%
         \includegraphics[width=\speedImageScale\textwidth]{figures/geo_kotgll_result.eps}
-        \small (c) $Geo$ query
+        \small (c)
     \end{minipage}%
-    \caption{Multiple sources CFPQ reachability speedup (RSM over CFG) on RDF graphs.}
+    \caption{Multiple-source CFPQ reachability speedup (RSM over CFG) on RDF graphs for (a)~$G_1$, (b)~$G_2$, and (c)~$Geo$ queries.}
     \label{fig:speedup}
 \end{figure}
