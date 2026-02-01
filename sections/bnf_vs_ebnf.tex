@@ -12,24 +12,25 @@ Accordingly, the transition in a context-free grammar is replaced with a transit
 
 Our modification, like the classic GLL algorithm, can be generalized to graphs. At the transition step in the recursive automaton, all transitions from the current state of the recursive automaton are processed along with all outgoing edges of the current vertex of the graph.
 
-To make the implementation code itself as concise and understandable as possible for further extensions and optimizations, the Kotlin was chosen as a programming language for implementing.
+To make the implementation code itself as concise and understandable as possible for further extensions and optimizations, Kotlin was chosen as a programming language for implementing.
 }
 
-\subsection{Evaluation}\label{sectioin:cfg_vs_rsm}
+\subsection{Evaluation}\label{section:cfg_vs_rsm}
 
 To assess the applicability of the proposed solution, we evaluate it on a number of real-world graphs and queries described in section~\ref{section:dataset}.
 
 We compare the performance of the evaluation of queries in \textit{reachability-only} mode with different sizes of the start vertex set to estimate the speedup of  the RSM-based version relative to the BNF-based one.
 
 The experimental study was conducted as follows.   
+
 \begin{itemize}
-    \item For all graphs, queries and start vertices sets, described in section~\ref{section:dataset}, we measure evaluation time for both versions.
-    \item Average time for each start vertices set size was calculated. Thus, for each graph, query, and start vertices set size we have an average time of respective query evaluation.
+    \item For all graphs, queries, and start vertex sets, described in section~\ref{section:dataset}, we measure evaluation time for both versions.
+    \item Average time for each start vertex set size was calculated. Thus, for each graph, query, and start vertex set size, we have an average time of respective query evaluation.
     \item Speedup as a ratio of BNF-based version evaluation time to RSM-based version evaluation time was calculated.
 \end{itemize}
 
 
-Results presented in Fig. ~\ref{fig:speedup} a, Fig. ~\ref{fig:speedup} b, and Fig. ~\ref{fig:speedup}c for queries $G_1$, $G_2$ and \textit{Geo} respectively. 
+Results presented in Fig.~\ref{fig:speedup} a, Fig.~\ref{fig:speedup} b, and Fig.~\ref{fig:speedup}c for queries $G_1$, $G_2$ and \textit{Geo} respectively. 
 We can see that in almost all cases the RSM-based version is faster than the BNF-based one. While in most cases speedup is not greater than 2, in some cases it can be more than 5 (see Fig.~\ref{fig:speedup}~c: graph \textit{pathways}, grammar \textit{Geo}). Average speedup over all graphs and grammars is 1.5. So we can conclude that RSM-based GLL demonstrates better performance than the BNF-based one on average. 
 
 

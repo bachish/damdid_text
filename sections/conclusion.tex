@@ -8,5 +8,4 @@ While GLL-based CFPQ can potentially be used to solve the \textit{all-paths} pro
 
 The most important direction for future work is to find a way to provide an incremental version of the GLL-based CFPQ algorithm to avoid full query reevaluation when the graph is only slightly changed. While our solution is based on the well-known parsing algorithm and there are solutions for incremental parsing, development of the efficient incremental version of the GLL-based CFPQ algorithm is a challenging problem left for future research. 
 
-Another direction is to create a parallel version of the GLL-based CFPQ algorithm to improve its performance on huge graphs. Although it seems natural to handle descriptors in parallel, the algorithm operates over global structures,
-and the naive implementation of this idea leads to a significant overhead in synchronization.
+Another direction is to create a parallel version of the GLL-based CFPQ algorithm to improve its performance on huge graphs. Although it seems natural to handle descriptors in parallel, the algorithm operates over global structures, and the na{\"{\i}}ve implementation of this idea leads to a significant overhead in synchronization.

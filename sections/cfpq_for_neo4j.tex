@@ -1,6 +1,6 @@
-\section{CFPQ For Neo4j}\label{section:cfpq_fro_neo4j}
+\section{CFPQ For Neo4j}\label{section:cfpq_for_neo4j}
 
-In this section we provide details on the integration of the GLL-based CFPQ to Neo4j graph database. We choose the RSM-based version because our comparison (see section~\ref{sectioin:cfg_vs_rsm}) shows that it is faster than the BNF-based one.
+In this section we provide details on the integration of the GLL-based CFPQ to Neo4j graph database. We choose the RSM-based version because our comparison (see section~\ref{section:cfg_vs_rsm}) shows that it is faster than the BNF-based one.
 
 Also, we provide results of the implemented solution evaluation which show that, first of all, the provided solution is faster than a similar linear algebra-based solution for RedisGraph. Also, we show that on RPQs our solution is compatible with the Neo4j native one and in some cases evaluates queries successfully while the native solution fails with an \textit{OutOfMemory} exception.
 
@@ -54,9 +54,9 @@ To assess the applicability of the proposed solution, we evaluate it on a number
 
 The results of the context-free path query evaluations are presented in Fig.~\ref{fig:performance}~a for $G_1$, Fig.~\ref{fig:performance}~b for $G_2$, and Fig.~\ref{fig:performance}~c for \textit{Geo}. 
 
-The results show that query evaluation time depends not only on a graph size or its sparsity, but also on the inner structure of the graph. For example, a relatively small graph \textit{go\_hierarchy} fully consists of edges used in queries $G_1$ and $G_2$, thus evaluation time for these queries is significantly bigger than for some bigger but more sparse graphs, for example, for the \textit{eclass} graph. Especially for a relatively big starting vertex set. Note that the creation of the relevant metrics for the CFPQ query evaluation time prediction is a challenging problem by itself and should be tackled in the future.
+The results show that query evaluation time depends not only on a graph size or its sparsity, but also on the inner structure of the graph. For example, a relatively small graph \textit{go\_hierarchy} fully consists of edges used in queries $G_1$ and $G_2$, thus evaluation time for these queries is significantly bigger than for some bigger but more sparse graphs, for example, for the \textit{eclass} graph. Especially for a relatively large starting vertex set. Note that the creation of the relevant metrics for the CFPQ query evaluation time prediction is a challenging problem by itself and should be tackled in the future.
 
-Also, we can see that in almost all cases the proposed solution is significantly faster than RedisGraph (in orders of magnitude in some cases). At the same time, in some cases (see results for the graph \textit{core} and all queries) RedisGraph outperforms our solution. Also, one can see that evaluation time for RedisGraph is more predictable. For our solution, in some cases, execution time highly depends on the start set. For example, see Fig.~\ref{fig:performance}~c, graph \textit{enzyme}.    
+Also, we can see that in almost all cases the proposed solution is significantly faster than RedisGraph (in orders of magnitude in some cases). At the same time, in some cases (see results for the graph \textit{core} and all queries) RedisGraph outperforms our solution. Moreover, it can be seen that evaluation time for RedisGraph is more predictable. For our solution, in some cases, execution time highly depends on the start set. For example, see Fig.~\ref{fig:performance}~c, graph \textit{enzyme}.    
 
 \newcommand\squeryImageW{0.34}
 \newcommand\squeryImageScale{1.111}

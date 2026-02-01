@@ -64,7 +64,7 @@ To simplify the acceptance condition, we introduce the concept of the \textit{ex
 
 Finally, for the given extended RSM $\mathcal{R}$ and the given graph $D$ we say that $v_n$ is reachable from $v_0$  w.r.t. $\mathcal{R}$ if $(q'_0,v_0,[]) \vdash^* C$ such that $(q'_1,v_n,[N_S]) \in C$, where $\vdash^*$ denotes zero or more transition steps, and $N_S$ is a node for the start nonterminal of the original (not extended) RSM. Additionally, $N_S$ represents a respective path.
 
-Now we need a way to compute transitions and to build trees efficiently, avoiding recomputation and infinite cycles that are possible with the naive implementation. Moreover, we need a compact representation of all paths of interest whose number can be infinite.
+Now we need a way to compute transitions and to build trees efficiently, avoiding recomputation and infinite cycles that are possible with the na{\"{\i}}ve implementation. Moreover, we need a compact representation of all paths of interest whose number can be infinite.
 
 \subsection{Example}\label{section:example_of_rsm}
 
@@ -117,7 +117,7 @@ Now we need a way to compute transitions and to build trees efficiently, avoidin
     \label{fig:input-graph}
 \end{figure}
 
-In this section, we introduce a step-by-step example of the context-free constrained path querying using RSM and the naive computation strategy. 
+In this section, we introduce a step-by-step example of the context-free constrained path querying using RSM and the na{\"{\i}}ve computation strategy. 
 
 Suppose that the input is a graph $D$ presented in Fig.~\ref{fig:input-graph} and the grammar  $G$ has two productions $S \to a \ b \mid a \ S \ b$. The start vertex is $v_0$ and our goal is to find at least one path to each reachable vertex (w.r.t. $G$). The extended RSM for the given grammar is presented in Fig.~\ref{fig:example-rsm}.
 

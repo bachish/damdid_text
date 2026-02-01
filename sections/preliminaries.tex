@@ -52,10 +52,10 @@ We use a generalization of a \textit{parse tree} to represent the result of the 
 \begin{definition}
     \textit{Parse tree} of the sequence $w$ w.r.t. the context-free grammar $G=\langle \Sigma, \mathcal{N}, P, S\rangle$ in EBNF is a rooted, node-labelled, ordered tree with the following properties.
     \begin{itemize}
-        \item All leaves are labelled with the elements of $\Sigma \cup \{\varepsilon\}$, where $\varepsilon \notin \Sigma \cup \mathcal{N}$ is a special symbol to demote the empty string. Left-to-right concatenation of leaves forms $w$.
+        \item All leaves are labelled with the elements of $\Sigma \cup \{\varepsilon\}$, where $\varepsilon \notin \Sigma \cup \mathcal{N}$ is a special symbol to denote the empty string. Left-to-right concatenation of leaves forms $w$.
         \item All other nodes are labelled with the elements of $\mathcal{N}$.
         \item The root is labelled with $S$.
-        \item Let $w_0$ is an ordered concatenation of child's labels of node labelled with $N_i$. Then $w_0 \in \mathcal{L}(r)$, where $N_i \to r \in P$.  
+        \item Let $w_0$ be an ordered concatenation of child's labels of node labelled with $N_i$. Then $w_0 \in \mathcal{L}(r)$, where $N_i \to r \in P$.  
     \end{itemize}
 \end{definition}
 

@@ -65,7 +65,7 @@ Doing pop, we go through all outgoing edges to get return addresses and to get t
 We suppose that the input of the algorithm is an extended RSM $\mathcal{R}' = \langle \mathcal{N}', \Sigma',B',B'_S,Q',Q'_S\rangle$ and graph $D=\langle V, E ,L \rangle$. Also note that we solve multiple-source CFPQ, so the set of start vertices $V_S \subseteq V$ is specified by the user.
 The first step of the algorithm is initialization. For each start vertex $v_i\in V_S$, we create a GSS vertex $s=(q'_0,v_i)$ and then create a descriptor $(q'_0,v_i,s,\epsilon)$, add it to $\mathcal{Q}$. Here $q'_0$ is the initial state of $B'_S$.
 
-In the main loop, we handle descriptors one by one. Namely, while $\mathcal{Q}$ is not empty, we pick a descriptor $d = (q_0,v_0,s_0,r_0), r_0=R^{p_0,u_0}_{q_0,v_0}$, add it to $\mathcal{Q}_{\text{handled}}$, and process it. Processing consists of the following cases that provide a way to compute the transition step of the RSM, as defined in ~\ref{def:rsm_transition}, extended with path index creation.
+In the main loop, we handle descriptors one by one. Namely, while $\mathcal{Q}$ is not empty, we pick a descriptor $d = (q_0,v_0,s_0,r_0), r_0=R^{p_0,u_0}_{q_0,v_0}$, add it to $\mathcal{Q}_{\text{handled}}$, and process it. Processing consists of the following cases that provide a way to compute the transition step of the RSM, as defined in~\ref{def:rsm_transition}, extended with path index creation.
 
 Let $\Delta$ be all possible transitions from all boxes:
 $$
@@ -136,7 +136,7 @@ The result of the algorithm is a path index $\mathcal{I}$, which allows one to c
 
 Suppose that we have the same graph and RSM, as we have used in \ref{section:example_of_rsm} (\ref{fig:input-graph} and \ref{fig:example-rsm} respectively).
 We construct a path index and then show how to create SPPF using it. 
-All the steps of the index creation algorithm are presented in the table~\ref{tbl:gll-example}. The final index is presented in Fig.~\ref{fig:sppf-matrix}. Note that this example is rather simple, so we avoid handling the stored pops.
+All steps of the index creation algorithm are presented in Table~\ref{tbl:gll-example}. The final index is presented in Fig.~\ref{fig:sppf-matrix}. Note that this example is rather simple, so we avoid handling the stored pops.
 
 
 The first step is the initialization. The stack is initialized with one vertex which represents the initial call, while the range is empty.
@@ -166,6 +166,6 @@ Note that one can extract paths explicitly instead of SPPF construction in a sim
 \begin{figure}
         \centering
         \includegraphics[width=\textwidth]{figures/path_index.eps}
-    \caption{The path index created during the steps represented in Table~\ref{tbl:gll-example}}
+    \caption{The path index created during the steps represented in Table~\ref{tbl:gll-example}.}
     \label{fig:sppf-matrix}
 \end{figure}
