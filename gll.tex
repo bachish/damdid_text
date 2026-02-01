@@ -12,13 +12,11 @@ centertags]%
 {revtex4-2}
 \usepackage{ljm}
 \setcaptionwidth{0.93\textwidth}
+%\raggedbottom %чтобы сократить большие проблелы между абзацами
 
 % --- ГРАФИКА (WINDOWS) ---
 \usepackage{epstopdf} % Критично для Windows: конвертирует EPS на лету
 \graphicspath{{figures/}} 
-
-% --- СТИЛЬ ЖУРНАЛА ---
-\usepackage{ljm} % Файл должен лежать рядом!
 
 % --- МАТЕМАТИКА И ТАБЛИЦЫ ---
 \usepackage{mathtools}
@@ -52,6 +50,9 @@ centertags]%
 
 \begin{document}
 \nocite{REVTEX42Control}
+% --- TITLE AND AUTHORS ---
+\titlerunning{GLL-based CFPQ for Neo4j} 
+\authorrunning{Abzalov et al.}        
 %
 \title{GLL-based Context-Free Path Querying for Neo4j}
 
@@ -77,11 +78,20 @@ centertags]%
 \email[E-mail: ]{s.v.grigoriev@spbu.ru}
 \affiliation{Saint Petersburg State University, St. Petersburg, Russia}
 
+\firstcollaboration{(Submitted by TODO: ADD SUBMITTER NAME)}
+
+\received{TODO: ADD DATES}
+
 
 % --- АННОТАЦИЯ (Должна быть ДО maketitle) ---
 \begin{abstract}
 We propose a GLL-based \textit{context-free path querying} algorithm that handles queries in Extended Backus-Naur Form (EBNF) using Recursive State Machines (RSM). Utilization of EBNF allows one to combine traditional regular expressions and mutually recursive patterns in constraints natively. The proposed algorithm solves both the \textit{reachability-only} and the \textit{all-paths} problems for the \textit{all-pairs} and the \textit{multiple sources} cases. The evaluation on real-world graphs demonstrates that the utilization of RSMs increases the performance of the query evaluation. Being implemented as a stored procedure for Neo4j, our solution demonstrates better performance than a similar solution for RedisGraph. The performance of our solution on the regular path queries is comparable to the performance of the native Neo4j solution, and in some cases, our solution requires significantly less memory.
 \end{abstract}
+
+\subclass{68Q45, 68Q42, 68P15}
+% 68P15	Database theory ​	Теория баз данных ​
+% 68Q42	Grammars and rewriting systems ​	Грамматики и системы переписывания ​
+% 68Q45	Formal languages and automata ​	Формальные языки и автоматы
 
 % --- КЛЮЧЕВЫЕ СЛОВА ---
 \keywords{Graph database, graph querying, context-free path querying, CFPQ, reachability problem, all-paths problem, generalized LL, GLL}
