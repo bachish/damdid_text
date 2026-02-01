@@ -7,7 +7,7 @@ In our work, we modify the GLL-based CFPQ algorithm to handle RSMs instead of gr
 \subsection{Paths Representation}
 
 Firstly, we need a way to represent a possibly infinite set of paths of interest. 
-Note that the solution of the all-paths problem is a set of paths which can be treated as a language using the $\omega$ function (\ref{eqn:omega}). This language is a context-free language because it is an intersection of the context-free and the regular language. Thus, the paths can be represented in a way the context-free language can be represented. 
+Note that the solution of the all-paths problem is a set of paths which can be treated as a language using the $\omega$ function (\ref{eqn:omega}). This language is context-free because it is the intersection of a context-free language and a regular language. Thus, the paths can be represented in a way the context-free language can be represented. 
 
 The obvious way to represent a context-free language is to specify a respective context-free grammar. This way was used by Jelle Hellings in~\cite{Hellings2020ExplainingPQ}: the query result is represented as a context-free grammar, and paths are extracted by generating strings.
 
@@ -149,12 +149,13 @@ In the fourth step, we produce two descriptors. The first one has already been h
 
 In the fifth step, two descriptors are created. One of them (boxed) denotes that we have recognized a path of interest. The second unique path is finished at the seventh step. All other paths are a combination of these two.
 
-At the sixth step, the terminal $b$ from the edge $v_1 \xrightarrow{b} v_0$ is handled. %Respective cells in $\mathcal{I}$ are filled.
+At the sixth step, the terminal $b$ from the edge $v_1 \xrightarrow{b} v_0$ is handled. 
 
-Finally, at the seventh step, we get the empty set of descriptors to process $\mathcal{Q}$ and finish the process.
+At step seven, the descriptors are processed using the procedure already discussed earlier. 
+
+Finally, at the eighth step, we get the empty set of descriptors to process $\mathcal{Q}$ and finish the process.
 
 \input{texfigures/sppf}
-
 
 Next, we show how to reconstruct SPPF from the path index. Suppose we want to build SPPF for all paths that start in $v_0$, finish in $v_0$, and form words derivable from $S$. To achieve this, we start from the respective root range node $R^{q_4,v_0}_{q_5,v_0}$. The information about ways to build this range is stored in $\mathcal{I}[(q_4,v_0),(q_5,v_0)]$. Each element of the respective set becomes a child of the respective range node. In our case, we see that this range corresponds to the nonterminal node $S$. Thus, we should find all the ways to build range $R^{q_0,v_0}_{q_3,v_0}$ ($q_0$ is a start state for $S$ and $q_3$ is a final state). To do this, we look at $\mathcal{I}[(q_0,v_0),(q_3,v_0)]$. It contains information about the intermediate point $I_{q_2,v_1}$ which means range $R^{q_0,v_0}_{q_3,v_0}$ was built from the two ranges $R^{q_0,v_0}_{q_2,v_1}$ and $R^{q_2,v_1}_{q_3,v_0}$ that have become children nodes of $I_{q_2,v_1}$. Repeating this procedure allows us to build SPPF in a top-down direction. At some steps, for example, when processing the intermediate point $I_{q_1,v_0}$, we found that some range nodes are always added to SPPF. Such nodes should be reused. The final result is presented in Fig.~\ref{fig:SPPF}.
 
