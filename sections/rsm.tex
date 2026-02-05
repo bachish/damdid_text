@@ -1,70 +1,25 @@
-\section{Recursive State Machines}\label{section:RSM}
+\section{RSM-based CFPQ algorithm}\label{section:RSM}
 
-\textit{Recursive state machine} or RSM~\cite{10.1145/1075382.1075387} is a way to represent context-free languages in a way resembling finite automata. It allows us to use a graph-based representation of the context-free languages specification and unify the processing of regular and context-free languages. We will use the following definition of RSM in this work.
+In this section, we provide necessary background on Recursive State Machines (RSM) and informally describe how RSM can be used to specify context-free constraints for path querying in graphs.
 
-\begin{definition}
-    \textit{Recursive state machine} (RSM) is a tuple $\mathcal{R} = \langle \mathcal{N},\Sigma,B,B_S,Q,Q_S\rangle$ where:
-    \begin{itemize}
-       \item $N$ is a set of nonterminal symbols, 
-       \item $\Sigma$ is a set of terminal symbols, 
-       \item $Q$ is a set of states of the RSM, 
-       \item $Q_S$ is a set of the start states of all \textit{boxes}, 
-       \item $B=\{B_{N_i} \mid N_i \in \mathcal{N}\}$ is a set of boxes, where each \\ $B_{N_i} = \langle Q_{N_i}, q_S, Q_F^{N_i}, \delta \rangle$ is a deterministic finite automaton without $\varepsilon$-transitions called a \textit{box}. Here:  
-        \begin{itemize}
-            \item $Q_{N_i} \subseteq Q$ is a set of states of the box, 
-            \item $q_S \in Q_{N_i} \cap Q_S$ is the start state of the box, 
-            \item $Q_F^{N_i} \subseteq Q_{N_i}$ is a set of final states of the box, 
-            \item $\delta \subseteq Q_{N_i} \times  (\Sigma\cup Q_S) \times Q_{N_i}$ is a transition function of the box.
-        \end{itemize}
-    \item $B_S \in B$ is the start box of the RSM.
-    \end{itemize}
-\end{definition}
+
+
+\subsection{RSM}
+
+((TODO add graphs, languages and CFPQ shortly here))
+
+\textit{Recursive state machine} or RSM~\cite{10.1145/1075382.1075387} is a way to represent context-free languages in a way resembling finite automata. It allows us to use a graph-based representation of the context-free languages specification and unify the processing of regular and context-free languages. 
 
 Thus, RSM is a set of the deterministic finite state machines without $\varepsilon$-transitions over the alphabet $\Sigma \cup Q_S$. But the computation process of RSM differs from that of DFA because it involves using a stack to handle transitions labelled with elements of $Q_S$.
 
-We can use RSM to compute reachable vertices in a graph. To describe the current state of the computation, we use \textit{configurations}. Computation can be defined as a transition between configurations.
+\subsection{RSM and GLL}
+In our work, we modify the GLL-based CFPQ algorithm to handle RSMs instead of grammars in BNF as a query specification. It enables performance improvement and native handling of both context-free and regular languages. A detailed description of the algorithm, including formal definitions of descriptors, GSS, and correctness proofs, is beyond the scope of this paper and will be presented separately. In this section, we introduce an overview of the context-free constrained path querying using RSM and the na{\"{\i}}ve computation strategy. 
 
-\begin{definition}
-    A \textit{Configuration} $C_{\mathcal{R}}$ of the computation of the RSM \\$\mathcal{R}=\langle \mathcal{N},\Sigma,B,B_S,Q,Q_S \rangle$ over the graph $D=\langle V,E,L \rangle$ is a tuple $(q,v,\mathcal{S})$ where: 
-    \begin{itemize}
-        \item $q \in Q$ is a current state of RSM,
-        \item $\mathcal{S}$ is the current stack, whose frames have one of two types: 
-        \begin{itemize} 
-            \item return addresses frame (elements of $Q$) to specify states to continue computation after the call is finished;
-            \item parsing tree node to store fragments of a parsing tree,
-        \end{itemize}
-        \item $v \in V$ is the current vertex (current position in the input).
-    \end{itemize}
-\end{definition}
+Our solution is based on the generalized LL parsing algorithm~\cite{SCOTT2010177} which was shown to generalize well to graph processing~\cite{Grigorev:2017:CPQ:3166094.3166104}. As a result of parsing, GLL can construct a \textit{Shared Packed Parse Forest} (SPPF)~\cite{SCOTT20131828} --- a special data structure which represents all possible derivations of the input in the compressed form. Alternatively, GLL can provide the result in the form of the \textit{binary subtree sets}~\cite{SCOTT201963}. It was shown in~\cite{Grigorev:2017:CPQ:3166094.3166104} that SPPF can be naturally used to represent the result of the query for the \textit{all-paths} problem finitely (see \ref{eqn:all_pairs_all_paths} and~\ref{eqn:multiple_source_all_paths} in the set of problems).
 
-\begin{definition}\label{def:rsm_transition}
-    A \textit{transition step} of the RSM specifies how to get new configurations of RSM, given the current configuration. $C_{\mathcal{R}} \vdash W$ denotes that $\mathcal{R}$ can go to each configuration in $W$ from the configuration $C_{\mathcal{R}}$.
-    \begin{align*}
-    (q,v,w_0::s::\mathcal{S})  \vdash & \{ (q',v',\textit{Node}(t)::w_0::s::\mathcal{S}) \mid (q,t,q') \in \delta, (v,t,v') \in E\} \\
-                       & \cup \{(s', v, q'::w_0::s::\mathcal{S}) \mid (q,s',q') \in \delta, s' \in Q_S \} \\
-                       & \cup \{(s,v,\textit{Node}(N_i, w_0)::\mathcal{S}) \mid q \in Q_F^{N_i}\}
-    \end{align*}
-    where $w_0$ is a possibly empty sequence of terminal and nonterminal nodes, $\textit{Node}(t)$ and $\textit{Node}(N_i, w_0)$ --- terminal and nonterminal nodes respectively, $q', s$ --- return addresses (states). 
-\end{definition}
 
-To simplify the acceptance condition, we introduce the concept of the \textit{extended RSM}. 
+((shoertly describe GLL algorithm and hw it's modified to work with RSM. Pseudiocode maybe?))
 
-\begin{definition}
-    For the given RSM $\mathcal{R}=\langle \mathcal{N},\Sigma,B,B_S,Q,Q_S\rangle$,
-    the \textit{extended RSM} 
-    $$\mathcal{R}'=\langle \mathcal{N} \cup \{S'\},\Sigma \cup\{\$\},B \cup {B'_S},B'_S,Q \cup \{q_0',q_1',q_2'\},Q_S \cup \{q_0'\}\rangle$$
-    is the RSM that defines the same language and is built from $\mathcal{R}$ by adding a new start box 
-    $$B'_S = \langle \{q_0',q_1',q_2'\}, q_0', \{q_2'\}, \{(q_0',q_0,q_1'),(q_1',\$, q_2')\} \rangle$$ where: 
-    \begin{itemize}
-        \item $q_0$ is a start state of $B_S$,
-        \item \$ is a special symbol to mark the end of input, $\$ \notin \Sigma$,
-        \item $q_i'$ are newly added states, $q_i'\notin Q$.
-    \end{itemize}
-\end{definition} 
-
-Finally, for the given extended RSM $\mathcal{R}$ and the given graph $D$ we say that $v_n$ is reachable from $v_0$  w.r.t. $\mathcal{R}$ if $(q'_0,v_0,[]) \vdash^* C$ such that $(q'_1,v_n,[N_S]) \in C$, where $\vdash^*$ denotes zero or more transition steps, and $N_S$ is a node for the start nonterminal of the original (not extended) RSM. Additionally, $N_S$ represents a respective path.
-
-Now we need a way to compute transitions and to build trees efficiently, avoiding recomputation and infinite cycles that are possible with the na{\"{\i}}ve implementation. Moreover, we need a compact representation of all paths of interest whose number can be infinite.
 
 \subsection{Example}\label{section:example_of_rsm}
 
@@ -117,28 +72,10 @@ Now we need a way to compute transitions and to build trees efficiently, avoidin
     \label{fig:input-graph}
 \end{figure}
 
-In this section, we introduce a step-by-step example of the context-free constrained path querying using RSM and the na{\"{\i}}ve computation strategy. 
-
-Suppose that the input is a graph $D$ presented in Fig.~\ref{fig:input-graph} and the grammar  $G$ has two productions $S \to a \ b \mid a \ S \ b$. The start vertex is $v_0$ and our goal is to find at least one path to each reachable vertex (w.r.t. $G$). The extended RSM for the given grammar is presented in Fig.~\ref{fig:example-rsm}.
-
-The initial configuration is $(q_4,v_0,[])$: we start from the initial state of the box for $S'$, the initial position in the graph is a start vertex $v_0$, the stack is empty. In each step, we apply rules from definition~\ref{def:rsm_transition} to compute new configurations. The sequence of the transitions, presented below, allows us to find a path $$v_0 \xrightarrow{a} v_0 \xrightarrow{b} v_1$$
-from $v_0$ to $v_1$ (step~\ref{eq:naive-rsm-step-res-1}) and a path 
-$$v_0 \xrightarrow{a} v_0 \xrightarrow{a} v_0 \xrightarrow{b} v_1 \xrightarrow{b} v_0$$
-from $v_0$ to itself (step~\ref{eq:naive-rsm-step-res-2}). 
-
-\begin{align}
-\setcounter{equation}{0}
-(q_4,v_0,[])     \vdash & \{(q_0,v_0,[q_5])\} \\
-(q_0,v_0,[q_5])  \vdash & \{(q_1,v_0,[a,q_5])\} \\
-(q_1,v_0,[a,q_5])\vdash & \{(q_0,v_0,[q_2,a,q_5]) \nonumber\\ 
-                        & , (q_3,v_1,[b,a,q_5])\} \\
-(q_0,v_0,[q_2,a,q_5]) \vdash & \{(q_1,v_0,[a,q_2,a,q_5])\} \\
-(q_3,v_1,[b,a,q_5])   \vdash & \boxed{\{(q_5,v_1,[S(a,b)])\}} \label{eq:naive-rsm-step-res-1}\\
-(q_1,v_0,[a,q_2,a,q_5]) \vdash & \{(q_3,v_1,[b,a,q_2,a,q_5]) \nonumber \\
-                               & , (q_0,v_0,[q_2,a,q_2,a,q_5])\} \label{eq:naive-rsm-step-6} \\
-(q_3,v_1,[b,a,q_2,a,q_5]) \vdash & \{(q_2,v_1,[S(a,b),a,q_5])\} \\
-(q_2,v_1,[S(a,b),a,q_5]) \vdash & \{(q_3,v_0,[b,S(a,b),a,q_5])\} \\
-(q_3,v_0,[b,S(a,b),a,q_5]) \vdash & \boxed{\{(q_5,v_0,[S(a,S(a,b),b)])\}} \label{eq:naive-rsm-step-res-2}
-\end{align}
+...
 
 Note that we have no conditions to stop computation. In our example, we can continue computation and get new paths between $v_0$ and $v_1$. Moreover, there is an infinite number of such paths. Additionally, the selection of the next step is not deterministic. One can choose the configuration $(q_0,v_0,[q_2,a,q_2,a,q_5])$ to continue computations after step~\ref{eq:naive-rsm-step-6} with a chance to fall into the infinite cycle, but choosing $(q_3,v_1,[b,a,q_2,a,q_5])$ we get a new path.
+
+\subsection{Result representation}
+ ((is path index important for this work or can be ommited?))
+

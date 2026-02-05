@@ -1,5 +1,7 @@
 \section{Performance of GLL on Queries in BNF and EBNF}\label{section:BFN_or_RSM}
 
+((TODO is it relevant for neo4j paper? If no, maybe remove?))
+
 As discussed above, different ways to specify context-free grammars can be used to specify the query. The basic one is BNF (see definition~\ref{def:bnf}), the more expressive (but not more powerful) is EBNF (see definition~\ref{def:ebnf}). EBNF is not only more expressive, but potentially allows one to improve the performance of the query evaluation because it avoids stack usage by replacing some recursive rules with the Kleene star. RSMs allow one to natively represent grammars in EBNF and can be handled by GLL as described in section~\ref{section:GLL-CFPQ}.
 
 We implemented and evaluated two versions of the GLL-based CFPQ algorithm~\cite{kotgll}: one operates with grammar in BNF, and another one operates with grammar in EBNF and utilizes RSM to represent it. At this step, we use simple data structures for graph and query representations, tuned for our algorithm. Both versions were evaluated in reachability-only mode to estimate performance differences and to choose the best one to integrate with Neo4j. 

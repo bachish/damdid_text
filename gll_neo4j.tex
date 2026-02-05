@@ -1,0 +1,129 @@
+\documentclass[
+11pt,%
+tightenlines,%
+twoside,%
+onecolumn,%
+nobibnotes,%
+nofootinbib,%
+superscriptaddress,%
+noshowpacs,%
+longbibliography,%
+centertags]%
+{revtex4-2}
+\usepackage{ljm}
+\setcaptionwidth{0.93\textwidth}
+%\raggedbottom %чтобы сократить большие проблелы между абзацами
+
+% --- ГРАФИКА (WINDOWS) ---
+\usepackage{epstopdf} % Критично для Windows: конвертирует EPS на лету
+\graphicspath{{figures/}} 
+
+% --- МАТЕМАТИКА И ТАБЛИЦЫ ---
+\usepackage{mathtools}
+\usepackage{colortbl}
+\usepackage{algorithm2e}
+% \usepackage{multirow}
+\usepackage{makecell}  %new line in one table cell
+
+% --- TIKZ (ВНИМАНИЕ: Для журнала в итоге нужны EPS файлы) ---
+\usepackage{pgf}
+\usepackage{tikz}
+\usepackage{nicematrix}
+\usetikzlibrary{arrows, automata, fit, calc, positioning}
+
+% --- ДОПОЛНИТЕЛЬНО ---
+% \usepackage{soul}
+\usepackage[makeroom]{cancel}
+\newcommand{\mycomment}[1]{}
+
+\usepackage[caption=false]{subfig}
+\usepackage{wrapfig}
+
+
+% --- Fix for apsrev-generated .bbl without hyperref ---
+\makeatletter
+\providecommand{\href@noop}{}%
+\providecommand{\href}[2]{#2}%
+\providecommand{\url}[1]{#1}%
+\providecommand{\nolinkurl}[1]{#1}%
+\makeatother
+
+\begin{document}
+\nocite{REVTEX42Control}
+% --- TITLE AND AUTHORS ---
+\titlerunning{GLL-based CFPQ for Neo4j} 
+\authorrunning{Abzalov et al.}        
+%
+\title{GLL-based Context-Free Path Querying for Neo4j}
+
+% --- АВТОРЫ (Формат RevTeX) ---
+
+\author{Vadim Abzalov}
+\email[E-mail: ]{vadim.i.abzalov@gmail.com}
+\affiliation{Saint Petersburg State University, St. Petersburg, Russia}
+
+\author{Vlada Pogozhelskaya}
+\email[E-mail: ]{vvpogozhelskaia@edu.hse.ru}
+\affiliation{National Research University Higher School of Economics, St. Petersburg, Russia}
+
+\author{Vladimir Kutuev}
+\email[E-mail: ]{v.kutuev@spbu.ru}
+\affiliation{Saint Petersburg State University, St. Petersburg, Russia}
+
+\author{Olga Bachishche}
+\email[E-mail: ]{bachisheo@gmail.com}
+\affiliation{ITMO University, St. Petersburg, Russia}
+
+\author{Semyon Grigorev}
+\email[E-mail: ]{s.v.grigoriev@spbu.ru}
+\affiliation{Saint Petersburg State University, St. Petersburg, Russia}
+
+\firstcollaboration{(Submitted by TODO: ADD SUBMITTER NAME)}
+
+\received{TODO: ADD DATES}
+
+
+% --- АННОТАЦИЯ (Должна быть ДО maketitle) ---
+\begin{abstract}
+We propose a GLL-based \textit{context-free path querying} algorithm that handles queries in Extended Backus-Naur Form (EBNF) using Recursive State Machines (RSM). Utilization of EBNF allows one to combine traditional regular expressions and mutually recursive patterns in constraints natively. The proposed algorithm solves both the \textit{reachability-only} and the \textit{all-paths} problems for the \textit{all-pairs} and the \textit{multiple sources} cases. The evaluation on real-world graphs demonstrates that the utilization of RSMs increases the performance of the query evaluation. Being implemented as a stored procedure for Neo4j, our solution demonstrates better performance than a similar solution for RedisGraph. The performance of our solution on the regular path queries is comparable to the performance of the native Neo4j solution, and in some cases, our solution requires significantly less memory.
+\end{abstract}
+
+\subclass{68Q45, 68Q42, 68P15}
+% 68P15	Database theory ​	Теория баз данных ​
+% 68Q42	Grammars and rewriting systems ​	Грамматики и системы переписывания ​
+% 68Q45	Formal languages and automata ​	Формальные языки и автоматы
+
+% --- КЛЮЧЕВЫЕ СЛОВА ---
+\keywords{Graph database, graph querying, context-free path querying, CFPQ, reachability problem, all-paths problem, generalized LL, GLL}
+
+% --- ГЕНЕРАЦИЯ ЗАГОЛОВКА ---
+\maketitle
+\renewcommand{\figurename}{Fig.} 
+% --- MAIN CONTENT ---
+\input{sections/introduction}
+\input{sections/rsm}
+\input{sections/dataset}
+\input{sections/bnf_vs_ebnf}
+\input{sections/cfpq_for_neo4j}
+\input{sections/related_work}
+\input{sections/conclusion}
+
+\section*{ACKNOWLEDGMENTS}
+We thank Adrian Johnstone for pointing out the Generalized LL algorithm in our discussion at Parsing@SLE--2013, which motivated the development of the presented solution. We thank George Fletcher for the discussion of the evaluation of different CFPQ algorithms for Neo4j.
+
+\section*{FUNDING}
+The study was funded by the St. Petersburg State University (Grant No. 116636233). 
+
+\section*{CONFLICT OF INTEREST}
+The authors of this work declare that they have no conflicts of interest.
+
+%
+% ---- Bibliography ----
+%
+% The bibliography style 'APS (American Physical Society)' is a standard for RevTex.
+% References will then be sorted and formatted in the correct style.
+%
+\bibliographystyle{apsrev4-2}
+\bibliography{gll}
+%
+\end{document}

@@ -2,7 +2,7 @@
 
 Our solution is based on the generalized LL parsing algorithm~\cite{SCOTT2010177} which was shown to generalize well to graph processing~\cite{Grigorev:2017:CPQ:3166094.3166104}. As a result of parsing, GLL can construct a \textit{Shared Packed Parse Forest} (SPPF)~\cite{SCOTT20131828} --- a special data structure which represents all possible derivations of the input in the compressed form. Alternatively, GLL can provide the result in the form of the \textit{binary subtree sets}~\cite{SCOTT201963}. It was shown in~\cite{Grigorev:2017:CPQ:3166094.3166104} that SPPF can be naturally used to represent the result of the query for the \textit{all-paths} problem finitely (see \ref{eqn:all_pairs_all_paths} and~\ref{eqn:multiple_source_all_paths} in the set of problems).
 
-In our work, we modify the GLL-based CFPQ algorithm to handle RSMs instead of grammars in BNF as a query specification. It enables performance improvement and native handling of both context-free and regular languages.
+In our work, we modify the GLL-based CFPQ algorithm to handle RSMs instead of grammars in BNF as a query specification. It enables performance improvement and native handling of both context-free and regular languages. A detailed description of the algorithm, including formal definitions of descriptors, GSS, and correctness proofs, is beyond the scope of this paper and will be presented separately.
 
 \subsection{Paths Representation}
 
