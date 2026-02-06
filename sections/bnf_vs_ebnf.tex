@@ -1,10 +1,8 @@
 \section{Performance of GLL on Queries in BNF and EBNF}\label{section:BFN_or_RSM}
 
-((TODO is it relevant for neo4j paper? If no, maybe remove?))
+As discussed above, different CFG representations can be used to define the query. The basic one is BNF, the more expressive (but not more powerful) is EBNF. EBNF can also speed up query evaluation by replacing some recursion with Kleene star, reducing stack usage. RSMs natively encode EBNF grammars and can be processed by GLL~\ref{section:RSM}.
 
-As discussed above, different ways to specify context-free grammars can be used to specify the query. The basic one is BNF (see definition~\ref{def:bnf}), the more expressive (but not more powerful) is EBNF (see definition~\ref{def:ebnf}). EBNF is not only more expressive, but potentially allows one to improve the performance of the query evaluation because it avoids stack usage by replacing some recursive rules with the Kleene star. RSMs allow one to natively represent grammars in EBNF and can be handled by GLL as described in section~\ref{section:GLL-CFPQ}.
-
-We implemented and evaluated two versions of the GLL-based CFPQ algorithm~\cite{kotgll}: one operates with grammar in BNF, and another one operates with grammar in EBNF and utilizes RSM to represent it. At this step, we use simple data structures for graph and query representations, tuned for our algorithm. Both versions were evaluated in reachability-only mode to estimate performance differences and to choose the best one to integrate with Neo4j. 
+We implemented and evaluated two versions of the GLL-based CFPQ algorithm~\cite{kotgll}: one operates with grammar in BNF, and another one operates with grammar in EBNF and utilizes RSM to represent it. Both versions were evaluated in reachability-only mode to estimate performance differences and to choose the best one to integrate with Neo4j. 
 
 \mycomment{
 \subsection{Implementation Details}
@@ -20,9 +18,7 @@ To make the implementation code itself as concise and understandable as possible
 \subsection{Evaluation}\label{section:cfg_vs_rsm}
 
 To assess the applicability of the proposed solution, we evaluate it on a number of real-world graphs and queries described in section~\ref{section:dataset}.
-
-We compare the performance of the evaluation of queries in \textit{reachability-only} mode with different sizes of the start vertex set to estimate the speedup of  the RSM-based version relative to the BNF-based one.
-
+We evaluate \textit{reachability-only} query performance across varying start-set sizes to estimate the speedup of the RSM-based approach over the BNF-based one.
 The experimental study was conducted as follows.   
 
 \begin{itemize}
@@ -32,9 +28,7 @@ The experimental study was conducted as follows.
 \end{itemize}
 
 
-Results presented in Fig.~\ref{fig:speedup} a, Fig.~\ref{fig:speedup} b, and Fig.~\ref{fig:speedup}c for queries $G_1$, $G_2$ and \textit{Geo} respectively. 
-We can see that in almost all cases the RSM-based version is faster than the BNF-based one. While in most cases speedup is not greater than 2, in some cases it can be more than 5 (see Fig.~\ref{fig:speedup}~c: graph \textit{pathways}, grammar \textit{Geo}). Average speedup over all graphs and grammars is 1.5. So we can conclude that RSM-based GLL demonstrates better performance than the BNF-based one on average. 
-
+Results are shown in Fig.~\ref{fig:speedup}. In most cases, the RSM-based version outperforms the BNF-based one, with speedups typically below 2 times but reaching over 5 times in some settings (Fig.~\ref{fig:speedup} c: graph \textit{pathways}, grammar \textit{Geo}). The mean speedup across all graphs and grammars is 1.5, indicating that RSM-based GLL is faster on average.
 
 
 \newcommand\speedImageW{0.34}

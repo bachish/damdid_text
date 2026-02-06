@@ -1,29 +1,29 @@
 \section{RSM-based CFPQ algorithm}\label{section:RSM}
 
-In this section, we provide background on Recursive State Machines (RSMs) and describe informally how they can specify context-free constraints for path querying in graphs.
-Also we describe main idea behind adoption GLL for RSM-based CFPQ algorithm.
+In this section, we provide background on Recursive State Machines (RSMs) and describe informally how they can specify context-free constraints for path querying in graphs. 
+We also describe the main idea behind adopting GLL for an RSM-based CFPQ algorithm.
 
-\textit{Recursive state machine} or RSM~\cite{10.1145/1075382.1075387} is a way to represent context-free languages in a way resembling finite automata.
-It allows us to use a graph-based representation of the context-free languages specification and unify the processing of regular and context-free languages. 
-Moreover, RSMs provide a natural representation for grammars in Extended Backus–Naur Form (EBNF), which are often more compact and user-friendly than BNF.
+A \textit{recursive state machine} (RSM)~\cite{10.1145/1075382.1075387} provides a representation of context-free languages in a way resembling finite automata.
+It allows us to use a graph-based specification of context-free languages and unify the processing of regular and context-free languages. 
+Moreover, RSMs naturally encode grammars in Extended Backus-Naur Form (EBNF), which is often more compact and user-friendly than BNF.
 
 In our work, we modify the GLL-based CFPQ algorithm to handle RSMs instead of grammars in BNF as a query specification.
-It enables performance improvement and native handling of both context-free and regular languages.
-A detailed description of the algorithm, including formal definitions of descriptors, GSS, and correctness proofs, is beyond the scope of this paper and can be found in extended version~\cite{abzalov2023gllbasedcontextfreepathquerying}.
+This modification improves performance and enables native handling of both context-free and regular languages.
+A detailed description of the algorithm, including formal definitions of descriptors, GSS, and correctness proofs, is beyond the scope of this paper and can be found in the extended version~\cite{abzalov2023gllbasedcontextfreepathquerying}.
 
 Our solution is based on the generalized LL parsing algorithm~\cite{SCOTT2010177} which was shown to generalize well to graph processing~\cite{Grigorev:2017:CPQ:3166094.3166104}.
-To generalize GLL to handle RSMs as query specification we introduce \emph{matched ranges}: each range is defined by two graph vertices (e.g., $u$ and $v$) and two RSM states (e.g., $p$ and $q$).
-A matched range of the form $(p,u),(q,v)$ indicates that there exist at least one path from $u$ to $v$ such that it forms a word is accepted by RSM when starting in state $p$ and ending in state $q$.
+To support RSMs as a query specification, we introduce \emph{matched ranges}: each range is defined by two graph vertices (e.g., $u$ and $v$) and two RSM states (e.g., $p$ and $q$).
+A matched range of the form $(p,u),(q,v)$ indicates that there exists at least one path from $u$ to $v$ such that its labels form a word accepted by RSM when starting in state $p$ and ending in state $q$.
 
-As a result of parsing, GLL can construct a \textit{Shared Packed Parse Forest} (SPPF)~\cite{SCOTT20131828} --- a special data structure which represents all possible derivations of the input in the compressed form.
+As a result of parsing, GLL can construct a \textit{Shared Packed Parse Forest} (SPPF)~\cite{SCOTT20131828}, a special data structure which represents all possible derivations of the input in the compressed form.
 A Shared Packed Parse Forest (SPPF) was proposed by Jan Rekers in~\cite{rekers1992parser} to represent parse forest without duplication of subtrees. Later, other versions of SPPF were introduced in different generalized parsing algorithms.
-For example, GLL can provide the result in the form of the \textit{binary subtree sets}~\cite{SCOTT201963}.
+For example, GLL can provide the result in the form of \textit{binary subtree sets}~\cite{SCOTT201963}.
 As shown in~\cite{Grigorev:2017:CPQ:3166094.3166104}, the SPPF can finitely represent the result of an all-paths query, enabling the recovery of any concrete path.
-In our work, we employ SPPF with the following types of nodes. 
+We employ SPPF with the following types of nodes. 
 
 \begin{itemize}
     \item A \textit{Terminal node} to represent a matched edge label.
-    \item A \textit{Nonterminal node} to represent the root of the subtree which corresponds to paths that can be derived from the respective nonterminal.  
+    \item A \textit{Nonterminal node} to represent the root of the subtree that corresponds to paths that can be derived from the respective nonterminal.  
     \item An \textit{Intermediate node} which corresponds to the intermediate point used to connect two matched ranges. It has exactly two children (both range nodes) and is denoted $I_{q,v}$, indicating that ranges are joined at point $(q,v)$.
     \item A \textit{Range node} corresponds to a matched range $(p,u),(q,v)$ and is denoted $R^{p,u}_{q,v}$. It encodes all possible derivations of that range and can have arbitrarily many children of any type except range. Range nodes are reusable within the SPPF.
     \item An \textit{Epsilon node} to represent the empty subtree in the case when nonterminal produces the empty string. 
@@ -31,11 +31,11 @@ In our work, we employ SPPF with the following types of nodes.
 
 \subsection{Example}\label{section:example_of_rsm}
 
-Let us introduce a brief example.
-Suppose we have a graph as shown in Fig.~\ref{fig:input-graph} and we wish to find all paths from $v_0$ to $v_0$ that satisfy the constraint specified by the RSM in Fig.~\ref{fig:example-rsm}.
+We give a brief example.
+Consider the graph as shown in Fig.~\ref{fig:input-graph} and we seek all paths from $v_0$ to $v_0$ that satisfy the constraint specified by the RSM in Fig.~\ref{fig:example-rsm}.
 The RSM describes paths of the form $a^n b^n$, where $n > 0$.
-It is easy to see that there are infinitely many such paths. 
-Therefore, the resulting SPPF will contain cycles.
+Note that there are infinitely many such paths. 
+Therefore, the resulting SPPF contain cycles.
 
 \begin{figure}
     \centering
@@ -87,7 +87,7 @@ Therefore, the resulting SPPF will contain cycles.
 
 The resulting SPPF is shown in Fig.~\ref{fig:SPPF}.
 Its root is the node $R^{q_4,v_0}_{q_5,v_0}$, which indicates that it represents paths from $v_0$ to $v_0$ that can be recognized by the RSM transitioning from state $q_4$ to $q_5$.
-This transition corresponds to recognizing a word derived from the non-terminal $S$.
+This transition corresponds to recognizing a word derived from the nonterminal $S$.
 The node $R^{q_0,v_0}_{q_3,v_0}$ is the entry point for a cycle.
 The node $R^{q_0,v_0}_{q_3,v_1}$ has two siblings, indicating two ways to construct the corresponding subpath.
 The first corresponds to the shortest possible path: $$v_0 \xrightarrow{a} v_0 \xrightarrow{a} v_0 \xrightarrow{b} v_1 \xrightarrow{b} v_0.$$

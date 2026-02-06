@@ -1,8 +1,7 @@
 \section{CFPQ For Neo4j}\label{section:cfpq_for_neo4j}
 
-In this section we provide details on the integration of the GLL-based CFPQ to Neo4j graph database. We choose the RSM-based version because our comparison (see section~\ref{section:cfg_vs_rsm}) shows that it is faster than the BNF-based one.
-
-Also, we provide results of the implemented solution evaluation which show that, first of all, the provided solution is faster than a similar linear algebra-based solution for RedisGraph. Also, we show that on RPQs our solution is compatible with the Neo4j native one and in some cases evaluates queries successfully while the native solution fails with an \textit{OutOfMemory} exception.
+This section details integrating GLL-based CFPQ into the Neo4j graph database. We use the RSM-based variant because our comparison (Section~\ref{section:cfg_vs_rsm}) shows it outperforms the BNF-based one.
+Also, we provide results of the implemented solution evaluation which show that, first of all, the provided solution is faster than a similar linear algebra-based solution for RedisGraph. In addition, we show that on RPQs our solution is compatible with the Neo4j native one and in some cases evaluates queries successfully while the native solution fails with an \textit{OutOfMemory} exception.
 
 \subsection{Implementation Details}
 
@@ -10,7 +9,7 @@ Neo4j stored procedure is a mechanism through which query language can be extend
 
 We implemented a Neo4j stored procedure which solves the reachability problem for the given set of the start vertices and the given query. The procedure can be called as follows:
 $\texttt{CALL}~\texttt{cfpq.gll.getReachabilities(nodes, q)}$
-where \texttt{nodes} is a collection of start nodes, and \texttt{q} is a string representation (or description) of RSM specified over relation types. The result of the given procedure is a stream of reachable pairs of nodes. Note that the expressive power of our solution is limited: we cannot use the full power of Cypher inside our constraints. For example, we cannot specify constraints on the vertices inside our constraints.
+where \texttt{nodes} is a collection of start nodes, and \texttt{q} is a string representation (or description) of RSM specified over relation types. The procedure outputs a stream of reachable node pairs. Note that the expressive power of our solution is limited: we cannot use the full power of Cypher inside our constraints. For example, we cannot specify constraints on the vertices inside our constraints.
 
 \mycomment{
 %\scalebox{0.75}{\parbox{.5\linewidth}{%
@@ -52,11 +51,12 @@ To assess the applicability of the proposed solution, we evaluate it on a number
 
 %\subsection{Evaluation Results}
 
-The results of the context-free path query evaluations are presented in Fig.~\ref{fig:performance}~a for $G_1$, Fig.~\ref{fig:performance}~b for $G_2$, and Fig.~\ref{fig:performance}~c for \textit{Geo}. 
+The results of the context-free path query evaluations are presented in Fig.~\ref{fig:performance}. 
+Evaluation time depends not only on graph size and sparsity, but also on graph structure. 
+For example, a relatively small graph \textit{go\_hierarchy} fully consists of edges used in queries $G_1$ and $G_2$, thus evaluation time for these queries is significantly bigger than for some bigger but more sparse graphs, for example, for the \textit{eclass} graph. Especially for a relatively large starting vertex set. Note that the creation of the relevant metrics for the CFPQ query evaluation time prediction is a challenging problem by itself and should be tackled in the future.
 
-The results show that query evaluation time depends not only on a graph size or its sparsity, but also on the inner structure of the graph. For example, a relatively small graph \textit{go\_hierarchy} fully consists of edges used in queries $G_1$ and $G_2$, thus evaluation time for these queries is significantly bigger than for some bigger but more sparse graphs, for example, for the \textit{eclass} graph. Especially for a relatively large starting vertex set. Note that the creation of the relevant metrics for the CFPQ query evaluation time prediction is a challenging problem by itself and should be tackled in the future.
-
-Also, we can see that in almost all cases the proposed solution is significantly faster than RedisGraph (in orders of magnitude in some cases). At the same time, in some cases (see results for the graph \textit{core} and all queries) RedisGraph outperforms our solution. Moreover, it can be seen that evaluation time for RedisGraph is more predictable. For our solution, in some cases, execution time highly depends on the start set. For example, see Fig.~\ref{fig:performance}~c, graph \textit{enzyme}.    
+In almost all cases, the proposed solution is significantly faster than RedisGraph (in orders of magnitude in some cases).
+In some cases, however (e.g., graph \textit{core} across all queries), RedisGraph outperforms our solution. Moreover, it can be seen that evaluation time for RedisGraph is more predictable. For our solution, in some cases, execution time highly depends on the start set. For example, see Fig.~\ref{fig:performance}~c, graph \textit{enzyme}.    
 
 \newcommand\squeryImageW{0.34}
 \newcommand\squeryImageScale{1.111}
@@ -81,10 +81,10 @@ Also, we can see that in almost all cases the proposed solution is significantly
 \end{figure}
 
 
-The particularly important scenario is the case when the start set is a single vertex. 
-The results of the \texttt{single-source reachability} show that such queries are reasonably fast: median time is about few milliseconds for all graphs and all queries. Note that even for single source queries, evaluation time highly depends on the graph structure: evaluation time on \textit{core} graph is significantly bigger than for all other graphs for all queries. Note that \textit{core} is the smallest graph in terms of the number of the nodes and edges. Again, to provide a reliable metric to predict query execution time is a non-trivial task. Moreover, time grows with the size of the chunk, as expected. 
+The particularly important scenario is when the start set contains a single vertex. \texttt{Single-source reachability} queries are reasonably fast: median runtime is about few milliseconds across all graphs and queries. Even in this setting, runtime depends strongly on graph structure. For example, \textit{core} is slower than the other graphs despite being the smallest by node and edge count. Predicting execution time with a reliable metric remains non-trivial. As expected, runtime increases with chunk size.
 
-Partial results for RPQ evaluation are presented in Fig.~\ref{fig:performance-reg}~a and Fig.~\ref{fig:performance-reg}~b for $\textit{reg}_1$ (defined in~\ref{eqn:reg_1}) and $\textit{reg}_2$ (defined in~\ref{eqn:reg_2}) respectively. For queries $\textit{reg}_3$ (defined in~\ref{eqn:reg_3}) and $\textit{reg}_4$ (defined in~\ref{eqn:reg_4}) we get similar results. Note that on \textit{geospecies} and \textit{taxonomy} graphs, the native solution failed with the \textit{OutOfMemory} exception, while our solution evaluates queries successfully. 
+
+Partial results for RPQ evaluation are presented in Fig.~\ref{fig:performance-reg}. For queries $\textit{reg}_3$ (defined in~\ref{eqn:reg_3}) and $\textit{reg}_4$ (defined in~\ref{eqn:reg_4}) we get similar results. Note that on \textit{geospecies} and \textit{taxonomy} graphs, the native solution failed with the \textit{OutOfMemory} exception, while our solution evaluates queries successfully. 
 
 \begin{figure}
     \begin{minipage}{0.4\textwidth}
