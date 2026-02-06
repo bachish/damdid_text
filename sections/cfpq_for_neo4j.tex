@@ -1,7 +1,7 @@
 \section{CFPQ For Neo4j}\label{section:cfpq_for_neo4j}
 
 This section details integrating GLL-based CFPQ into the Neo4j graph database.
-We use the RSM-based variant because our comparison (Section~\ref{section:cfg_vs_rsm}) shows it outperforms the BNF-based one.
+We use the RSM-based variant because our comparison (Section~\ref{section:BFN_or_RSM}) shows it outperforms the BNF-based one.
 Also, we provide results of the implemented solution evaluation which show that, first of all, the provided solution is faster than a similar linear algebra-based solution for RedisGraph. In addition, we show that on RPQs our solution is compatible with the Neo4j native one and in some cases evaluates queries successfully while the native solution fails with an \textit{OutOfMemory} exception.
 
 \subsection{Implementation Details}
