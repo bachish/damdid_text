@@ -120,7 +120,6 @@ After that, in Section~\ref{section:cfpq_for_neo4j}, we provide details on the i
 Related work is discussed in Section~\ref{section:related_work}. Final remarks and conclusion are provided in Section~\ref{section:conclusion}.
 
 
-
 \section{RSM-based CFPQ algorithm}\label{section:RSM}
 
 In this section, we provide background on Recursive State Machines (RSMs) and describe informally how they can specify context-free constraints for path querying in graphs. 
@@ -155,7 +154,7 @@ We employ SPPF with the following types of nodes.
 \subsection{Example}\label{section:example_of_rsm}
 
 We give a brief example.
-Consider the graph as shown in Fig.~\ref{fig:input-graph} and we seek all paths from $v_0$ to $v_0$ that satisfy the constraint specified by the RSM in Fig.~\ref{fig:example-rsm}.
+Consider the graph as shown in Fig.~\ref{fig:input-graph-1} and we seek all paths from $v_0$ to $v_0$ that satisfy the constraint specified by the RSM in Fig.~\ref{fig:example-rsm}.
 The RSM describes paths of the form $a^n b^n$, where $n > 0$.
 Note that there are infinitely many such paths. 
 Therefore, the resulting SPPF contain cycles.
@@ -174,106 +173,7 @@ Therefore, the resulting SPPF contain cycles.
     \end{tikzpicture}
 
     \caption{Input graph.}
-    \label{fig:input-graph}
-
-\end{figure}
-
-\begin{figure}
-    \centering
-    \begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=2.5cm, semithick]
-
-    \node[initial,state]   (F)              {$q_4$};
-    \node[state]           (G) [right of=F] {$q_5$};
-    \node[accepting,state] (H) [right of=G] {$q_6$};
-    \node[draw=black, fit= (F) (G) (H), inner sep=0.25cm] (J) {};
-    \node[below right] at (J.north west) {S'};
-
-    \path (F) edge              node {$q_0$} (G)
-            (G) edge              node {$\$$} (H); 
-
-    \node[initial,state] (A) [below = 2.7cm of F] {$q_0$};
-    \node[state]         (B) [right of=A] {$q_1$};
-    \node[state]         (D) [above right of=B] {$q_2$};
-    \node[accepting,state]         (C) [right of=B] {$q_3$};
-    \node [draw=black, fit= (A) (C) (D), inner sep=0.25cm] (E) {};
-    \node[below right] at (E.north west) {S};
-
-    \path (A) edge              node {a} (B)
-            (B) edge              node {$q_0$} (D)
-                edge              node {b} (C)
-            (D) edge              node {b} (C);
-    \end{tikzpicture}
-    
-    \caption{Extended RSM for grammar $S \to a \ b \mid a \ S \ b$. We automatically add the rule $S' \to S \ \$ $ to simplify query processing termination condition.}
-    \label{fig:example-rsm}
-\end{figure}
-
-The resulting SPPF is shown in Fig.~\ref{fig:SPPF}.
-Its root is the node $R^{q_4,v_0}_{q_5,v_0}$, which indicates that it represents paths from $v_0$ to $v_0$ that can be recognized by the RSM transitioning from state $q_4$ to $q_5$.
-This transition corresponds to recognizing a word derived from the nonterminal $S$.
-The node $R^{q_0,v_0}_{q_3,v_0}$ is the entry point for a cycle.
-The node $R^{q_0,v_0}_{q_3,v_1}$ has two siblings, indicating two ways to construct the corresponding subpath.
-The first corresponds to the shortest possible path
-$$v_0 \xrightarrow{a} v_0 \xrightarrow{a} v_0 \xrightarrow{b} v_1 \xrightarrow{b} v_0.$$
-The second contains the cycle mentioned above and therefore represents an infinite family of paths formed by repeatedly wrapping the shortest path with additional pairs of $a$s and $b$s.
-For example, traversing the cycle once yields the path $$v_0 \xrightarrow{a} v_0 \xrightarrow{a} v_0 \xrightarrow{a} v_0 \xrightarrow{a} v_0 \xrightarrow{b} v_1 \xrightarrow{b} v_0 \xrightarrow{b} v_1 \xrightarrow{b} v_0.$$
-
-\input{texfigures/sppf}
-
-\section{RSM-based CFPQ algorithm}\label{section:RSM}
-
-In this section, we provide background on Recursive State Machines (RSMs) and describe informally how they can specify context-free constraints for path querying in graphs. 
-We also describe the main idea behind adopting GLL for an RSM-based CFPQ algorithm.
-
-A \textit{recursive state machine} (RSM)~\cite{10.1145/1075382.1075387} provides a representation of context-free languages in a way resembling finite automata.
-It allows us to use a graph-based specification of context-free languages and unify the processing of regular and context-free languages. 
-Moreover, RSMs naturally encode grammars in Extended Backus--Naur Form (EBNF), which is often more compact and user-friendly than BNF.
-
-In our work, we modify the GLL-based CFPQ algorithm to handle RSMs instead of grammars in BNF as a query specification.
-This modification improves performance and enables native handling of both context-free and regular languages.
-A detailed description of the algorithm, including formal definitions of descriptors, GSS, and correctness proofs, is beyond the scope of this paper and can be found in the extended version~\cite{abzalov2023gllbasedcontextfreepathquerying}.
-
-Our solution is based on the generalized LL parsing algorithm~\cite{SCOTT2010177} which was shown to generalize well to graph processing~\cite{Grigorev:2017:CPQ:3166094.3166104}.
-To support RSMs as a query specification, we introduce \emph{matched ranges}: each range is defined by two graph vertices (e.g., $u$ and $v$) and two RSM states (e.g., $p$ and $q$).
-A matched range of the form $(p,u),(q,v)$ indicates that there exists at least one path from $u$ to $v$ such that its labels form a word accepted by RSM when starting in state $p$ and ending in state $q$.
-
-As a result of parsing, GLL can construct a \textit{Shared Packed Parse Forest} (SPPF)~\cite{SCOTT20131828}, a special data structure which represents all possible derivations of the input in the compressed form.
-A Shared Packed Parse Forest (SPPF) was proposed by Jan Rekers in~\cite{rekers1992parser} to represent parse forest without duplication of subtrees. Later, other versions of SPPF were introduced in different generalized parsing algorithms.
-For example, GLL can provide the result in the form of \textit{binary subtree sets}~\cite{SCOTT201963}.
-As shown in~\cite{Grigorev:2017:CPQ:3166094.3166104}, the SPPF can finitely represent the result of an all-paths query, enabling the recovery of any concrete path.
-We employ SPPF with the following types of nodes. 
-
-\begin{itemize}
-    \item A \textit{Terminal node} to represent a matched edge label.
-    \item A \textit{Nonterminal node} to represent the root of the subtree that corresponds to paths that can be derived from the respective nonterminal.  
-    \item An \textit{Intermediate node} which corresponds to the intermediate point used to connect two matched ranges. It has exactly two children (both range nodes) and is denoted $I_{q,v}$, indicating that ranges are joined at point $(q,v)$.
-    \item A \textit{Range node} corresponds to a matched range $(p,u),(q,v)$ and is denoted $R^{p,u}_{q,v}$. It encodes all possible derivations of that range and can have arbitrarily many children of any type except range. Range nodes are reusable within the SPPF.
-    \item An \textit{Epsilon node} to represent the empty subtree in the case when nonterminal produces the empty string. 
-\end{itemize}
-
-\subsection{Example}\label{section:example_of_rsm}
-
-We give a brief example.
-Consider the graph as shown in Fig.~\ref{fig:input-graph} and we seek all paths from $v_0$ to $v_0$ that satisfy the constraint specified by the RSM in Fig.~\ref{fig:example-rsm}.
-The RSM describes paths of the form $a^n b^n$, where $n > 0$.
-Note that there are infinitely many such paths. 
-Therefore, the resulting SPPF contain cycles.
-
-\begin{figure}
-    \centering
-    
-    \begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=2.8cm, semithick]
-
-    \node[state] (A)                    {$v_0$};
-    \node[state]         (B) [right of=A] {$v_1$};
-    
-    \path (A) edge  [loop left] node {a} (A)
-                edge  [bend left] node {b} (B)
-            (B) edge  [bend left] node {b} (A);
-    \end{tikzpicture}
-
-    \caption{Input graph.}
-    \label{fig:input-graph}
+    \label{fig:input-graph-1}
 
 \end{figure}
 
@@ -653,7 +553,7 @@ Partial results for RPQ evaluation are presented in Fig.~\ref{fig:performance-re
 \end{figure}
 
 
-We can see that the proposed solution is slightly slower than the native Neo4j algorithm, but not dramatically: typically less than two times. Moreover, in some cases, our solution is comparable with the native one (see Figs.~\ref{fig:performance-reg}~a and ~\ref{fig:performance-reg}~b, graph \textit{eclass}), and in some cases, our solution is faster than the native one (see Fig.~\ref{fig:performance-reg}~b, graph \textit{core}).
+We can see that the proposed solution is slightly slower than the native Neo4j algorithm, but not dramatically: typically less than two times. Moreover, in some cases, our solution is comparable with the native one (see Fig.~\ref{fig:performance-reg}~a and ~\ref{fig:performance-reg}~b, graph \textit{eclass}), and in some cases, our solution is faster than the native one (see Fig.~\ref{fig:performance-reg}~b, graph \textit{core}).
 
 Finally, we conclude that the proposed GLL-based solution can serve as an alternative to linear algebra-based CFPQ algorithms and is suitable for real-world graph analysis systems: our evaluation shows that the proposed solution outperforms the linear algebra-based one. Furthermore, we show that the proposed solution can be used as a universal algorithm for both RPQ and CFPQ.
 
@@ -706,7 +606,7 @@ The authors of this work declare that they have no conflicts of interest.
 
 \bibitem{Azimov:2018:CPQ:3210259.3210264}
 R. Azimov and S. Grigorev, "{Context-free path querying by matrix multiplication}",
-in \textit{Proceedings of the 1st ACM SIGMOD Joint International Workshop on Graph Data
+\textit{Proceedings of the 1st ACM SIGMOD Joint International Workshop on Graph Data
 Management Experiences \& Systems (GRADES) and Network Data Analytics (NDA)},
 GRADES-NDA '18, \textbf{5}, 
 1--10 (ACM, New York, NY, USA, 2018). 
@@ -715,7 +615,7 @@ GRADES-NDA '18, \textbf{5},
 \bibitem{Kuijpers:2019:ESC:3335783.3335791}
 J. Kuijpers, G. Fletcher, N. Yakovets, and T. Lindaaker,
 "{An experimental study of context-free path query evaluation methods}",
-in \textit{Proceedings of the 31st International Conference on Scientific and
+\textit{Proceedings of the 31st International Conference on Scientific and
 Statistical Database Management}, SSDBM '19, 
 121--132 (ACM, New York, NY, USA, 2019).
 {https://doi.org/10.1145/3335783.3335791}
@@ -723,7 +623,7 @@ Statistical Database Management}, SSDBM '19,
 \bibitem{zhangCfPgRdf}
 X. Zhang, Z. Feng, X. Wang, G. Rao, and W. Wu,
 "{Context-free path queries on RDF graphs}",
-in \textit{The Semantic Web -- ISWC 2016}, 
+\textit{The Semantic Web -- ISWC 2016}, 
 632--648
 (Springer International Publishing, Cham, 2016).
 
@@ -735,13 +635,13 @@ Journal of Integrative Bioinformatics \textbf{5}, 157 (2008).
 \bibitem{8731467}
 H. Miao and A. Deshpande,
 "{Understanding data science lifecycle provenance via graph segmentation and summarization}",
-in \textit{2019 IEEE 35th International Conference on Data Engineering (ICDE)}, 
+\textit{2019 IEEE 35th International Conference on Data Engineering (ICDE)}, 
 1710--1713
 (2019).
 
 \bibitem{Zheng}
 X. Zheng and R. Rugina, "{Demand-driven alias analysis for C}",
-in \textit{Proceedings of the 35th Annual ACM SIGPLAN-SIGACT Symposium on Principles
+\textit{Proceedings of the 35th Annual ACM SIGPLAN-SIGACT Symposium on Principles
 of Programming Languages}, POPL '08, 
 197--208 
 (ACM, New York, NY, USA, 2008). 
@@ -756,20 +656,20 @@ to CFL-reachability}",\ SIGPLAN Not. \textbf{36},
 \bibitem{santosBottomUp}
 F.~C. Santos, U.~S. Costa, and M.~A. Musicante,
 "{A bottom-up algorithm for answering context-free path queries in graph databases}",
-in \textit{Web Engineering}, 
+\textit{Web Engineering}, 
 225--233
 (Springer International Publishing, Cham, 2018).
 
 \bibitem{hellingsRelational}
 J. Hellings, "{Conjunctive context-free path queries}",
-in \textit{Proceedings of ICDT'14}, 
+\textit{Proceedings of ICDT'14}, 
 119--130
 (2014).
 
 \bibitem{10.1145/3167132.3167265}
 C.~M. Medeiros, M.~A. Musicante, and U.~S. Costa,
 "{Efficient evaluation of context-free path queries for graph databases}",
-in \textit{Proceedings of the 33rd Annual ACM Symposium on Applied Computing},
+\textit{Proceedings of the 33rd Annual ACM Symposium on Applied Computing},
 SAC '18,
 1230--1237
 (Association for Computing Machinery, New York, NY, USA, 2018). 
@@ -778,7 +678,7 @@ SAC '18,
 \bibitem{10.1145/3398682.3399163}
 A. Terekhov, A. Khoroshev, R. Azimov, and S. Grigorev,
 "{Context-free path querying with single-path semantics by matrix multiplication}",
-in \textit{Proceedings of the 3rd Joint International Workshop on Graph Data Management
+\textit{Proceedings of the 3rd Joint International Workshop on Graph Data Management
 Experiences \& Systems (GRADES) and Network Data Analytics (NDA)},
 GRADES-NDA'20 
 (Association for Computing Machinery, New York, NY, USA, 2020). 
@@ -786,7 +686,7 @@ GRADES-NDA'20
 
 \bibitem{Hellings2020ExplainingPQ}
 J. Hellings, "{Explaining results of path queries on graphs}",
-in \textit{Software Foundations for Data Interoperability and Large Scale Graph
+\textit{Software Foundations for Data Interoperability and Large Scale Graph
 Data Analytics},
 84--98
 (Springer International Publishing, Cham, 2020).
@@ -794,25 +694,26 @@ Data Analytics},
 \bibitem{10.1145/3461837.3464513}
 R. Azimov, I. Epelbaum, and S. Grigorev,
 "{Context-free path querying with all-path semantics by matrix multiplication}",
-in \textit{Proceedings of the 4th ACM SIGMOD Joint International Workshop on Graph Data
+\textit{Proceedings of the 4th ACM SIGMOD Joint International Workshop on Graph Data
 Management Experiences \& Systems (GRADES) and Network Data Analytics (NDA)},
 GRADES-NDA '21 (Association for Computing Machinery, New York, NY, USA, 2021). {https://doi.org/10.1145/3461837.3464513}
 
+%ok
 \bibitem{9064792}
 O. Rodriguez-Prieto, A. Mycroft, and F. Ortin,
-"{An efficient and scalable platform for Java source code analysis using overlaid
-graph representations}",\ IEEE Access \textbf{8}, 72239 (2020). {https://doi.org/10.1109/ACCESS.2020.2987631}
+"{An Efficient and Scalable Platform for Java Source Code Analysis Using Overlaid Graph Representations}",
+\textit{IEEE Access}, \textbf{8}, 72239--72260 (2020). {https://doi.org/10.1109/ACCESS.2020.2987631}
 
 \bibitem{Grigorev:2017:CPQ:3166094.3166104}
 S. Grigorev and A. Ragozina,
 "{Context-free path querying with structural representation of result}",
-in \textit{Proceedings of the 13th Central \& Eastern European Software Engineering
+\textit{Proceedings of the 13th Central \& Eastern European Software Engineering
 Conference in Russia}, CEE-SECR '17 (ACM, New York, NY, USA, 2017), \textbf{10}, 1--7. 
 {https://doi.org/10.1145/3166094.3166104}
 
 \bibitem{AfroozenFasterGll}
 A. Afroozeh and A. Izmaylova, "{Faster, practical GLL parsing}",
-in \textit{Compiler Construction},
+\textit{Compiler Construction},
 89--108
 (Springer Berlin Heidelberg, Berlin, Heidelberg, 2015).
 
@@ -854,7 +755,7 @@ accessed: 27.09.2024.
 \bibitem{Pacaci2020RegularPQ}
 A. Pacaci, A. Bonifati, and M.~T. \"{O}zsu,
 "{Regular path query evaluation on streaming graphs}",
-in \textit{Proceedings of the 2020 ACM SIGMOD International Conference on Management
+\textit{Proceedings of the 2020 ACM SIGMOD International Conference on Management
 of Data}, SIGMOD '20,
 1415--1430
 (Association for Computing Machinery, New York, NY, USA, 2020). {https://doi.org/10.1145/3318464.3389733}
@@ -867,7 +768,7 @@ X. Wang, S. Wang, Y. Xin, Y. Yang, J. Li, and X. Wang,
 \bibitem{DBLP:conf/edbt/TerekhovPAZG21}
 A. Terekhov, V. Pogozhelskaya, V. Abzalov, T. Zinnatulin, and S.~V. Grigorev,
 "{Multiple-source context-free path querying in terms of linear algebra}",
-in \textit{Proceedings of the 24th International Conference on Extending Database
+\textit{Proceedings of the 24th International Conference on Extending Database
 Technology, EDBT 2021, Nicosia, Cyprus, March 23--26, 2021},
 487--492
 (OpenProceedings.org, 2021).
@@ -880,7 +781,7 @@ accessed: 12.11.2024.
 
 \bibitem{10.1145/298514.298576}
 M. Yannakakis, "{Graph-theoretic methods in database theory}",
-in \textit{Proceedings of the Ninth ACM SIGACT-SIGMOD-SIGART Symposium on Principles
+\textit{Proceedings of the Ninth ACM SIGACT-SIGMOD-SIGART Symposium on Principles
 of Database Systems}, PODS '90,
 230--242
 (Association for Computing Machinery, New York, NY, USA, 1990). {https://doi.org/10.1145/298514.298576}
@@ -888,14 +789,14 @@ of Database Systems}, PODS '90,
 \bibitem{10.1145/3241653.3241655}
 E. Verbitskaia, I. Kirillov, I. Nozkin, and S. Grigorev,
 "{Parser combinators for context-free path querying}",
-in \textit{Proceedings of the 9th ACM SIGPLAN International Symposium on Scala},
+\textit{Proceedings of the 9th ACM SIGPLAN International Symposium on Scala},
 13--23
 Scala 2018 (Association for Computing Machinery, New York, NY, USA, 2018). {https://doi.org/10.1145/3241653.3241655}
 
 \bibitem{10.1145/3427081.3427087}
 C.~M. Medeiros, M.~A. Musicante, and U.~S. Costa,
 "{An algorithm for context-free path queries over graph databases}",
-in \textit{Proceedings of the 24th Brazilian Symposium on Context-Oriented Programming
+\textit{Proceedings of the 24th Brazilian Symposium on Context-Oriented Programming
 and Advanced Modularity}, SBLP '20,
 40--47
 (Association for Computing Machinery, New York, NY, USA, 2020). {https://doi.org/10.1145/3427081.3427087}
@@ -918,7 +819,7 @@ P.~G. Bradford and D.~A. Thomas,
 \bibitem{8249039}
 P.~G. Bradford,
 "{Efficient exact paths for Dyck and semi-Dyck labeled path reachability (extended abstract)}",
-in \textit{2017 IEEE 8th Annual Ubiquitous Computing, Electronics and Mobile
+\textit{2017 IEEE 8th Annual Ubiquitous Computing, Electronics and Mobile
 Communication Conference (UEMCON)},
 247--253
 (2017). {https://doi.org/10.1109/UEMCON.2017.8249039}
@@ -926,13 +827,13 @@ Communication Conference (UEMCON)},
 \bibitem{4625871}
 C.~B. Ward, N.~M. Wiegand, and P.~G. Bradford,
 "{A distributed context-free language constrained shortest path algorithm}",
-in \textit{2008 37th International Conference on Parallel Processing},
+\textit{2008 37th International Conference on Parallel Processing},
 373--380
 (2008). {https://doi.org/10.1109/ICPP.2008.67}
 
 \bibitem{10.1145/3318464.3384400}
 Y. Susanina, "{Context-free path querying via matrix equations}",
-in \textit{Proceedings of the 2020 ACM SIGMOD International Conference on Management
+\textit{Proceedings of the 2020 ACM SIGMOD International Conference on Management
 of Data}, SIGMOD '20,
 2821--2823
 (Association for Computing Machinery, New York, NY, USA, 2020). {https://doi.org/10.1145/3318464.3384400}
@@ -940,7 +841,7 @@ of Data}, SIGMOD '20,
 \bibitem{OrachevKronecker}
 E. Orachev, I. Epelbaum, R. Azimov, and S. Grigorev,
 "{Context-free path querying by Kronecker product}",
-in \textit{Advances in Databases and Information Systems},
+\textit{Advances in Databases and Information Systems},
 49--59,
 (Springer International Publishing, Cham, 2020).
 
